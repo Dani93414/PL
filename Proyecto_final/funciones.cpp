@@ -30,8 +30,8 @@ double get_variable(const std::string& nombre) {
 
 // ALFANUMÉRICAS
 void set_variable_str(const std::string& nombre, const std::string& valor) {
-    tabla_cadenas[nombre] = valor;
-    tabla_numeros.erase(nombre); // Si estaba como número, la borra
+    tabla_cadenas[nombre] = valor; // Ya hace copia correctamente
+    tabla_numeros.erase(nombre);
 }
 
 std::string get_variable_str(const std::string& nombre) {

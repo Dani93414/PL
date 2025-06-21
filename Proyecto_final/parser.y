@@ -102,7 +102,7 @@ asignacion:
         free($1);
     }
   | ID ASSIGN expresion_alfanumerica {
-        set_variable_str($1, $3);
+        set_variable_str($1, std::string($3));
         free($1);
         free($3);
     }
@@ -122,12 +122,23 @@ lectura:
 
 // Escritura
 escritura:
-    PRINT LPAREN expresion_alfanumerica RPAREN {
-        imprimir_str($3);
+    PRINT LPAREN ID RPAREN {
+        std::string nombre($3);
+        if (tabla_numeros.count(nombre)) {
+            imprimir(get_variable(nombre));
+        } else if (tabla_cadenas.count(nombre)) {
+            imprimir_str(get_variable_str(nombre));
+        } else {
+            std::cerr << "Error: Variable '" << nombre << "' no definida.\n";
+        }
         free($3);
     }
   | PRINT LPAREN expresion RPAREN {
         imprimir($3);
+    }
+  | PRINT LPAREN expresion_alfanumerica RPAREN {
+        imprimir_str($3);
+        free($3);
     }
 ;
 
