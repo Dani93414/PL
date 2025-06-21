@@ -24,6 +24,8 @@ extern FILE* yyin;
 %token <numval> NUMBER
 %token <strval> STRING
 %token <id> ID
+%token <numval> TRUE FALSE
+%token <numval> PI E_CONST GAMMA PHI DEG
 
 /* Tipos de retorno */
 %type <numval> expresion
@@ -232,6 +234,23 @@ expresion:
   | expresion AND expresion        { $$ = $1 && $3; }
   | expresion OR expresion         { $$ = $1 || $3; }
   | NOT expresion                  { $$ = !$2; }
+
+  | SIN LPAREN expresion RPAREN     { $$ = sin($3); }
+  | COS LPAREN expresion RPAREN     { $$ = cos($3); }
+  | LOG LPAREN expresion RPAREN     { $$ = log($3); }
+  | LOG10 LPAREN expresion RPAREN   { $$ = log10($3); }
+  | EXP LPAREN expresion RPAREN     { $$ = exp($3); }
+  | ABS LPAREN expresion RPAREN     { $$ = fabs($3); }
+  | INTEGER LPAREN expresion RPAREN { $$ = (int)$3; }
+
+  | PI       { $$ = $1; }
+  | E_CONST  { $$ = $1; }
+  | GAMMA    { $$ = $1; }
+  | PHI      { $$ = $1; }
+  | DEG      { $$ = $1; }
+
+  | TRUE     { $$ = $1; } 
+  | FALSE    { $$ = $1; }
 
   | LPAREN expresion RPAREN        { $$ = $2; }
   | MINUS expresion %prec UMINUS   { $$ = -$2; }
