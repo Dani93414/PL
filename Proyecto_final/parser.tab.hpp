@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_PARSER_HPP_INCLUDED
-# define YY_YY_PARSER_HPP_INCLUDED
+#ifndef YY_YY_PARSER_TAB_HPP_INCLUDED
+# define YY_YY_PARSER_TAB_HPP_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -115,7 +115,9 @@ extern int yydebug;
     SEMICOLON = 316,               /* SEMICOLON  */
     LPAREN = 317,                  /* LPAREN  */
     RPAREN = 318,                  /* RPAREN  */
-    COMMA = 319                    /* COMMA  */
+    COMMA = 319,                   /* COMMA  */
+    COLON = 320,                   /* COLON  */
+    UMINUS = 321                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -124,13 +126,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 16 "parser.y"
+#line 17 "parser.y"
 
     double numval;
     char* strval;
     char* id;
 
-#line 134 "parser.hpp"
+#line 136 "parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -145,4 +147,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_PARSER_HPP_INCLUDED  */
+#endif /* !YY_YY_PARSER_TAB_HPP_INCLUDED  */

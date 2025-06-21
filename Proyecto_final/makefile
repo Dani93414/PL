@@ -1,16 +1,33 @@
-all: interpreter
+# Compilador y opciones
+CXX = g++
+CXXFLAGS = -Wall -std=c++17
 
-# parser.cpp y parser.tab.h se generan juntos desde parser.y
-parser.cpp parser.tab.h: parser.y
-	bison -d parser.y -o parser.cpp
+# Archivos fuente
+LEX = lexer.l
+YACC = parser.y
+SRCS = funciones.cpp main.cpp
 
-# lexer.cpp necesita parser.tab.h
-lexer.cpp: lexer.l parser.tab.h
-	flex -o lexer.cpp lexer.l
+# Archivos generados
+LEX_C = lex.yy.c
+YACC_CPP = parser.tab.cpp
+YACC_HPP = parser.tab.hpp
 
-# compilar el binario final
-interpreter: lexer.cpp parser.cpp main.cpp funciones.cpp
-	g++ -o interpreter lexer.cpp parser.cpp main.cpp funciones.cpp -std=c++11
+# Objetos y ejecutable
+OBJS = $(YACC_CPP) $(LEX_C) $(SRCS)
+TARGET = interpreter
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+# Genera parser.tab.cpp y parser.tab.hpp
+$(YACC_CPP) $(YACC_HPP): $(YACC)
+	bison -d -o $(YACC_CPP) $(YACC)
+
+# Genera lex.yy.c
+$(LEX_C): $(LEX) $(YACC_HPP)
+	flex $(LEX)
 
 clean:
-	rm -f interpreter lexer.cpp parser.cpp parser.tab.h parser.output
+	rm -f $(TARGET) $(LEX_C) $(YACC_CPP) $(YACC_HPP) *.o

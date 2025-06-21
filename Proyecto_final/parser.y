@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <cstring>
 #include <iostream>
 #include <cmath>
 #include "funciones.hpp"
@@ -19,13 +20,16 @@ extern FILE* yyin;
     char* id;
 }
 
+/* Tokens con valores */
 %token <numval> NUMBER
 %token <strval> STRING
 %token <id> ID
 
+/* Tipos de retorno */
 %type <numval> expresion
+%type <strval> expresion_alfanumerica
 
-// Palabras reservadas
+/* Palabras reservadas */
 %token READ READ_STRING PRINT
 %token IF THEN ELSE END_IF
 %token WHILE DO END_WHILE
@@ -44,21 +48,37 @@ extern FILE* yyin;
 %token LEQ GEQ NEQ LT GT EQ
 %token PLUS MINUS MULT DIV DIV_INT MOD POW
 %token CONCAT
-%token SEMICOLON LPAREN RPAREN COMMA
+%token SEMICOLON LPAREN RPAREN COMMA COLON
+
+/* Precedencias y asociaciones */
+%left OR
+%left AND
+%left EQ NEQ
+%left LT LEQ GT GEQ
+%left PLUS MINUS
+%left MULT DIV DIV_INT MOD
+%right POW
+%right NOT
+%nonassoc UMINUS
 
 %start programa
 
 %%
 
-// Punto de entrada
+// Entrada principal
 programa:
     sentencias
 ;
 
-// Lista de sentencias separadas por ;
+// Lista de sentencias
 sentencias:
-    sentencia
-  | sentencias SEMICOLON sentencia
+    /* vacío */
+  | sentencias_aux
+;
+
+sentencias_aux:
+    sentencia SEMICOLON
+  | sentencias_aux sentencia SEMICOLON
 ;
 
 // Sentencias válidas
@@ -70,13 +90,21 @@ sentencia:
   | sentencia_while
   | sentencia_repeat
   | sentencia_for
+  | sentencia_switch
+  | sentencia_clear
+  | sentencia_place
 ;
 
-// Asignaciones con ejecución
+// Asignación
 asignacion:
     ID ASSIGN expresion {
         set_variable($1, $3);
         free($1);
+    }
+  | ID ASSIGN expresion_alfanumerica {
+        set_variable_str($1, $3);
+        free($1);
+        free($3);
     }
 ;
 
@@ -86,24 +114,43 @@ lectura:
         leer_numero($3);
         free($3);
     }
+  | READ_STRING LPAREN ID RPAREN {
+        leer_cadena($3);
+        free($3);
+    }
 ;
 
 // Escritura
 escritura:
-    PRINT LPAREN expresion RPAREN {
+    PRINT LPAREN expresion_alfanumerica RPAREN {
+        imprimir_str($3);
+        free($3);
+    }
+  | PRINT LPAREN expresion RPAREN {
         imprimir($3);
     }
 ;
 
-// If/Else
+
+// If / Else
 sentencia_if:
     IF expresion THEN sentencias END_IF {
-        if ($2) { /* ejecutamos el bloque */ }
+        if ($2) {
+            // Ejecutar las sentencias THEN
+        }
     }
   | IF expresion THEN sentencias ELSE sentencias END_IF {
-        if ($2) { /* ejecuta bloque THEN */ }
-        else { /* ejecuta bloque ELSE */ }
+        if ($2) {
+            // Ejecuta el THEN
+        } else {
+            // Ejecuta el ELSE
+        }
     }
+;
+
+else_opt:
+    /* vacío */
+  | ELSE sentencias
 ;
 
 // While
@@ -122,7 +169,40 @@ sentencia_for:
   | FOR ID FROM expresion TO expresion STEP expresion DO sentencias END_FOR
 ;
 
-// Expresiones numéricas básicas con retorno
+// Switch
+sentencia_switch:
+    SWITCH LPAREN expresion RPAREN lista_cases END_SWITCH
+;
+
+lista_cases:
+    casos_opt default_opt
+;
+
+casos_opt:
+    /* vacío */
+  | casos_opt CASE expresion COLON sentencias
+;
+
+default_opt:
+    /* vacío */
+  | DEFAULT COLON sentencias
+;
+
+// Clear screen
+sentencia_clear:
+    CLEAR_SCREEN {
+        clear_screen();
+    }
+;
+
+// Place cursor
+sentencia_place:
+    PLACE LPAREN expresion COMMA expresion RPAREN {
+        place_cursor((int)$3, (int)$5);
+    }
+;
+
+// Expresiones numéricas
 expresion:
     expresion PLUS expresion       { $$ = $1 + $3; }
   | expresion MINUS expresion      { $$ = $1 - $3; }
@@ -132,7 +212,6 @@ expresion:
   | expresion POW expresion        { $$ = pow($1, $3); }
   | expresion MOD expresion        { $$ = fmod($1, $3); }
 
-  // relacionales y lógicas como numérico (0/1)
   | expresion LT expresion         { $$ = $1 < $3; }
   | expresion LEQ expresion        { $$ = $1 <= $3; }
   | expresion GT expresion         { $$ = $1 > $3; }
@@ -144,11 +223,40 @@ expresion:
   | NOT expresion                  { $$ = !$2; }
 
   | LPAREN expresion RPAREN        { $$ = $2; }
-  | MINUS expresion                { $$ = -$2; }
+  | MINUS expresion %prec UMINUS   { $$ = -$2; }
   | PLUS expresion                 { $$ = +$2; }
 
   | NUMBER                         { $$ = $1; }
-  | ID                             { $$ = get_variable($1); free($1); }
+  | ID {
+    if (tabla_numeros.count($1)) {
+        $$ = get_variable($1);
+    } else {
+        std::cerr << "Error: Variable '" << $1 << "' no es numérica.\n";
+        $$ = 0;
+    }
+    free($1);
+}
+;
+
+// Expresiones alfanuméricas
+expresion_alfanumerica:
+    STRING {
+        $$ = strdup($1);
+        free($1);
+    }
+  | ID {
+        $$ = strdup(get_variable_str($1).c_str());
+        free($1);
+    }
+  | expresion {
+        std::string res = std::to_string($1);
+        $$ = strdup(res.c_str());
+    }
+  | expresion_alfanumerica CONCAT expresion_alfanumerica {
+        std::string res = std::string($1) + std::string($3);
+        $$ = strdup(res.c_str());
+        free($1); free($3);
+    }
 ;
 
 %%
