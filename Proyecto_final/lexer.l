@@ -83,6 +83,7 @@ NUMERO      ({REAL}|{ENTERO})
 "exp"                      { return EXP; }
 "integer"                  { return INTEGER; }
 "abs"                      { return ABS; }
+"sqrt"                     { return SQRT; }
 
 
 ":="                       { return ASSIGN; }
@@ -96,10 +97,14 @@ NUMERO      ({REAL}|{ENTERO})
 "+"                        { return PLUS; }
 "-"                        { return MINUS; }
 "*"                        { return MULT; }
-"/"                        { return DIV; }
 "//"                       { return DIV_INT; }
+"/"                        { return DIV; }
 "^"                        { return POW; }
 "||"                       { return CONCAT; }
+
+"++"                       { return INCR; }
+"--"                       { return DECR; }
+"!"                        { return FACT; }
 
 ";"                        { return SEMICOLON; }
 ":"                        { return COLON; }
@@ -129,11 +134,38 @@ NUMERO      ({REAL}|{ENTERO})
 {ID_VALIDO} {
     const char* text = yytext;
     size_t len = strlen(text);
+
+    // Comprobaciones estructurales
     if (text[0] == '_' || text[len - 1] == '_' || strstr(text, "__")) {
         printf("Error léxico: identificador no válido '%s' en línea %d\n", yytext, yylineno);
         return 0;
     }
-    yylval.id = strdup(yytext);
+
+    // Lista de palabras reservadas
+    const char* palabras_reservadas[] = {
+        "read", "read_string", "print",
+        "if", "then", "else", "end_if",
+        "while", "do", "end_while",
+        "repeat", "until",
+        "for", "from", "to", "step", "end_for",
+        "switch", "case", "default", "end_switch",
+        "clear_screen", "place",
+        "sin", "cos", "sqrt", "log", "log10", "exp", "integer", "abs",
+        "pi", "e", "gamma", "phi", "deg",
+        "mod", "sqrt",
+        "true", "false",
+        "or", "and", "not",
+        NULL
+    };
+
+    for (int i = 0; palabras_reservadas[i] != NULL; i++) {
+        if (strcasecmp(text, palabras_reservadas[i]) == 0) {
+            printf("Error léxico: uso de palabra reservada '%s' como identificador en línea %d\n", yytext, yylineno);
+            return 0;
+        }
+    }
+
+    yylval.id = strdup(text);
     return ID;
 }
 

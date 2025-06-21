@@ -40,11 +40,13 @@ extern FILE* yyin;
 %token SWITCH CASE DEFAULT END_SWITCH
 %token CLEAR_SCREEN PLACE
 
-%token TRUE FALSE
+
 %token OR AND NOT
 
-%token PI E_CONST GAMMA PHI DEG
-%token SIN COS LOG LOG10 EXP INTEGER ABS
+%token INCR DECR FACT
+
+
+%token SIN COS LOG LOG10 EXP INTEGER ABS SQRT
 
 %token ASSIGN
 %token LEQ GEQ NEQ LT GT EQ
@@ -59,6 +61,8 @@ extern FILE* yyin;
 %left LT LEQ GT GEQ
 %left PLUS MINUS
 %left MULT DIV DIV_INT MOD
+%right INCR DECR       
+%right FACT             
 %right POW
 %right NOT
 %nonassoc UMINUS
@@ -235,6 +239,19 @@ expresion:
   | expresion OR expresion         { $$ = $1 || $3; }
   | NOT expresion                  { $$ = !$2; }
 
+  | expresion INCR                 {$$ = $1 + 1;}
+  | expresion DECR                 {$$ = $1 - 1;}
+  | expresion FACT {
+    if ($1 < 0 || floor($1) != $1) {
+        std::cerr << "Error: factorial solo se aplica a enteros no negativos.\n";
+        $$ = 0;
+    } else {
+        $$ = 1;
+        for (int i = 1; i <= (int)$1; ++i)
+            $$ *= i;
+    }
+}
+
   | SIN LPAREN expresion RPAREN     { $$ = sin($3); }
   | COS LPAREN expresion RPAREN     { $$ = cos($3); }
   | LOG LPAREN expresion RPAREN     { $$ = log($3); }
@@ -242,6 +259,7 @@ expresion:
   | EXP LPAREN expresion RPAREN     { $$ = exp($3); }
   | ABS LPAREN expresion RPAREN     { $$ = fabs($3); }
   | INTEGER LPAREN expresion RPAREN { $$ = (int)$3; }
+  | SQRT LPAREN expresion RPAREN { $$ = sqrt($3); }
 
   | PI       { $$ = $1; }
   | E_CONST  { $$ = $1; }
@@ -251,6 +269,8 @@ expresion:
 
   | TRUE     { $$ = $1; } 
   | FALSE    { $$ = $1; }
+
+  
 
   | LPAREN expresion RPAREN        { $$ = $2; }
   | MINUS expresion %prec UMINUS   { $$ = -$2; }

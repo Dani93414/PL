@@ -90,34 +90,38 @@ extern int yydebug;
     OR = 291,                      /* OR  */
     AND = 292,                     /* AND  */
     NOT = 293,                     /* NOT  */
-    SIN = 294,                     /* SIN  */
-    COS = 295,                     /* COS  */
-    LOG = 296,                     /* LOG  */
-    LOG10 = 297,                   /* LOG10  */
-    EXP = 298,                     /* EXP  */
-    INTEGER = 299,                 /* INTEGER  */
-    ABS = 300,                     /* ABS  */
-    ASSIGN = 301,                  /* ASSIGN  */
-    LEQ = 302,                     /* LEQ  */
-    GEQ = 303,                     /* GEQ  */
-    NEQ = 304,                     /* NEQ  */
-    LT = 305,                      /* LT  */
-    GT = 306,                      /* GT  */
-    EQ = 307,                      /* EQ  */
-    PLUS = 308,                    /* PLUS  */
-    MINUS = 309,                   /* MINUS  */
-    MULT = 310,                    /* MULT  */
-    DIV = 311,                     /* DIV  */
-    DIV_INT = 312,                 /* DIV_INT  */
-    MOD = 313,                     /* MOD  */
-    POW = 314,                     /* POW  */
-    CONCAT = 315,                  /* CONCAT  */
-    SEMICOLON = 316,               /* SEMICOLON  */
-    LPAREN = 317,                  /* LPAREN  */
-    RPAREN = 318,                  /* RPAREN  */
-    COMMA = 319,                   /* COMMA  */
-    COLON = 320,                   /* COLON  */
-    UMINUS = 321                   /* UMINUS  */
+    INCR = 294,                    /* INCR  */
+    DECR = 295,                    /* DECR  */
+    FACT = 296,                    /* FACT  */
+    SIN = 297,                     /* SIN  */
+    COS = 298,                     /* COS  */
+    LOG = 299,                     /* LOG  */
+    LOG10 = 300,                   /* LOG10  */
+    EXP = 301,                     /* EXP  */
+    INTEGER = 302,                 /* INTEGER  */
+    ABS = 303,                     /* ABS  */
+    SQRT = 304,                    /* SQRT  */
+    ASSIGN = 305,                  /* ASSIGN  */
+    LEQ = 306,                     /* LEQ  */
+    GEQ = 307,                     /* GEQ  */
+    NEQ = 308,                     /* NEQ  */
+    LT = 309,                      /* LT  */
+    GT = 310,                      /* GT  */
+    EQ = 311,                      /* EQ  */
+    PLUS = 312,                    /* PLUS  */
+    MINUS = 313,                   /* MINUS  */
+    MULT = 314,                    /* MULT  */
+    DIV = 315,                     /* DIV  */
+    DIV_INT = 316,                 /* DIV_INT  */
+    MOD = 317,                     /* MOD  */
+    POW = 318,                     /* POW  */
+    CONCAT = 319,                  /* CONCAT  */
+    SEMICOLON = 320,               /* SEMICOLON  */
+    LPAREN = 321,                  /* LPAREN  */
+    RPAREN = 322,                  /* RPAREN  */
+    COMMA = 323,                   /* COMMA  */
+    COLON = 324,                   /* COLON  */
+    UMINUS = 325                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -132,7 +136,7 @@ union YYSTYPE
     char* strval;
     char* id;
 
-#line 136 "parser.tab.hpp"
+#line 140 "parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
