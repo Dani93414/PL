@@ -27,8 +27,10 @@
 // 
 #include "../table/numericVariable.hpp"
 #include "../table/logicalVariable.hpp"
+#include "../table/stringVariable.hpp"
 
 #include "../table/numericConstant.hpp"
+#include "../table/stringConstant.hpp"
 #include "../table/logicalConstant.hpp"
 
 #include "../table/builtinParameter0.hpp"
@@ -488,7 +490,7 @@ double lp::DivisionNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::IntDivisionNode::printAST()
+void lp::IntegerDivisionNode::printAST()
 {
   std::cout << "DivisionNode: /" << std::endl;
   std::cout << "\t"; 
@@ -497,7 +499,7 @@ void lp::IntDivisionNode::printAST()
 	this->_right->printAST();
 }
 
-double lp::IntDivisionNode::evaluateNumber() 
+double lp::IntegerDivisionNode::evaluateNumber() 
 {
 	int result= 0;
 
@@ -1344,7 +1346,7 @@ void lp::ReadStringStmt::evaluate()
   // Obtener la variable de la tabla de símbolos
   lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
 
-  if (var != nullptr && var->getType() == STRING)
+  if (var != nullptr && var->getType() == STRING_LITERAL)
   {
     // Ya existe como STRING
     lp::StringVariable *s = (lp::StringVariable *) var;
@@ -1358,7 +1360,7 @@ void lp::ReadStringStmt::evaluate()
     // Insertar como nueva variable STRING
     lp::StringVariable *s = new lp::StringVariable(this->_id,
                                                    VARIABLE,
-                                                   STRING,
+                                                   STRING_LITERAL,
                                                    value);
     table.installSymbol(s);
   }

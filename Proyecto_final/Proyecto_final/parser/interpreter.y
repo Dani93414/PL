@@ -45,7 +45,7 @@ extern lp::AST *root;
 %type <expNode> exp cond
 %type <parameters> listOfExp restOfListOfExp
 %type <stmts> stmtlist caseList
-%type <st> stmt asgn print read if while block repeat for switchstmt caseBlock defaultBlock clearscreen place
+%type <st> stmt asgn print read if while repeat for switchstmt caseBlock defaultBlock clearscreen place
 
 %token SEMICOLON COMMA
 %token PRINT READ READ_STRING
@@ -106,16 +106,11 @@ stmt:
   | read SEMICOLON
   | if
   | while
-  | block
   | repeat
   | for
   | switchstmt
   | clearscreen
   | place
-;
-
-block:
-    '{' stmtlist '}' { $$ = new lp::BlockStmt($2); }
 ;
 
 controlSymbol:
