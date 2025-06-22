@@ -21,7 +21,7 @@ CFLAGS = -c -g  -Wall -ansi -O2
 # MODIFIED in example 14: builtinParameter0.o builtinParameter2.o 
 OBJECTS= table.o symbol.o variable.o numericVariable.o \
 		init.o \
-		constant.o numericConstant.o \
+		constant.o numericConstant.o stringConstant.o stringVariable.o \
 		keyword.o \
 		builtin.o builtinParameter1.o mathFunction.o \
 		builtinParameter0.o builtinParameter2.o \
@@ -120,6 +120,17 @@ builtinParameter2.o: builtinParameter2.cpp builtinParameter2.hpp builtin.hpp sym
 init.o: init.cpp numericVariable.hpp variable.hpp symbol.hpp symbolInterface.hpp $(NAME).hpp tableInterface.hpp ../parser/interpreter.tab.h
 	@echo "Compiling " $<
 	@$(CPP) $(CFLAGS) $<	
+
+
+# Nueva regla para stringVariable.o
+stringVariable.o: stringVariable.cpp stringVariable.hpp variable.hpp symbol.hpp symbolInterface.hpp
+	@echo "Compiling " $<
+	@$(CPP) $(CFLAGS) $<
+
+# Nueva regla para stringConstant.o
+stringConstant.o: stringConstant.cpp stringConstant.hpp constant.hpp symbol.hpp symbolInterface.hpp
+	@echo "Compiling " $<
+	@$(CPP) $(CFLAGS) $<
 
 
 
