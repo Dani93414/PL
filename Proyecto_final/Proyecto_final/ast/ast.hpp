@@ -715,6 +715,43 @@ class DivisionNode : public NumericOperatorNode
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 /*!	
+  \class   IntDivisionNode
+  \brief   Definition of atributes and methods of IntDivisionNode class
+  \note    IntDivisionNode Class publicly inherits from NumericOperatorNode class 
+		   and adds its own printAST and evaluate functions
+*/
+class IntDivisionNode : public NumericOperatorNode 
+{
+  public:
+/*!		
+	\brief Constructor of IntDivisionNode uses NumericOperatorNode's constructor as members initializer
+	\param L: pointer to ExpNode
+	\param R: pointer to ExpNode
+	\post  A new IntDivisionNode is created with the parameter
+*/
+  IntDivisionNode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) 
+  {
+		// Empty
+  }
+/*!
+	\brief   printAST the IntDivisionNode
+	\return  void
+	\sa		   evaluateNumber
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the IntDivisionNode
+	\return  double
+	\sa		   printAST
+*/
+  int evaluateNumber();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+/*!	
   \class   ModuloNode
   \brief   Definition of atributes and methods of ModuloNode class
   \note    ModuloNode Class publicly inherits from NumericOperatorNode class 
