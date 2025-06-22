@@ -1825,9 +1825,9 @@ class PlaceStmt : public Statement
 class IfStmt : public Statement 
 {
  private:
-  ExpNode *_cond;    //!< Condicion of the if statement
-  std::list<Statement> *_stmt1; //!< Statement of the consequent
-  std::list<Statement> *_stmt2; //!< Statement of the other option
+  ExpNode *_cond;                     //!< Condición del if
+  std::list<Statement *> *_stmt1;     //!< Declaraciones de la rama consecuente
+  std::list<Statement *> *_stmt2;     //!< Declaraciones de la rama alternativa
 
   public:
 /*!		
@@ -1836,11 +1836,11 @@ class IfStmt : public Statement
 	\param statement1: Statement of the consequent
 	\post  A new IfStmt is created with the parameters
 */
-  IfStmt(ExpNode *condition, std::list<Statement> *statement1)
+  IfStmt(ExpNode *condition, std::list<Statement *> *statement1)
 	{
-		this->_cond = condition;
-		this->_stmt1 = statement1;
-		this->_stmt2 = NULL;
+	this->_cond = condition;
+	this->_stmt1 = statement1;
+	this->_stmt2 = NULL;
 	}
 
 
@@ -1851,11 +1851,11 @@ class IfStmt : public Statement
 	\param statement2: Statement of the alternative
 	\post  A new IfStmt is created with the parameters
 */
-  IfStmt(ExpNode *condition, std::list<Statement> *statement1, std::list<Statement> *statement2)
+  IfStmt(ExpNode *condition, std::list<Statement *> *statement1, std::list<Statement *> *statement2)
 	{
-		this->_cond = condition;
-		this->_stmt1 = statement1;
-		this->_stmt2 = statement2;
+	this->_cond = condition;
+	this->_stmt1 = statement1;
+	this->_stmt2 = statement2;
 	}
 
 
@@ -1889,7 +1889,7 @@ class IfStmt : public Statement
  {
  private:
  ExpNode *_casN;
-  std::list<Statement> *_stmt;
+ std::list<Statement *> *_stmt;
   
   public:
 /*!		
@@ -1898,7 +1898,7 @@ class IfStmt : public Statement
 \param statement: Statement of the consequent
 	\post  A new CaseStmt is created with the parameters
 	*/
-CaseStmt(ExpNode *casN, std::list<Statement> *statement)
+CaseStmt(ExpNode *casN, std::list<Statement *> *statement)
 {
 	this->_casN = casN;
 	this->_stmt = statement;
@@ -1940,8 +1940,7 @@ class SwitchStmt : public Statement
 {
  private:
   ExpNode *_value;   
-  std::list<CaseStmt> *_cases;
-  std::list<Statement> *_default;
+  std::list<Statement *> *_casesAndDefault;
 
   public:
 
@@ -1951,27 +1950,11 @@ class SwitchStmt : public Statement
 	\param cases: List of different cases
 	\post  A new SwitchStmt is created with the parameters
 	*/
-	SwitchStmt(ExpNode *value, std::list<CaseStmt> *cases)
-	{
-		this->_value = value;
-		this->_cases = cases;
-		this->_default = NULL;
-	}
-
-
-/*!		
-	\brief Constructor of Single SwitchStmt (without alternative)
-	\param value: ExpNode of the condition
-	\param cases: List of different cases
-	\param defaulT: Default case
-	\post  A new SwitchStmt is created with the parameters
-*/
-  SwitchStmt(ExpNode *value, std::list<CaseStmt> *cases, std::list<Statement> *defaulT)
-	{
-		this->_value = value;
-		this->_cases = cases;
-		this->_default = defaulT;
-	}
+	SwitchStmt(ExpNode *value, std::list<Statement *> *casesAndDefault)
+{
+	this->_value = value;
+	this->_casesAndDefault = casesAndDefault;
+}
 
 
 /*!
@@ -2004,7 +1987,7 @@ class WhileStmt : public Statement
 {
  private:
   ExpNode *_cond; //!< Condicion of the while statement
-  std::list<Statement> *_stmt; //!< Statement of the body of the while loop
+  std::list<Statement *> *_stmt; //!< List of pointers to Statement objects for the body of the while loop
 
   public:
 /*!		
@@ -2013,12 +1996,11 @@ class WhileStmt : public Statement
 	\param statement: Statement of the body of the loop 
 	\post  A new WhileStmt is created with the parameters
 */
-  WhileStmt(ExpNode *condition, std::list<Statement> *statement)
+  WhileStmt(ExpNode *condition, std::list<Statement *> *statement)
 	{
 		this->_cond = condition;
 		this->_stmt = statement;
 	}
-
 
 /*!
 	\brief   Print the AST for WhileStmt
@@ -2049,8 +2031,8 @@ class WhileStmt : public Statement
 class RepeatStmt : public Statement 
 {
  private:
-	std::list<Statement> *_stmt; //!< Statement of the body of the while loop
-	ExpNode *_cond; //!< Condicion of the while statement
+	std::list<Statement *> *_stmt; //!< List of pointers to Statement objects for the body of the repeat loop
+	ExpNode *_cond; //!< Condition of the repeat statement
 
   public:
 /*!		
@@ -2059,7 +2041,7 @@ class RepeatStmt : public Statement
 	\param statement: Statement of the body of the loop 
 	\post  A new RepeatStmt is created with the parameters
 */
-  RepeatStmt(ExpNode *condition, std::list<Statement> *statement)
+  RepeatStmt(ExpNode *condition, std::list<Statement *> *statement)
 	{
 		this->_cond = condition;
 		this->_stmt = statement;
@@ -2094,26 +2076,32 @@ class RepeatStmt : public Statement
 class ForStmt : public Statement 
 {
  private:
+  std::string _variable;
   ExpNode *_final;
   ExpNode *_inicio;
   ExpNode *_inc;
-  std::list<Statement> *_stmt; //!< Statement of the body of the while loop
+  std::list<Statement *> *_stmt;
 
-  public:
-/*!		
-	\brief Constructor of  ForStmt
-	\param stmt: Statements of the condition
-	\param inicio: Initial value of iteration
-	\param final: Final value of iteration
-	\post  A new ForStmt is created with the parameters
-*/
-  	ForStmt(std::list<Statement> *stmt, ExpNode *inicio, ExpNode *final)
-	{
-		this->_stmt = stmt;
-		this->_inicio = inicio;
-		this->_final = final;
-		this->_inc = NULL;
-	}
+ public:
+  // Constructor con step por defecto
+  ForStmt(const std::string &var, ExpNode *inicio, ExpNode *final, std::list<Statement *> *stmt)
+  {
+    _variable = var;
+    _inicio = inicio;
+    _final = final;
+    _inc = new NumberNode(1);  // step por defecto
+    _stmt = stmt;
+  }
+
+  // Constructor con step personalizado
+  ForStmt(const std::string &var, ExpNode *inicio, ExpNode *final, ExpNode *inc, std::list<Statement *> *stmt)
+  {
+    _variable = var;
+    _inicio = inicio;
+    _final = final;
+    _inc = inc;
+    _stmt = stmt;
+  }
 
 	/*!		
 	\brief Constructor of ForStmt
@@ -2123,12 +2111,12 @@ class ForStmt : public Statement
 	\param inc: Incremental value of iteration
 	\post  A new ForStmt is created with the parameters
 	*/
-	ForStmt(std::list<Statement> *stmt, ExpNode *inicio, ExpNode *final, ExpNode *inc)
+	ForStmt(std::list<Statement *> *stmt, ExpNode *inicio, ExpNode *final, ExpNode *inc)
 	{
+		this->_stmt = stmt;
 		this->_inicio = inicio;
 		this->_final = final;
 		this->_inc = inc;
-		this->_stmt = stmt;
 	}
 
 /*!

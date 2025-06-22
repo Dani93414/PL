@@ -89,34 +89,36 @@ extern int yydebug;
     INCREMENT = 290,               /* INCREMENT  */
     DECREMENT = 291,               /* DECREMENT  */
     FACTORIAL = 292,               /* FACTORIAL  */
-    STRING_LITERAL = 293,          /* STRING_LITERAL  */
-    NUMBER = 294,                  /* NUMBER  */
-    BOOL = 295,                    /* BOOL  */
-    VARIABLE = 296,                /* VARIABLE  */
-    CONSTANT = 297,                /* CONSTANT  */
-    BUILTIN = 298,                 /* BUILTIN  */
-    UNDEFINED = 299,               /* UNDEFINED  */
-    ASSIGNMENT = 300,              /* ASSIGNMENT  */
-    OR = 301,                      /* OR  */
-    AND = 302,                     /* AND  */
-    GREATER_OR_EQUAL = 303,        /* GREATER_OR_EQUAL  */
-    LESS_OR_EQUAL = 304,           /* LESS_OR_EQUAL  */
-    GREATER_THAN = 305,            /* GREATER_THAN  */
-    LESS_THAN = 306,               /* LESS_THAN  */
-    EQUAL = 307,                   /* EQUAL  */
-    NOT_EQUAL = 308,               /* NOT_EQUAL  */
-    NOT = 309,                     /* NOT  */
-    PLUS = 310,                    /* PLUS  */
-    MINUS = 311,                   /* MINUS  */
-    MULTIPLICATION = 312,          /* MULTIPLICATION  */
-    DIVISION = 313,                /* DIVISION  */
-    INTDIV = 314,                  /* INTDIV  */
-    MODULO = 315,                  /* MODULO  */
-    CONCAT = 316,                  /* CONCAT  */
-    LPAREN = 317,                  /* LPAREN  */
-    RPAREN = 318,                  /* RPAREN  */
-    POWER = 319,                   /* POWER  */
-    UNARY = 320                    /* UNARY  */
+    IDENTIFIER = 293,              /* IDENTIFIER  */
+    ERROR_TOKEN = 294,             /* ERROR_TOKEN  */
+    STRING_LITERAL = 295,          /* STRING_LITERAL  */
+    NUMBER = 296,                  /* NUMBER  */
+    BOOL = 297,                    /* BOOL  */
+    VARIABLE = 298,                /* VARIABLE  */
+    CONSTANT = 299,                /* CONSTANT  */
+    BUILTIN = 300,                 /* BUILTIN  */
+    UNDEFINED = 301,               /* UNDEFINED  */
+    ASSIGNMENT = 302,              /* ASSIGNMENT  */
+    OR = 303,                      /* OR  */
+    AND = 304,                     /* AND  */
+    GREATER_OR_EQUAL = 305,        /* GREATER_OR_EQUAL  */
+    LESS_OR_EQUAL = 306,           /* LESS_OR_EQUAL  */
+    GREATER_THAN = 307,            /* GREATER_THAN  */
+    LESS_THAN = 308,               /* LESS_THAN  */
+    EQUAL = 309,                   /* EQUAL  */
+    NOT_EQUAL = 310,               /* NOT_EQUAL  */
+    NOT = 311,                     /* NOT  */
+    PLUS = 312,                    /* PLUS  */
+    MINUS = 313,                   /* MINUS  */
+    MULTIPLICATION = 314,          /* MULTIPLICATION  */
+    DIVISION = 315,                /* DIVISION  */
+    INTDIV = 316,                  /* INTDIV  */
+    MODULO = 317,                  /* MODULO  */
+    CONCAT = 318,                  /* CONCAT  */
+    LPAREN = 319,                  /* LPAREN  */
+    RPAREN = 320,                  /* RPAREN  */
+    POWER = 321,                   /* POWER  */
+    UNARY = 322                    /* UNARY  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -125,7 +127,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 34 "interpreter.y"
+#line 35 "interpreter.y"
 
   double number;
   char * string;
@@ -136,7 +138,7 @@ union YYSTYPE
   lp::Statement *st;
   lp::AST *prog;
 
-#line 140 "interpreter.tab.h"
+#line 142 "interpreter.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

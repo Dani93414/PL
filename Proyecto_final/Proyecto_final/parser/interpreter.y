@@ -1,7 +1,8 @@
 %{
 #include <iostream>
 #include <string>
-#include <math.h>
+#include <cmath>
+#include <list>
 #include <setjmp.h>
 #include <signal.h>
 
@@ -45,7 +46,7 @@ extern lp::AST *root;
 %type <expNode> exp cond
 %type <parameters> listOfExp restOfListOfExp
 %type <stmts> stmtlist caseList
-%type <st> stmt asgn print read if while repeat for switchstmt caseBlock defaultBlock clearscreen place
+%type <st> stmt asgn print read if while repeat for switchstmt caseBlock clearscreen place
 
 %token SEMICOLON COMMA
 %token PRINT READ READ_STRING
@@ -58,6 +59,7 @@ extern lp::AST *root;
 %token BOOL_TRUE BOOL_FALSE
 %token CONST_PI CONST_E CONST_GAMMA CONST_PHI CONST_DEG
 %token INCREMENT DECREMENT FACTORIAL
+%token IDENTIFIER ERROR_TOKEN
 
 %token <string> STRING_LITERAL
 %token <number> NUMBER
@@ -118,18 +120,18 @@ controlSymbol:
 ;
 
 if:
-    IF controlSymbol cond THEN stmt END_IF {
+    IF controlSymbol cond THEN stmtlist END_IF {
         $$ = new lp::IfStmt($3, $5);
         control--;
     }
-  | IF controlSymbol cond THEN stmt ELSE stmt END_IF {
+  | IF controlSymbol cond THEN stmtlist ELSE stmtlist END_IF {
         $$ = new lp::IfStmt($3, $5, $7);
         control--;
     }
 ;
 
 while:
-    WHILE controlSymbol cond DO stmt END_WHILE {
+    WHILE controlSymbol cond DO stmtlist END_WHILE {
         $$ = new lp::WhileStmt($3, $5);
         control--;
     }
@@ -137,22 +139,22 @@ while:
 
 repeat:
     REPEAT stmtlist UNTIL cond SEMICOLON {
-        $$ = new lp::RepeatStmt($2, $4);
+        $$ = new lp::RepeatStmt($4, $2); // Correcto: $4 es cond y $2 es stmtlist
     }
 ;
 
 for:
-    FOR VARIABLE FROM exp TO exp DO stmt END_FOR {
+    FOR VARIABLE FROM exp TO exp DO stmtlist END_FOR {
         $$ = new lp::ForStmt($2, $4, $6, new lp::NumberNode(1), $8); // step por defecto = 1
     }
-  | FOR VARIABLE FROM exp TO exp STEP exp DO stmt END_FOR {
+  | FOR VARIABLE FROM exp TO exp STEP exp DO stmtlist END_FOR {
         $$ = new lp::ForStmt($2, $4, $6, $8, $10); // step personalizado
     }
 ;
 
 switchstmt:
     SWITCH LPAREN exp RPAREN caseList END_SWITCH {
-        $$ = new lp::SwitchStmt($3, $5);
+        $$ = new lp::SwitchStmt($3, $5);  
     }
 ;
 
@@ -161,15 +163,7 @@ caseList:
         $$ = $1;
         $$->push_back($2);
     }
-  | caseList defaultBlock {
-        $$ = $1;
-        $$->push_back($2);
-    }
   | caseBlock {
-        $$ = new std::list<lp::Statement *>();
-        $$->push_back($1);
-    }
-  | defaultBlock {
         $$ = new std::list<lp::Statement *>();
         $$->push_back($1);
     }
@@ -178,12 +172,6 @@ caseList:
 caseBlock:
     CASE exp ':' stmtlist {
         $$ = new lp::CaseStmt($2, $4);
-    }
-;
-
-defaultBlock:
-    DEFAULT ':' stmtlist {
-        $$ = new lp::DefaultStmt($3);
     }
 ;
 
