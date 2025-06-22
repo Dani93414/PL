@@ -367,6 +367,39 @@ double lp::UnaryPlusNode::evaluateNumber()
 }
 
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void lp::FactorialNode::printAST() 
+{
+  std::cout << "FactorialNode: !"  << std::endl;
+  std::cout << "\t"; 
+  this->_exp->printAST();
+}
+
+double lp::FactorialNode::evaluateNumber()
+{
+	int result = 0;
+
+	// Ckeck the type of the expression
+	if (this->getType() == NUMBER)
+	{
+		result = static_cast<int>(this->_exp->evaluateNumber());
+		for(int i=(result - 1); i>1; i--){
+			result= (result*i);
+		}
+	}
+	else
+	{
+		warning("Runtime error: the expressions are not numeric for ","Factorial");
+	}
+
+  return static_cast<double>(result);
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -545,16 +578,16 @@ double lp::IntegerDivisionNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::ConcatenationNode::printAST()
+void lp::ConcatNode::printAST()
 {
-  std::cout << "ConcatenationNode: +" << std::endl;
+  std::cout << "ConcatNode: +" << std::endl;
   std::cout << "\t";
   this->_left->printAST();
   std::cout << "\t";
   this->_right->printAST();
 }
 
-std::string lp::ConcatenationNode::evaluateString()
+std::string lp::ConcatNode::evaluateString()
 {
   std::string result;
 
@@ -1731,8 +1764,6 @@ void lp::ForStmt::evaluate()
 	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
 		stmtIter->evaluate();
 	}
-	
-	inicio+= inc; 
   }
 
 }

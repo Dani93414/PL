@@ -69,6 +69,18 @@ namespace lp
 		return false;
 	}
 
+
+	/*!	
+		\brief   Evaluate the expression as STRING_LITERAL
+		\warning Virtual function: could be redefined in the heir classes
+		\return  bool
+		\sa		   getType, printAST
+	*/
+	virtual std::string evaluateString()
+	{
+		return "";
+	}
+
 };
 
 
@@ -253,7 +265,7 @@ class StringNode : public ExpNode
     std::cout << "StringNode: \"" << _value << "\"" << std::endl;
   }
 
-  std::string evaluateString();
+  std::string evaluateString() override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -443,6 +455,43 @@ class UnaryPlusNode : public NumericUnaryOperatorNode
 };
 
 
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class   FactorialNode
+  \brief   Definition of atributes and methods of FactorialNode class
+  \note    FactorialNode Class publicly inherits from NumericUnaryOperatorNode class
+*/
+class FactorialNode : public NumericUnaryOperatorNode 
+{
+
+ public:
+
+/*!		
+	\brief Constructor of FactorialNode uses NumericUnaryOperatorNode's constructor as member initializer
+	\param expression: pointer to ExpNode
+	\post  A new FactorialNode is created with the parameter
+*/
+  FactorialNode(ExpNode *expression): NumericUnaryOperatorNode(expression) 
+	{
+		// empty
+	} 
+
+/*!
+	\brief   Print the AST for expression
+	\return  void
+	\sa		   evaluateNumber
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the expression
+	\return  double
+	\sa		   printAST
+*/
+  double evaluateNumber();
+};
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

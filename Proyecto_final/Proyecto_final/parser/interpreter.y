@@ -229,8 +229,8 @@ exp:
   | PLUS exp %prec UNARY { $$ = new lp::UnaryPlusNode($2); }
   | MINUS exp %prec UNARY { $$ = new lp::UnaryMinusNode($2); }
   | NOT exp { $$ = new lp::NotNode($2); }
-  | INCREMENT exp %prec UNARY { $$ = new lp::IncrementNode($2); }
-  | DECREMENT exp %prec UNARY { $$ = new lp::DecrementNode($2); }
+  | INCREMENT exp %prec UNARY { $$ = new lp::UnaryPlusNode($2); }
+  | DECREMENT exp %prec UNARY { $$ = new lp::UnaryMinusNode($2); }
   | exp FACTORIAL             { $$ = new lp::FactorialNode($1); }
   | exp PLUS exp { $$ = new lp::PlusNode($1, $3); }
   | exp MINUS exp { $$ = new lp::MinusNode($1, $3); }
