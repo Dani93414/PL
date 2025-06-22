@@ -745,7 +745,7 @@ class IntDivisionNode : public NumericOperatorNode
 	\return  double
 	\sa		   printAST
 */
-  int evaluateNumber();
+  double evaluateNumber();
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

@@ -497,7 +497,7 @@ void lp::IntDivisionNode::printAST()
 	this->_right->printAST();
 }
 
-int lp::IntDivisionNode::evaluateNumber() 
+double lp::IntDivisionNode::evaluateNumber() 
 {
 	int result= 0;
 
@@ -524,7 +524,7 @@ int lp::IntDivisionNode::evaluateNumber()
 		warning("Runtime error: the expressions are not numeric for", "Division");
 	}
 
-  return result;
+  return static_cast<double>(result);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
