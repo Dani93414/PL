@@ -23,7 +23,7 @@ extern FILE* yyin;
 /* Tokens con valores */
 %token <numval> NUMBER
 %token <strval> STRING
-%token <id> ID
+%token <id> NUMERIC_ID STRING_ID
 %token <numval> TRUE FALSE
 %token <numval> PI E_CONST GAMMA PHI DEG
 
@@ -59,6 +59,7 @@ extern FILE* yyin;
 %left AND
 %left EQ NEQ
 %left LT LEQ GT GEQ
+%left CONCAT
 %left PLUS MINUS
 %left MULT DIV DIV_INT MOD
 %right INCR DECR       
@@ -103,11 +104,11 @@ sentencia:
 
 // Asignación
 asignacion:
-    ID ASSIGN expresion {
+    NUMERIC_ID ASSIGN expresion {
         set_variable($1, $3);
         free($1);
     }
-  | ID ASSIGN expresion_alfanumerica {
+  | STRING_ID ASSIGN expresion_alfanumerica {
         set_variable_str($1, std::string($3));
         free($1);
         free($3);
@@ -116,37 +117,26 @@ asignacion:
 
 // Lectura
 lectura:
-    READ LPAREN ID RPAREN {
+    READ LPAREN NUMERIC_ID RPAREN {
         leer_numero($3);
         free($3);
     }
-  | READ_STRING LPAREN ID RPAREN {
+  | READ_STRING LPAREN STRING_ID RPAREN {
         leer_cadena($3);
         free($3);
     }
 ;
-
 // Escritura
 escritura:
-    PRINT LPAREN ID RPAREN {
-        std::string nombre($3);
-        if (tabla_numeros.count(nombre)) {
-            imprimir(get_variable(nombre));
-        } else if (tabla_cadenas.count(nombre)) {
-            imprimir_str(get_variable_str(nombre));
-        } else {
-            std::cerr << "Error: Variable '" << nombre << "' no definida.\n";
-        }
+    PRINT LPAREN expresion_alfanumerica RPAREN {
+        imprimir_str($3);
         free($3);
     }
   | PRINT LPAREN expresion RPAREN {
         imprimir($3);
     }
-  | PRINT LPAREN expresion_alfanumerica RPAREN {
-        imprimir_str($3);
-        free($3);
-    }
 ;
+
 
 
 // If / Else
@@ -182,8 +172,8 @@ sentencia_repeat:
 
 // For
 sentencia_for:
-    FOR ID FROM expresion TO expresion DO sentencias END_FOR
-  | FOR ID FROM expresion TO expresion STEP expresion DO sentencias END_FOR
+    FOR NUMERIC_ID FROM expresion TO expresion DO sentencias END_FOR
+  | FOR NUMERIC_ID FROM expresion TO expresion STEP expresion DO sentencias END_FOR
 ;
 
 // Switch
@@ -277,15 +267,15 @@ expresion:
   | PLUS expresion                 { $$ = +$2; }
 
   | NUMBER                         { $$ = $1; }
-  | ID {
-    if (tabla_numeros.count($1)) {
-        $$ = get_variable($1);
-    } else {
-        std::cerr << "Error: Variable '" << $1 << "' no es numérica.\n";
-        $$ = 0;
+  | NUMERIC_ID {
+        if (tabla_numeros.count($1)) {
+            $$ = get_variable($1);
+        } else {
+            std::cerr << "Error: Variable '" << $1 << "' no es numérica o no está definida.\n";
+            $$ = 0;
+        }
+        free($1);
     }
-    free($1);
-}
 ;
 
 // Expresiones alfanuméricas
@@ -294,13 +284,18 @@ expresion_alfanumerica:
         $$ = strdup($1);
         free($1);
     }
-  | ID {
+  | STRING_ID {
         $$ = strdup(get_variable_str($1).c_str());
         free($1);
     }
   | expresion {
-        std::string res = std::to_string($1);
-        $$ = strdup(res.c_str());
+        if (std::isfinite($1)) { // Verifica que la expresión es un número finito
+            std::string res = std::to_string($1);
+            $$ = strdup(res.c_str());
+        } else {
+            std::cerr << "Error: la expresión no es un número válido.\n";
+            $$ = strdup("");
+        }
     }
   | expresion_alfanumerica CONCAT expresion_alfanumerica {
         std::string res = std::string($1) + std::string($3);

@@ -1,0 +1,39 @@
+# Lectura y escritura de cadenas
+mensaje1 := 'miau';
+mensaje := 'Hola, mundo!';
+print(mensaje1);
+
+mensaje1 := 'miau';
+mensaje := 'Hola, mundo!';
+print(mensaje1 || mensaje);
+
+read_string(nombre);
+print('Leído nombre: ' || nombre);
+
+read_string(apellido);
+print('Leído apellido: ' || apellido);
+
+# Concatenación de cadenas
+nombre_completo := nombre || ' ' || apellido;
+print('Nombre completo: ' || nombre_completo);
+
+# Concatenación de texto con número
+edad := 25;
+print('Edad: ' || edad);
+
+mensaje := 'Tu edad es ' || edad;
+print('Mensaje con edad: ' || mensaje);
+
+# Expresión con resultado numérico convertido a texto
+resultado := 3 + 4 * 2;
+print('Resultado numérico: ' || resultado);
+
+texto_resultado := 'Resultado: ' || resultado;
+print('Texto con resultado: ' || texto_resultado);
+
+# Concatenar varias expresiones alfanuméricas
+saludo := 'Hola, ' || nombre_completo || '! Bienvenido.';
+print('Saludo final: ' || saludo);
+
+# Uso de cadena literal directamente
+print('Este es un mensaje literal');

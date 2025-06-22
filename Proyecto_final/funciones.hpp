@@ -27,6 +27,10 @@ void leer_cadena(const std::string& nombre);
 void clear_screen();
 void place_cursor(int x, int y);
 
+// Función para determinar si un identificador es numérico
+int es_numero(const char* text);
+
 extern std::map<std::string, double> tabla_numeros;
 extern std::map<std::string, std::string> tabla_cadenas;
+
 #endif

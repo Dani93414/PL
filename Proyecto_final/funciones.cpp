@@ -1,6 +1,9 @@
 #include "funciones.hpp"
 #include <iostream>
 #include <map>
+#include <math.h>
+#include <ctype.h>
+#include <cstring>
 #include <string>
 
 // Tablas de símbolos separadas por tipo
@@ -85,4 +88,35 @@ void clear_screen() {
 
 void place_cursor(int x, int y) {
     std::cout << "\033[" << y << ";" << x << "H";
+}
+
+// Función para determinar si un identificador es numérico
+int es_numero(const char* text) {
+    if (text == nullptr || *text == '\0') return 0;
+
+    int puntos = 0;
+    int i = 0;
+
+    // Puede empezar con signo + o -
+    if (text[0] == '+' || text[0] == '-') {
+        i = 1;
+        if (text[1] == '\0') return 0; // solo signo no es número
+    }
+
+    for (; text[i] != '\0'; ++i) {
+        if (text[i] == '.') {
+            puntos++;
+            if (puntos > 1) return 0; // más de un punto no permitido
+        }
+        else if (!isdigit(text[i])) {
+            return 0; // caracter inválido
+        }
+    }
+
+    // No debe terminar ni comenzar con punto
+    if (text[i-1] == '.' || (i > 0 && text[(text[0] == '+' || text[0] == '-') ? 1 : 0] == '.')) {
+        return 0;
+    }
+
+    return 1;
 }

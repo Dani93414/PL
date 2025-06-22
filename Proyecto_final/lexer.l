@@ -1,5 +1,6 @@
 %{
 #include "parser.tab.hpp"
+#include "funciones.hpp"
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -165,8 +166,14 @@ NUMERO      ({REAL}|{ENTERO})
         }
     }
 
-    yylval.id = strdup(text);
-    return ID;
+    // Clasificar el identificador según el contexto
+    if (es_numero(text)) {  
+        yylval.id = strdup(text);
+        return NUMERIC_ID;
+    } else {
+        yylval.id = strdup(text);
+        return STRING_ID;
+    }
 }
 
 
