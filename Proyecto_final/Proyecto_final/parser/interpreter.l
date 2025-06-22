@@ -105,7 +105,6 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 
 ":="            { return ASSIGNMENT; }
 "//"            { return INTDIV; }
-"mod"           { return MODULO; }
 
 "++"            { return INCREMENT; }
 "--"            { return DECREMENT; }
@@ -124,60 +123,10 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 ">"             { return GREATER_THAN; }
 "<"             { return LESS_THAN; }
 
-"or"            { return OR; }
-"and"           { return AND; }
-"not"           { return NOT; }
 "||"            { return CONCAT; }
 
 "("             { return LPAREN; }
 ")"             { return RPAREN; }
-
-/* ------------------------- */
-/* Palabras reservadas */
-/* ------------------------- */
-
-"read"          { return READ; }
-"read_string"   { return READ_STRING; }
-"print"         { return PRINT; }
-
-"if"            { return IF; }
-"then"          { return THEN; }
-"else"          { return ELSE; }
-"end_if"        { return END_IF; }
-
-"while"         { return WHILE; }
-"do"            { return DO; }
-"end_while"     { return END_WHILE; }
-
-"repeat"        { return REPEAT; }
-"until"         { return UNTIL; }
-
-"for"           { return FOR; }
-"from"          { return FROM; }
-"step"          { return STEP; }
-"to"            { return TO; }
-"end_for"       { return END_FOR; }
-
-"switch"        { return SWITCH; }
-"case"          { return CASE; }
-"default"       { return DEFAULT; }
-"end_switch"    { return END_SWITCH; }
-
-"clear_screen"  { return CLEAR_SCREEN; }
-"place"         { return PLACE; }
-
-"pi"            { return CONST_PI; }
-"e"             { return CONST_E; }
-"gamma"         { return CONST_GAMMA; }
-"phi"           { return CONST_PHI; }
-"deg"           { return CONST_DEG; }
-
-"true"          { return BOOL_TRUE; }
-"false"         { return BOOL_FALSE; }
-
-"sin"|"cos"|"log"|"log10"|"exp"|"sqrt"|"integer"|"abs" {
-                    return FUNCTION; 
-}
 
 /* ------------------------- */
 /* Fin de fichero */
