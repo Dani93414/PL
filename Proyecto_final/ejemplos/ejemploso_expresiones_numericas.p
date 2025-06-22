@@ -7,7 +7,19 @@ j := 7 // 3;           print(j);    # 2
 f := 10 ^ 2;           print(f);    # 100
 g := 10 mod 3;         print(g);    # 1
 
+# Comparaciones relacionalesAdd commentMore actions
+r1 := a < b;           print(r1);   # false (8 < 8) → 0
+r2 := c <= d;          print(r2);   # false (8 <= 4) → 0
+t := 2;                # necesario para r3
+r3 := t > f;           print(r3);   # false (2 > 100) → 0
+r4 := g >= 2;          print(r4);   # false (1 >= 2) → 0
+r5 := a = 8;           print(r5);   # true → 1
+r6 := b <> 8;          print(r6);   # false → 0
 
+# Lógicos
+l1 := (a < b) and (c > d);   print(l1);   # false and true → false → 0
+l2 := true or false;         print(l2);   # true → 1
+l3 := not false;             print(l3);   # true → 1
 
 # Operadores ++, --, !
 x := 4;
@@ -37,4 +49,4 @@ neg := -5;               print(neg);  # -5
 pos := +6;               print(pos);  # 6
 p1 := (2 + 3) * 4;       print(p1);   # 20
 
-#NO USAR e PORQUE SE CONFUNDE con el numero e
+#NO USAR e PORQUE SE CONFUNDE con el numero eAdd comment
