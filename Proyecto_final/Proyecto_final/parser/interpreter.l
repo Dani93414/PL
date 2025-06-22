@@ -1,236 +1,198 @@
-/*! 
-  \file interpreter.l
-  \brief Lexical or scanner file
-*/
 %{
 #include <iostream>
-
-/*********************/
-/* NEW in example 4 */
-/* atof */
 #include <stdlib.h>
-/*********************/
-
-/* Macros for the screen */
-#include "../includes/macros.hpp"
-
-/*********************/
-/* 
-  NEW in example 16 
-  AST class
-  IMPORTANT: must be written before interpreter.tab.h
-*/
-#include "../ast/ast.hpp"
-/*********************/
-
-/*  interpreter.tab.h contains the numeric values of the tokens produced by the parser */
+#include <string.h>
 #include "interpreter.tab.h"
 
-/********************/
-/* NEW in example 3 */
-#include "../error/error.hpp"
-/********************/
-
-
-/*********************************************/
-/* NEW in example 7 */
-/* Table of symbols */
-#include "../table/table.hpp"
-
-#include "../table/numericVariable.hpp"
-
-extern lp::Table table; //!< External Table of Symbols
-/*********************************************/
-
-extern int lineNumber; //!< External line counter
-
-/* uso de strdup */
-#include <string.h>
-
-
+extern int lineNumber;
 %}
 
+/* ------------------------------------- */
+/* Configuración del analizador léxico */
+/* ------------------------------------- */
 
-/*! \name REGULAR DEFINITIONS  */
+/* Hacemos el análisis insensible a mayúsculas/minúsculas */
+%option noyywrap
+%option caseless
 
-DIGIT  [0-9] 
-
-LETTER [a-zA-Z]
-
-NUMBER1 {DIGIT}+\.?
-
-NUMBER2 {DIGIT}*\.{DIGIT}+
-
-IDENTIFIER  {LETTER}({LETTER}|{DIGIT})*
-
-/* NEW in example 3 */
-/* STATE  */
 %x ERROR
+%x COMMENT
 
-/*! \name REGULAR EXPRESSIONS  */
+/* ------------------------------------- */
+/* Definiciones de expresiones regulares */
+/* ------------------------------------- */
+
+DIGIT         [0-9]
+LETTER        [a-zA-Z]
+ID            {LETTER}({LETTER}|{DIGIT}|_)*
+INVALID_ID    (_{ID}|{ID}_|.*__.*)
+
+INTEGER       {DIGIT}+
+REAL1         {DIGIT}+\.{DIGIT}*
+REAL2         {DIGIT}*\.{DIGIT}+
+SCI           ({REAL1}|{REAL2}|{INTEGER})[eE][+-]?{DIGIT}+
+NUMBER        {REAL1}|{REAL2}|{SCI}|{INTEGER}
+
+STRING        \'([^\'\\]|\\[nt\\\'])*\'
+
 %%
 
-[ \t] 	{ ; }    /* skip white space and tabular */
+[ \t\r]+        ;                // Ignorar espacios y tabulaciones
 
-\n      { 
-			/* Line counter */
-           	lineNumber++; 
-	
-			/* MODIFIED in example 3 */
-			/* COMMENTED in example 5 */
-        	/* return NEWLINE; */
+\n              { lineNumber++; }  // Contar líneas
+
+";"             { return SEMICOLON; }
+","             { return COMMA;    }
+
+/* ------------------------- */
+/* Comentarios */
+/* ------------------------- */
+
+"#".*           ;                        // Comentario de línea
+"(*"            { BEGIN(COMMENT); }     // Comentario de bloque (inicio)
+<COMMENT>"*)"   { BEGIN(INITIAL); }     // Comentario de bloque (fin)
+<COMMENT>.|\n   ;                        // Consumir comentario multilinea
+
+/* ------------------------------- */
+/* Cadenas entre comillas simples */
+/* ------------------------------- */
+
+{STRING} {
+    // Eliminar comillas simples y almacenar la cadena interpretando secuencias especiales
+    std::string raw(yytext + 1, yyleng - 2);
+    std::string result;
+    for (size_t i = 0; i < raw.size(); ++i) {
+        if (raw[i] == '\\' && i + 1 < raw.size()) {
+            switch (raw[++i]) {
+                case 'n': result += '\n'; break;
+                case 't': result += '\t'; break;
+                case '\'': result += '\''; break;
+                default: result += raw[i]; break;
+            }
+        } else {
+            result += raw[i];
         }
+    }
+    yylval.string = strdup(result.c_str());
+    return STRING_LITERAL;
+}
 
-";"		{
-			/* NEW in example 5 */
-			return SEMICOLON;
-		}
+/* ------------------------- */
+/* Números */
+/* ------------------------- */
 
+{NUMBER} {
+    yylval.number = atof(yytext);
+    return NUMBER;
+}
 
-","		{
-			/* NEW in example 14 */
-			return COMMA;
-		}
+/* ------------------------- */
+/* Identificadores válidos */
+/* ------------------------- */
 
-{NUMBER1}|{NUMBER2}  {
-					  /* MODIFIED in example 4 */
-					  /* Conversion of type and sending of the numerical value to the parser */
-					   yylval.number = atof(yytext); 
+{ID} {
+    if (strstr(yytext, "__") || yytext[0] == '_' || yytext[yyleng - 1] == '_') {
+        std::cerr << "Error léxico: identificador no válido '" << yytext << "' en línea " << lineNumber << std::endl;
+        return ERROR_TOKEN;
+    }
+    yylval.string = strdup(yytext);
+    return IDENTIFIER;
+}
 
-                       return NUMBER; 
-                      }
+/* ------------------------- */
+/* Operadores y símbolos */
+/* ------------------------- */
 
+":="            { return ASSIGNMENT; }
+"//"            { return INTDIV; }
+"mod"           { return MODULO; }
 
-{IDENTIFIER}   		 {
-						 /* NEW in example 7 */
-						 std::string identifier(yytext);
+"++"            { return INCREMENT; }
+"--"            { return DECREMENT; }
+"!"             { return FACTORIAL; }
 
-						/* 
-                          strdup() function returns a pointer to a new string 
-                          which  is a duplicate of the string yytext
-                        */
-						  yylval.string =  strdup(yytext);
+"+"             { return PLUS; }
+"-"             { return MINUS; }
+"*"             { return MULTIPLICATION; }
+"/"             { return DIVISION; }
+"^"             { return POWER; }
 
-						/* If the identifier is not in the table of symbols then it is inserted */	
-						 if (table.lookupSymbol(identifier) == false)
-							{
-								/* 
-								 The identifier is inserted into the symbol table 
-								 as undefined Variable with value 0.0
-								*/
-								lp::NumericVariable *n = new lp::NumericVariable(identifier,VARIABLE,UNDEFINED,0.0);
+"="             { return EQUAL; }
+"<>"            { return NOT_EQUAL; }
+">="            { return GREATER_OR_EQUAL; }
+"<="            { return LESS_OR_EQUAL; }
+">"             { return GREATER_THAN; }
+"<"             { return LESS_THAN; }
 
-								/* A pointer to the new NumericVariable is inserted into the table of symbols */
-								table.installSymbol(n);
+"or"            { return OR; }
+"and"           { return AND; }
+"not"           { return NOT; }
+"||"            { return CONCAT; }
 
-								return VARIABLE;
-							}
+"("             { return LPAREN; }
+")"             { return RPAREN; }
 
-						/* MODIFIED in example 11 */
-						/* 
-							If the identifier is in the table of symbols then its token is returned 
-								The identifier can be a variable or a numeric constant
-						*/
-						else 
-							{
-								lp::Symbol	*s = table.getSymbol(identifier);
+/* ------------------------- */
+/* Palabras reservadas */
+/* ------------------------- */
 
-/*
-								std::cout << "lex: "<< s->getName() 
-										  << "token " << s->getToken()
-  										  << std::endl; 
-*/
+"read"          { return READ; }
+"read_string"   { return READ_STRING; }
+"print"         { return PRINT; }
 
-								/*  If the identifier is in the table then its token is returned  */
-								return s->getToken();
-							}
-                     }
+"if"            { return IF; }
+"then"          { return THEN; }
+"else"          { return ELSE; }
+"end_if"        { return END_IF; }
 
-"-"		{ return MINUS;  } 			/* NEW in example 3 */
-"+"		{ return PLUS;   } 			/* NEW in example 3 */
+"while"         { return WHILE; }
+"do"            { return DO; }
+"end_while"     { return END_WHILE; }
 
-"*"	    { return MULTIPLICATION; } 	/* NEW in example 3 */
-"/"     { return DIVISION; } 		/* NEW in example 3 */
+"repeat"        { return REPEAT; }
+"until"         { return UNTIL; }
 
-"("     { return LPAREN; } 			/* NEW in example 3 */
-")"	    { return RPAREN; } 			/* NEW in example 3 */
+"for"           { return FOR; }
+"from"          { return FROM; }
+"step"          { return STEP; }
+"to"            { return TO; }
+"end_for"       { return END_FOR; }
 
+"switch"        { return SWITCH; }
+"case"          { return CASE; }
+"default"       { return DEFAULT; }
+"end_switch"    { return END_SWITCH; }
 
+"clear_screen"  { return CLEAR_SCREEN; }
+"place"         { return PLACE; }
 
-"%"     { return MODULO; }			/* NEW in example 5 */
+"pi"            { return CONST_PI; }
+"e"             { return CONST_E; }
+"gamma"         { return CONST_GAMMA; }
+"phi"           { return CONST_PHI; }
+"deg"           { return CONST_DEG; }
 
-"^"	    { return POWER; }			/* NEW in example 5 */
+"true"          { return BOOL_TRUE; }
+"false"         { return BOOL_FALSE; }
 
-"=" 	{ return ASSIGNMENT; }		/* NEW in example 7 */
+"sin"|"cos"|"log"|"log10"|"exp"|"sqrt"|"integer"|"abs" {
+                    return FUNCTION; 
+}
 
+/* ------------------------- */
+/* Fin de fichero */
+/* ------------------------- */
 
-"=="	{ return EQUAL; }			/* NEW in example 15 */
+<<EOF>>         { return 0; }
 
-"!="	{ return NOT_EQUAL; }		/* NEW in example 15 */
+/* ------------------------- */
+/* Caracteres inválidos */
+/* ------------------------- */
 
-">="	{ return GREATER_OR_EQUAL; }/* NEW in example 15 */
+. {
+    std::cerr << "Error léxico: símbolo no válido '" << yytext << "' en línea " << lineNumber << std::endl;
+    return ERROR_TOKEN;
+}
 
-"<="	{ return LESS_OR_EQUAL; }	/* NEW in example 15 */
-
-">"		{ return GREATER_THAN; }	/* NEW in example 15 */
-
-"<"		{ return LESS_THAN; }		/* NEW in example 15 */
-
-"!"		{ return NOT; }				/* NEW in example 15 */
-
-"||"	{ return OR; }				/* NEW in example 15 */
-
-"&&"	{ return AND; }				/* NEW in example 15 */
-
-"{"		{ return LETFCURLYBRACKET; } 	/* NEW in example 17 */
-
-"}"		{ return RIGHTCURLYBRACKET; }	/* NEW in example 17 */
-
-
-<<EOF>> { /* The interpreter finishes when finds the end of file character */
-		/*  PLACE(24,10);
-	  	  std::cout <<  BICYAN;
-	   	  std::cout <<  ">>>>>>> End of program <<<<<<<";
-	 	  std::cout << std::endl;
-	   	  std::cout << RESET;
-		  PLACE(25,1);
-		*/
-	  	  return 0;
-	}
-
-
-.								{ 	
-									/* Any other character */
-									/* MODIFIIED in example 3 */
-									/* Change to error state */
-									BEGIN(ERROR); 
-
-									/* 
-										The current value of yytext 
-										will be concatenated with the next character
-									*/
-									yymore();  
-								}
-
-<ERROR>[^0-9+\-*/()\^% \t\n\;a-zA-Z=<>!&]	{ /* MODIFIED in examples 5, 7, 15 */
-								  /* NEW in example 3 */
-								  /* 
-									The current value of yytext 
-									will be concatenated with the next character
-								  */
-									yymore(); 
-								}
-
-<ERROR>(.|\n)                { 
-								/* NEW in example 3 */
-								/* Rewind one position */
-								yyless(yyleng-1); 
-
-								/* Display the error message */
-								warning("Lexical error", yytext);
-
-								/* Restore the initial state */
-   								BEGIN(INITIAL);
-							}
 %%
 
