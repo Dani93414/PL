@@ -7,20 +7,13 @@
 extern int lineNumber;
 %}
 
-/* ------------------------------------- */
-/* Configuración del analizador léxico */
-/* ------------------------------------- */
-
-/* Hacemos el análisis insensible a mayúsculas/minúsculas */
 %option noyywrap
 %option caseless
 
 %x ERROR
 %x COMMENT
 
-/* ------------------------------------- */
-/* Definiciones de expresiones regulares */
-/* ------------------------------------- */
+
 
 DIGIT         [0-9]
 LETTER        [a-zA-Z]
@@ -37,28 +30,23 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 
 %%
 
-[ \t\r]+        ;                // Ignorar espacios y tabulaciones
+[ \t\r]+        ;                
 
-\n              { lineNumber++; }  // Contar líneas
+\n              { lineNumber++; }  
 
 ";"             { return SEMICOLON; }
 ","             { return COMMA;    }
 
-/* ------------------------- */
-/* Comentarios */
-/* ------------------------- */
 
-"#".*           ;                        // Comentario de línea
-"(*"            { BEGIN(COMMENT); }     // Comentario de bloque (inicio)
-<COMMENT>"*)"   { BEGIN(INITIAL); }     // Comentario de bloque (fin)
-<COMMENT>.|\n   ;                        // Consumir comentario multilinea
+"#".*           ;                        
+"(*"            { BEGIN(COMMENT); }     
+<COMMENT>"*)"   { BEGIN(INITIAL); }     
+<COMMENT>.|\n   ;                       
 
-/* ------------------------------- */
-/* Cadenas entre comillas simples */
-/* ------------------------------- */
+
 
 {STRING} {
-    // Eliminar comillas simples y almacenar la cadena interpretando secuencias especiales
+    
     std::string raw(yytext + 1, yyleng - 2);
     std::string result;
     for (size_t i = 0; i < raw.size(); ++i) {
@@ -77,18 +65,12 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
     return STRING_LITERAL;
 }
 
-/* ------------------------- */
-/* Números */
-/* ------------------------- */
 
 {NUMBER} {
     yylval.number = atof(yytext);
     return NUMBER;
 }
 
-/* ------------------------- */
-/* Identificadores válidos */
-/* ------------------------- */
 
 {ID} {
     if (strstr(yytext, "__") || yytext[0] == '_' || yytext[yyleng - 1] == '_') {
@@ -99,9 +81,7 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
     return IDENTIFIER;
 }
 
-/* ------------------------- */
-/* Operadores y símbolos */
-/* ------------------------- */
+
 
 ":="            { return ASSIGNMENT; }
 "//"            { return INTDIV; }
@@ -128,15 +108,8 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 "("             { return LPAREN; }
 ")"             { return RPAREN; }
 
-/* ------------------------- */
-/* Fin de fichero */
-/* ------------------------- */
 
 <<EOF>>         { return 0; }
-
-/* ------------------------- */
-/* Caracteres inválidos */
-/* ------------------------- */
 
 . {
     std::cerr << "Error léxico: símbolo no válido '" << yytext << "' en línea " << lineNumber << std::endl;
