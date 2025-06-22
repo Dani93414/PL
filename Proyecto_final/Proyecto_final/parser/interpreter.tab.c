@@ -1671,7 +1671,7 @@ yyreduce:
   case 18: /* if: IF controlSymbol cond THEN stmt END_IF  */
 #line 121 "interpreter.y"
                                            {
-        (yyval.st) = new lp::IfStmt::IfStmt((yyvsp[-3].expNode), (yyvsp[-1].st));
+        (yyval.st) = new lp::IfStmt((yyvsp[-3].expNode), (yyvsp[-1].st));
         control--;
     }
 #line 1678 "interpreter.tab.c"
@@ -1680,7 +1680,7 @@ yyreduce:
   case 19: /* if: IF controlSymbol cond THEN stmt ELSE stmt END_IF  */
 #line 125 "interpreter.y"
                                                      {
-        (yyval.st) = new lp::IfStmt::IfStmt((yyvsp[-5].expNode), (yyvsp[-3].st), (yyvsp[-1].st));
+        (yyval.st) = new lp::IfStmt((yyvsp[-5].expNode), (yyvsp[-3].st), (yyvsp[-1].st));
         control--;
     }
 #line 1687 "interpreter.tab.c"
