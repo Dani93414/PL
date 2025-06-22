@@ -57,9 +57,9 @@ extern lp::AST *root;
 %token CLEAR_SCREEN PLACE
 %token BOOL_TRUE BOOL_FALSE
 %token CONST_PI CONST_E CONST_GAMMA CONST_PHI CONST_DEG
-%token STRING_LITERAL
 %token INCREMENT DECREMENT FACTORIAL
 
+%token <string> STRING_LITERAL
 %token <number> NUMBER
 %token <logic> BOOL
 %token <string> VARIABLE CONSTANT BUILTIN UNDEFINED
@@ -88,10 +88,11 @@ stmtlist:
       $$ = $1;
       $$->push_back($2);
       if (interactiveMode && control == 0) {
-        for (auto stmt : *$$) {
-          stmt->printAST();
-          stmt->evaluate();
-        }
+		for (std::list<lp::Statement *>::iterator it = $$->begin(); it != $$->end(); ++it) {
+			lp::Statement *stmt = *it;
+			stmt->printAST();
+			stmt->evaluate();
+		}
         $$->clear();
       }
     }
