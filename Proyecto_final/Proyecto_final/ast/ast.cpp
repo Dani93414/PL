@@ -817,7 +817,7 @@ bool lp::LessOrEqualNode::evaluateBool()
 
 void lp::EqualNode::printAST()
 {
-  std::cout << "EqualNode: ==" << std::endl;
+  std::cout << "EqualNode: =" << std::endl;
   std::cout << "\t"; 
 	this->_left->printAST();
 	std::cout << "\t"; 
@@ -867,7 +867,7 @@ bool lp::EqualNode::evaluateBool()
 
 void lp::NotEqualNode::printAST()
 {
-  std::cout << "NotEqualNode: !=" << std::endl;
+  std::cout << "NotEqualNode: <>" << std::endl;
   std::cout << "\t"; 
 	this->_left->printAST();
 	std::cout << "\t"; 
@@ -1014,7 +1014,7 @@ bool lp::NotNode::evaluateBool()
 
 void lp::AssignmentStmt::printAST() 
 {
-  std::cout << "assignment_node: ="  << std::endl;
+  std::cout << "assignment_node: :="  << std::endl;
   std::cout << "\t";
   std::cout << this->_id << std::endl;
   std::cout << "\t";
@@ -1368,7 +1368,7 @@ void lp::PlaceStmt::printAST()
   std::cout << "PlaceStmt: "  << std::endl;
   
   std::cout << "\t";
-  this->_rows->printAST();
+  this->_row->printAST();
 
 
   std::cout << "\t";
@@ -1383,7 +1383,7 @@ void lp::PlaceStmt::evaluate()
   // While the condition is true. the body is run 
 	double rows= this->_row->evaluateNumber();
 	double cols= this->_cols->evaluateNumber();
-	std::cout << "\033[" << row << ";" << col << "H";
+	std::cout << "\033[" << rows << ";" << cols << "H";
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1448,14 +1448,18 @@ void lp::SwitchStmt::printAST()
 
 
 	std::cout << "\t";
-	std::list<Statement>::iterator it = this->_def->begin();
-	while(it != this->_def->end()){
-		(*it)->printAST();
+	std::list<CaseStmt>::iterator it = this->_cases->begin();
+	while(it != this->_cases->end()){
+		(it)->printAST();
 		it++;
 	}
 
 	if(_default!=NULL){
-		_default.front()->printAST();
+		std::list<Statement>::iterator itsttm = this->_default->begin();
+		while(itsttm != this->_default->end()){
+			(itsttm)->printAST();
+			itsttm++;
+		}
 	}
 }
 
@@ -1466,7 +1470,7 @@ void lp::SwitchStmt::evaluate()
   double value = this->_value->evaluateNumber();
 
   // Check the cases
-  std::list<CaseStmt >::iterator it = this->_cases->begin();
+  std::list<CaseStmt>::iterator it = this->_cases->begin();
   while(it != this->_cases->end())
   {
     // If the case matches, evaluate the body of the case
@@ -1481,11 +1485,11 @@ void lp::SwitchStmt::evaluate()
   // If no case matches, do nothing (or handle default case if implemented)
   if (this->_default != NULL) 
   {
-    std::list<Statement>::iterator it = this->_default->begin();
-    while (it != this->_default->end())
+    std::list<Statement>::iterator itDf = this->_default->begin();
+    while (itDf != this->_default->end())
     {
-      (*it)->evaluate();
-      it++;
+      (itDf)->evaluate();
+      itDf++;
     }
   }
 }
@@ -1508,7 +1512,7 @@ void lp::CaseStmt::printAST()
   }
 }
 
-void lp::CaseStmt::evaluateNumber() 
+double lp::CaseStmt::evaluateNumber() 
 {
   // While the condition is true. the body is run 
 	return this->_casN->evaluateNumber();
@@ -1517,7 +1521,7 @@ void lp::CaseStmt::evaluateNumber()
 
 void lp::CaseStmt::evaluate() 
 {
-	// While the condition is true. the body is run 
+	std::list<Statement >::iterator stmtIter;
 	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
 		stmtIter->evaluate();
 	}
@@ -1636,7 +1640,7 @@ void lp::ForStmt::evaluate()
 		inc= 1.0;
 	}
 
-  for(i = inicio ; i <= final; i += inc){
+  for(double i = inicio ; i <= final; i += inc){
 	
 	std::list<Statement >::iterator stmtIter;
 	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){

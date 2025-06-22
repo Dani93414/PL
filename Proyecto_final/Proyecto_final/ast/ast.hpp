@@ -1748,6 +1748,58 @@ class IfStmt : public Statement
   void evaluate();
 };
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// NEW in example 17
+
+/*!	
+  \class   CaseStmt
+  \brief   Definition of atributes and methods of CaseStmt class
+  \note    CaseStmt Class publicly inherits from Statement class 
+  and adds its own printAST and evaluate functions
+  */
+ class CaseStmt : public Statement 
+ {
+ private:
+ ExpNode *_casN;
+  std::list<Statement> *_stmt;
+  
+  public:
+/*!		
+\brief Constructor of Single CaseStmt (without alternative)
+\param _casN: Case Number
+\param statement: Statement of the consequent
+	\post  A new CaseStmt is created with the parameters
+	*/
+CaseStmt(ExpNode *casN, std::list<Statement> *statement)
+{
+	this->_casN = casN;
+	this->_stmt = statement;
+}
+
+/*!
+\brief   Print the AST for CaseStmt
+\return  void
+\sa		 evaluate
+*/
+void printAST();
+
+/*!	
+	\brief   Evaluate the CaseStmt
+	\return  void
+	\sa	   	 printAST
+	*/
+  virtual double evaluateNumber();
+  
+/*!	
+	\brief   Evaluate the CaseStmt
+	\return  void
+	\sa	   	 printAST
+	*/
+void evaluate();
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
@@ -1756,7 +1808,7 @@ class IfStmt : public Statement
   \class   SwitchStmt
   \brief   Definition of atributes and methods of SwitchStmt class
   \note    SwitchStmt Class publicly inherits from Statement class 
-		       and adds its own printAST and evaluate functions
+			   and adds its own printAST and evaluate functions
 */
 class SwitchStmt : public Statement 
 {
@@ -1811,56 +1863,6 @@ class SwitchStmt : public Statement
   void evaluate();
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////
-// NEW in example 17
-
-/*!	
-  \class   CaseStmt
-  \brief   Definition of atributes and methods of CaseStmt class
-  \note    CaseStmt Class publicly inherits from Statement class 
-		       and adds its own printAST and evaluate functions
-*/
-class CaseStmt : public Statement 
-{
- private:
-  ExpNode *_casN;
-  std::list<Statement> *_stmt;
-
-  public:
-/*!		
-	\brief Constructor of Single CaseStmt (without alternative)
-	\param _casN: Case Number
-	\param statement: Statement of the consequent
-	\post  A new CaseStmt is created with the parameters
-*/
-  CaseStmt(ExpNode *casN, std::list<Statement> *statement)
-	{
-		this->_casN = casN;
-		this->_stmt = statement;
-	}
-
-/*!
-	\brief   Print the AST for CaseStmt
-	\return  void
-	\sa		 evaluate
-*/
-  void printAST();
-
-/*!	
-	\brief   Evaluate the CaseStmt
-	\return  void
-	\sa	   	 printAST
-*/
-  virtual double evaluateNumber();
-
-/*!	
-	\brief   Evaluate the CaseStmt
-	\return  void
-	\sa	   	 printAST
-*/
-  void evaluate();
-};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
