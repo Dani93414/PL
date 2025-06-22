@@ -1527,6 +1527,45 @@ class ReadStmt : public Statement
 
 
 /*!	
+  \class   ReadStringStmt
+  \brief   Statement para leer variables de tipo cadena (STRING)
+  \note    Hereda de Statement
+*/
+class ReadStringStmt : public Statement 
+{
+ private:
+  std::string _id; //!< Nombre de la variable STRING
+
+ public:
+  /*!		
+    \brief Constructor de ReadStringStmt
+    \param id: string con el nombre de la variable
+    \post Se crea un nuevo ReadStringStmt
+  */
+  ReadStringStmt(std::string id)
+  {
+    this->_id = id;
+  }
+
+  /*!	
+    \brief Muestra el AST del ReadStringStmt
+    \return void
+  */
+  void printAST();
+
+  /*!	
+    \brief Ejecuta la lectura de la variable STRING
+    \return void
+  */
+  void evaluate();
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
   \class   EmptyStmt
   \brief   Definition of atributes and methods of EmptyStmt class
   \note    EmptyStmt Class publicly inherits from Statement class 
@@ -1563,6 +1602,89 @@ class EmptyStmt : public Statement
 };
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// NEW in example 17
+
+/*!	
+  \class   ClearScreenStmt
+  \brief   Definition of atributes and methods of ClearScreenStmt class
+  \note    ClearScreenStmt Class publicly inherits from Statement class 
+		       and adds its own printAST and evaluate functions
+*/
+class ClearScreenStmt : public Statement 
+{
+ private:
+
+  public:
+/*!		
+	\brief Constructor of Single ClearScreenStmt (without alternativ and variables)
+	\post  A new ClearScreenStmt is created with no parameters
+*/
+  ClearScreenStmt()
+	{
+
+	}
+
+/*!
+	\brief   Print the AST for ClearScreenStmt
+	\return  void
+	\sa		 evaluate
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the ClearScreenStmt
+	\return  void
+	\sa	   	 printAST
+*/
+  void evaluate();
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// NEW in example 17
+
+/*!	
+  \class   PlaceStmt
+  \brief   Definition of atributes and methods of PlaceStmt class
+  \note    PlaceStmt Class publicly inherits from Statement class 
+		       and adds its own printAST and evaluate functions
+*/
+class PlaceStmt : public Statement 
+{
+ private:
+	ExpNode *_row;
+	ExpNode *_cols;
+
+  public:
+/*!		
+	\brief Constructor of Single PlaceStmt (without alternative)
+	\param row: Rows number
+	\param cols: Columns number
+	\post  A new PlaceStmt is created with the parameters
+*/
+  PlaceStmt(ExpNode *row, ExpNode *cols)
+	{
+		this->_row= row;
+		this->_cols= cols;
+	}
+
+/*!
+	\brief   Print the AST for PlaceStmt
+	\return  void
+	\sa		   evaluate
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the PlaceStmt
+	\return  void
+	\sa	   	 printAST
+*/
+  void evaluate();
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1578,8 +1700,8 @@ class IfStmt : public Statement
 {
  private:
   ExpNode *_cond;    //!< Condicion of the if statement
-  Statement *_stmt1; //!< Statement of the consequent
-  Statement *_stmt2; //!< Statement of the alternative
+  std::list<Statement> *_stmt1; //!< Statement of the consequent
+  std::list<Statement> *_stmt2; //!< Statement of the other option
 
   public:
 /*!		
@@ -1588,7 +1710,7 @@ class IfStmt : public Statement
 	\param statement1: Statement of the consequent
 	\post  A new IfStmt is created with the parameters
 */
-  IfStmt(ExpNode *condition, Statement *statement1)
+  IfStmt(ExpNode *condition, std::list<Statement> *statement1)
 	{
 		this->_cond = condition;
 		this->_stmt1 = statement1;
@@ -1603,7 +1725,7 @@ class IfStmt : public Statement
 	\param statement2: Statement of the alternative
 	\post  A new IfStmt is created with the parameters
 */
-  IfStmt(ExpNode *condition, Statement *statement1, Statement *statement2)
+  IfStmt(ExpNode *condition, std::list<Statement> *statement1, std::list<Statement> *statement2)
 	{
 		this->_cond = condition;
 		this->_stmt1 = statement1;
@@ -1626,9 +1748,119 @@ class IfStmt : public Statement
   void evaluate();
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// NEW in example 17
+
+/*!	
+  \class   SwitchStmt
+  \brief   Definition of atributes and methods of SwitchStmt class
+  \note    SwitchStmt Class publicly inherits from Statement class 
+		       and adds its own printAST and evaluate functions
+*/
+class SwitchStmt : public Statement 
+{
+ private:
+  ExpNode *_value;   
+  std::list<CaseStmt> *_cases;
+  std::list<Statement> *_default;
+
+  public:
+
+  /*!		
+	\brief Constructor of Single SwitchStmt (without alternative)
+	\param value: ExpNode of the condition
+	\param cases: List of different cases
+	\post  A new SwitchStmt is created with the parameters
+	*/
+	SwitchStmt(ExpNode *value, std::list<CaseStmt> *cases)
+	{
+		this->_value = value;
+		this->_cases = cases;
+		this->_default = NULL;
+	}
 
 
+/*!		
+	\brief Constructor of Single SwitchStmt (without alternative)
+	\param value: ExpNode of the condition
+	\param cases: List of different cases
+	\param defaulT: Default case
+	\post  A new SwitchStmt is created with the parameters
+*/
+  SwitchStmt(ExpNode *value, std::list<CaseStmt> *cases, std::list<Statement> *defaulT)
+	{
+		this->_value = value;
+		this->_cases = cases;
+		this->_default = defaulT;
+	}
 
+
+/*!
+	\brief   Print the AST for SwitchStmt
+	\return  void
+	\sa		   evaluate
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the SwitchStmt
+	\return  void
+	\sa	   	 printAST
+*/
+  void evaluate();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// NEW in example 17
+
+/*!	
+  \class   CaseStmt
+  \brief   Definition of atributes and methods of CaseStmt class
+  \note    CaseStmt Class publicly inherits from Statement class 
+		       and adds its own printAST and evaluate functions
+*/
+class CaseStmt : public Statement 
+{
+ private:
+  ExpNode *_casN;
+  std::list<Statement> *_stmt;
+
+  public:
+/*!		
+	\brief Constructor of Single CaseStmt (without alternative)
+	\param _casN: Case Number
+	\param statement: Statement of the consequent
+	\post  A new CaseStmt is created with the parameters
+*/
+  CaseStmt(ExpNode *casN, std::list<Statement> *statement)
+	{
+		this->_casN = casN;
+		this->_stmt = statement;
+	}
+
+/*!
+	\brief   Print the AST for CaseStmt
+	\return  void
+	\sa		 evaluate
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the CaseStmt
+	\return  void
+	\sa	   	 printAST
+*/
+  virtual double evaluateNumber();
+
+/*!	
+	\brief   Evaluate the CaseStmt
+	\return  void
+	\sa	   	 printAST
+*/
+  void evaluate();
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1644,7 +1876,7 @@ class WhileStmt : public Statement
 {
  private:
   ExpNode *_cond; //!< Condicion of the while statement
-  Statement *_stmt; //!< Statement of the body of the while loop
+  std::list<Statement> *_stmt; //!< Statement of the body of the while loop
 
   public:
 /*!		
@@ -1653,7 +1885,7 @@ class WhileStmt : public Statement
 	\param statement: Statement of the body of the loop 
 	\post  A new WhileStmt is created with the parameters
 */
-  WhileStmt(ExpNode *condition, Statement *statement)
+  WhileStmt(ExpNode *condition, std::list<Statement> *statement)
 	{
 		this->_cond = condition;
 		this->_stmt = statement;
@@ -1663,7 +1895,7 @@ class WhileStmt : public Statement
 /*!
 	\brief   Print the AST for WhileStmt
 	\return  void
-	\sa		   evaluate
+	\sa		 evaluate
 */
   void printAST();
 
@@ -1676,43 +1908,110 @@ class WhileStmt : public Statement
 };
 
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
 
 /*!	
-  \class   BlockStmt
-  \brief   Definition of atributes and methods of BlockStmt class
-  \note    BlockStmt Class publicly inherits from Statement class 
+  \class   RepeatStmt
+  \brief   Definition of atributes and methods of RepeatStmt class
+  \note    RepeatStmt Class publicly inherits from Statement class 
 		       and adds its own printAST and evaluate functions
 */
-class BlockStmt : public Statement 
+class RepeatStmt : public Statement 
 {
  private:
-   std::list<Statement *> *_stmts;  //!< List of statements
+	std::list<Statement> *_stmt; //!< Statement of the body of the while loop
+	ExpNode *_cond; //!< Condicion of the while statement
 
   public:
 /*!		
-	\brief Constructor of  WhileStmt
-	\param stmtList: list of Statement
-	\post  A new BlockStmt is created with the parameters
+	\brief Constructor of  RepeatStmt
+	\param condition: ExpNode of the condition
+	\param statement: Statement of the body of the loop 
+	\post  A new RepeatStmt is created with the parameters
 */
-  BlockStmt(std::list<Statement *> *stmtList): _stmts(stmtList)
+  RepeatStmt(ExpNode *condition, std::list<Statement> *statement)
 	{
-		// Empty
+		this->_cond = condition;
+		this->_stmt = statement;
 	}
 
-
 /*!
-	\brief   Print the AST for BlockStmt
+	\brief   Print the AST for RepeatStmt
 	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the BlockStmt
+	\brief   Evaluate the RepeatStmt
+	\return  void
+	\sa	   	 printAST
+*/
+  void evaluate();
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// NEW in example 17
+
+/*!	
+  \class   ForStmt
+  \brief   Definition of atributes and methods of ForStmt class
+  \note    ForStmt Class publicly inherits from Statement class 
+		       and adds its own printAST and evaluate functions
+*/
+class ForStmt : public Statement 
+{
+ private:
+  ExpNode *_final;
+  ExpNode *_inicio;
+  ExpNode *_inc;
+  std::list<Statement> *_stmt; //!< Statement of the body of the while loop
+
+  public:
+/*!		
+	\brief Constructor of  ForStmt
+	\param stmt: Statements of the condition
+	\param inicio: Initial value of iteration
+	\param final: Final value of iteration
+	\post  A new ForStmt is created with the parameters
+*/
+  	ForStmt(std::list<Statement> *stmt, ExpNode *inicio, ExpNode *final)
+	{
+		this->_stmt = stmt;
+		this->_inicio = inicio;
+		this->_final = final;
+		this->_inc = NULL;
+	}
+
+	/*!		
+	\brief Constructor of ForStmt
+	\param stmt: Statements of the condition
+	\param inicio: Initial value of iteration
+	\param final: Final value of iteration
+	\param inc: Incremental value of iteration
+	\post  A new ForStmt is created with the parameters
+	*/
+	ForStmt(std::list<Statement> *stmt, ExpNode *inicio, ExpNode *final, ExpNode *inc)
+	{
+		this->_inicio = inicio;
+		this->_final = final;
+		this->_inc = inc;
+		this->_stmt = stmt;
+	}
+
+/*!
+	\brief   Print the AST for ForStmt
+	\return  void
+	\sa		   evaluate
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the ForStmt
 	\return  void
 	\sa	   	 printAST
 */
