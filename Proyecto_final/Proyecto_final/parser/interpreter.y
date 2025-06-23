@@ -32,6 +32,11 @@ extern lp::AST *root;
 %define parse.error verbose
 %start program
 
+%code requires {
+  #include <list>
+  #include "../ast/ast.hpp"
+}
+
 %union {
   double number;
   char * string;

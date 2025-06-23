@@ -606,13 +606,13 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    84,    84,    88,    89,   101,   105,   106,   107,   108,
-     109,   110,   111,   112,   113,   114,   115,   119,   123,   127,
-     134,   141,   147,   150,   156,   162,   166,   173,   179,   185,
-     191,   195,   196,   197,   198,   202,   206,   207,   208,   209,
-     213,   214,   215,   216,   217,   218,   219,   220,   221,   222,
-     223,   224,   225,   226,   227,   228,   229,   230,   231,   232,
-     233,   234,   235,   236,   237,   238,   239
+       0,    89,    89,    93,    94,   106,   110,   111,   112,   113,
+     114,   115,   116,   117,   118,   119,   120,   124,   128,   132,
+     139,   146,   152,   155,   161,   167,   171,   178,   184,   190,
+     196,   200,   201,   202,   203,   207,   211,   212,   213,   214,
+     218,   219,   220,   221,   222,   223,   224,   225,   226,   227,
+     228,   229,   230,   231,   232,   233,   234,   235,   236,   237,
+     238,   239,   240,   241,   242,   243,   244
 };
 #endif
 
@@ -1641,19 +1641,19 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* program: stmtlist  */
-#line 84 "interpreter.y"
+#line 89 "interpreter.y"
                    { root = new lp::AST((yyvsp[0].stmts)); }
 #line 1647 "interpreter.tab.c"
     break;
 
   case 3: /* stmtlist: %empty  */
-#line 88 "interpreter.y"
+#line 93 "interpreter.y"
                 { (yyval.stmts) = new std::list<lp::Statement *>(); }
 #line 1653 "interpreter.tab.c"
     break;
 
   case 4: /* stmtlist: stmtlist stmt  */
-#line 89 "interpreter.y"
+#line 94 "interpreter.y"
                   {
       (yyval.stmts) = (yyvsp[-1].stmts);
       (yyval.stmts)->push_back((yyvsp[0].st));
@@ -1670,25 +1670,25 @@ yyreduce:
     break;
 
   case 5: /* stmtlist: stmtlist error  */
-#line 101 "interpreter.y"
+#line 106 "interpreter.y"
                    { (yyval.stmts) = (yyvsp[-1].stmts); yyclearin; }
 #line 1676 "interpreter.tab.c"
     break;
 
   case 6: /* stmt: SEMICOLON  */
-#line 105 "interpreter.y"
+#line 110 "interpreter.y"
               { (yyval.st) = new lp::EmptyStmt(); }
 #line 1682 "interpreter.tab.c"
     break;
 
   case 17: /* controlSymbol: %empty  */
-#line 119 "interpreter.y"
+#line 124 "interpreter.y"
                 { control++; }
 #line 1688 "interpreter.tab.c"
     break;
 
   case 18: /* if: IF controlSymbol cond THEN stmtlist END_IF  */
-#line 123 "interpreter.y"
+#line 128 "interpreter.y"
                                                {
         (yyval.st) = new lp::IfStmt((yyvsp[-3].expNode), (yyvsp[-1].stmts));
         control--;
@@ -1697,7 +1697,7 @@ yyreduce:
     break;
 
   case 19: /* if: IF controlSymbol cond THEN stmtlist ELSE stmtlist END_IF  */
-#line 127 "interpreter.y"
+#line 132 "interpreter.y"
                                                              {
         (yyval.st) = new lp::IfStmt((yyvsp[-5].expNode), (yyvsp[-3].stmts), (yyvsp[-1].stmts));
         control--;
@@ -1706,7 +1706,7 @@ yyreduce:
     break;
 
   case 20: /* while: WHILE controlSymbol cond DO stmtlist END_WHILE  */
-#line 134 "interpreter.y"
+#line 139 "interpreter.y"
                                                    {
         (yyval.st) = new lp::WhileStmt((yyvsp[-3].expNode), (yyvsp[-1].stmts));
         control--;
@@ -1715,7 +1715,7 @@ yyreduce:
     break;
 
   case 21: /* repeat: REPEAT stmtlist UNTIL cond SEMICOLON  */
-#line 141 "interpreter.y"
+#line 146 "interpreter.y"
                                          {
         (yyval.st) = new lp::RepeatStmt((yyvsp[-1].expNode), (yyvsp[-3].stmts)); // Correcto: $4 es cond y $2 es stmtlist
     }
@@ -1723,7 +1723,7 @@ yyreduce:
     break;
 
   case 22: /* for: FOR VARIABLE FROM exp TO exp DO stmtlist END_FOR  */
-#line 147 "interpreter.y"
+#line 152 "interpreter.y"
                                                      {
         (yyval.st) = new lp::ForStmt((yyvsp[-7].string), (yyvsp[-5].expNode), (yyvsp[-3].expNode), new lp::NumberNode(1), (yyvsp[-1].stmts)); // step por defecto = 1
     }
@@ -1731,7 +1731,7 @@ yyreduce:
     break;
 
   case 23: /* for: FOR VARIABLE FROM exp TO exp STEP exp DO stmtlist END_FOR  */
-#line 150 "interpreter.y"
+#line 155 "interpreter.y"
                                                               {
         (yyval.st) = new lp::ForStmt((yyvsp[-9].string), (yyvsp[-7].expNode), (yyvsp[-5].expNode), (yyvsp[-3].expNode), (yyvsp[-1].stmts)); // step personalizado
     }
@@ -1739,7 +1739,7 @@ yyreduce:
     break;
 
   case 24: /* switchstmt: SWITCH LPAREN exp RPAREN caseList END_SWITCH  */
-#line 156 "interpreter.y"
+#line 161 "interpreter.y"
                                                  {
         (yyval.st) = new lp::SwitchStmt((yyvsp[-3].expNode), (yyvsp[-1].stmts));  
     }
@@ -1747,7 +1747,7 @@ yyreduce:
     break;
 
   case 25: /* caseList: caseList caseBlock  */
-#line 162 "interpreter.y"
+#line 167 "interpreter.y"
                        {
         (yyval.stmts) = (yyvsp[-1].stmts);
         (yyval.stmts)->push_back((yyvsp[0].st));
@@ -1756,7 +1756,7 @@ yyreduce:
     break;
 
   case 26: /* caseList: caseBlock  */
-#line 166 "interpreter.y"
+#line 171 "interpreter.y"
               {
         (yyval.stmts) = new std::list<lp::Statement *>();
         (yyval.stmts)->push_back((yyvsp[0].st));
@@ -1765,7 +1765,7 @@ yyreduce:
     break;
 
   case 27: /* caseBlock: CASE exp ':' stmtlist  */
-#line 173 "interpreter.y"
+#line 178 "interpreter.y"
                           {
         (yyval.st) = new lp::CaseStmt((yyvsp[-2].expNode), (yyvsp[0].stmts));
     }
@@ -1773,7 +1773,7 @@ yyreduce:
     break;
 
   case 28: /* clearscreen: CLEAR_SCREEN SEMICOLON  */
-#line 179 "interpreter.y"
+#line 184 "interpreter.y"
                            {
         (yyval.st) = new lp::ClearScreenStmt();
     }
@@ -1781,7 +1781,7 @@ yyreduce:
     break;
 
   case 29: /* place: PLACE LPAREN exp COMMA exp RPAREN SEMICOLON  */
-#line 185 "interpreter.y"
+#line 190 "interpreter.y"
                                                 {
         (yyval.st) = new lp::PlaceStmt((yyvsp[-4].expNode), (yyvsp[-2].expNode));
     }
@@ -1789,223 +1789,223 @@ yyreduce:
     break;
 
   case 30: /* cond: LPAREN exp RPAREN  */
-#line 191 "interpreter.y"
+#line 196 "interpreter.y"
                       { (yyval.expNode) = (yyvsp[-1].expNode); }
 #line 1795 "interpreter.tab.c"
     break;
 
   case 31: /* asgn: VARIABLE ASSIGNMENT exp  */
-#line 195 "interpreter.y"
+#line 200 "interpreter.y"
                             { (yyval.st) = new lp::AssignmentStmt((yyvsp[-2].string), (yyvsp[0].expNode)); }
 #line 1801 "interpreter.tab.c"
     break;
 
   case 32: /* asgn: VARIABLE ASSIGNMENT asgn  */
-#line 196 "interpreter.y"
+#line 201 "interpreter.y"
                              { (yyval.st) = new lp::AssignmentStmt((yyvsp[-2].string), (lp::AssignmentStmt*)(yyvsp[0].st)); }
 #line 1807 "interpreter.tab.c"
     break;
 
   case 33: /* asgn: CONSTANT ASSIGNMENT exp  */
-#line 197 "interpreter.y"
+#line 202 "interpreter.y"
                             { execerror("No se puede modificar una constante", (yyvsp[-2].string)); }
 #line 1813 "interpreter.tab.c"
     break;
 
   case 34: /* asgn: CONSTANT ASSIGNMENT asgn  */
-#line 198 "interpreter.y"
+#line 203 "interpreter.y"
                              { execerror("No se puede modificar una constante", (yyvsp[-2].string)); }
 #line 1819 "interpreter.tab.c"
     break;
 
   case 35: /* print: PRINT exp  */
-#line 202 "interpreter.y"
+#line 207 "interpreter.y"
               { (yyval.st) = new lp::PrintStmt((yyvsp[0].expNode)); }
 #line 1825 "interpreter.tab.c"
     break;
 
   case 36: /* read: READ LPAREN VARIABLE RPAREN  */
-#line 206 "interpreter.y"
+#line 211 "interpreter.y"
                                 { (yyval.st) = new lp::ReadStmt((yyvsp[-1].string)); }
 #line 1831 "interpreter.tab.c"
     break;
 
   case 37: /* read: READ LPAREN CONSTANT RPAREN  */
-#line 207 "interpreter.y"
+#line 212 "interpreter.y"
                                 { execerror("No se puede leer en una constante", (yyvsp[-1].string)); }
 #line 1837 "interpreter.tab.c"
     break;
 
   case 38: /* read: READ_STRING LPAREN VARIABLE RPAREN  */
-#line 208 "interpreter.y"
+#line 213 "interpreter.y"
                                        { (yyval.st) = new lp::ReadStringStmt((yyvsp[-1].string)); }
 #line 1843 "interpreter.tab.c"
     break;
 
   case 39: /* read: READ_STRING LPAREN CONSTANT RPAREN  */
-#line 209 "interpreter.y"
+#line 214 "interpreter.y"
                                        { execerror("No se puede leer en una constante", (yyvsp[-1].string)); }
 #line 1849 "interpreter.tab.c"
     break;
 
   case 40: /* exp: NUMBER  */
-#line 213 "interpreter.y"
+#line 218 "interpreter.y"
            { (yyval.expNode) = new lp::NumberNode((yyvsp[0].number)); }
 #line 1855 "interpreter.tab.c"
     break;
 
   case 41: /* exp: STRING_LITERAL  */
-#line 214 "interpreter.y"
+#line 219 "interpreter.y"
                    { (yyval.expNode) = new lp::StringNode((yyvsp[0].string)); }
 #line 1861 "interpreter.tab.c"
     break;
 
   case 42: /* exp: VARIABLE  */
-#line 215 "interpreter.y"
+#line 220 "interpreter.y"
              { (yyval.expNode) = new lp::VariableNode((yyvsp[0].string)); }
 #line 1867 "interpreter.tab.c"
     break;
 
   case 43: /* exp: CONSTANT  */
-#line 216 "interpreter.y"
+#line 221 "interpreter.y"
              { (yyval.expNode) = new lp::ConstantNode((yyvsp[0].string)); }
 #line 1873 "interpreter.tab.c"
     break;
 
   case 44: /* exp: PLUS exp  */
-#line 217 "interpreter.y"
+#line 222 "interpreter.y"
                          { (yyval.expNode) = new lp::UnaryPlusNode((yyvsp[0].expNode)); }
 #line 1879 "interpreter.tab.c"
     break;
 
   case 45: /* exp: MINUS exp  */
-#line 218 "interpreter.y"
+#line 223 "interpreter.y"
                           { (yyval.expNode) = new lp::UnaryMinusNode((yyvsp[0].expNode)); }
 #line 1885 "interpreter.tab.c"
     break;
 
   case 46: /* exp: NOT exp  */
-#line 219 "interpreter.y"
+#line 224 "interpreter.y"
             { (yyval.expNode) = new lp::NotNode((yyvsp[0].expNode)); }
 #line 1891 "interpreter.tab.c"
     break;
 
   case 47: /* exp: INCREMENT exp  */
-#line 220 "interpreter.y"
+#line 225 "interpreter.y"
                               { (yyval.expNode) = new lp::UnaryPlusNode((yyvsp[0].expNode)); }
 #line 1897 "interpreter.tab.c"
     break;
 
   case 48: /* exp: DECREMENT exp  */
-#line 221 "interpreter.y"
+#line 226 "interpreter.y"
                               { (yyval.expNode) = new lp::UnaryMinusNode((yyvsp[0].expNode)); }
 #line 1903 "interpreter.tab.c"
     break;
 
   case 49: /* exp: exp FACTORIAL  */
-#line 222 "interpreter.y"
+#line 227 "interpreter.y"
                               { (yyval.expNode) = new lp::FactorialNode((yyvsp[-1].expNode)); }
 #line 1909 "interpreter.tab.c"
     break;
 
   case 50: /* exp: exp PLUS exp  */
-#line 223 "interpreter.y"
+#line 228 "interpreter.y"
                  { (yyval.expNode) = new lp::PlusNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1915 "interpreter.tab.c"
     break;
 
   case 51: /* exp: exp MINUS exp  */
-#line 224 "interpreter.y"
+#line 229 "interpreter.y"
                   { (yyval.expNode) = new lp::MinusNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1921 "interpreter.tab.c"
     break;
 
   case 52: /* exp: exp MULTIPLICATION exp  */
-#line 225 "interpreter.y"
+#line 230 "interpreter.y"
                            { (yyval.expNode) = new lp::MultiplicationNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1927 "interpreter.tab.c"
     break;
 
   case 53: /* exp: exp DIVISION exp  */
-#line 226 "interpreter.y"
+#line 231 "interpreter.y"
                      { (yyval.expNode) = new lp::DivisionNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1933 "interpreter.tab.c"
     break;
 
   case 54: /* exp: exp INTDIV exp  */
-#line 227 "interpreter.y"
+#line 232 "interpreter.y"
                    { (yyval.expNode) = new lp::IntegerDivisionNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1939 "interpreter.tab.c"
     break;
 
   case 55: /* exp: exp MODULO exp  */
-#line 228 "interpreter.y"
+#line 233 "interpreter.y"
                    { (yyval.expNode) = new lp::ModuloNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1945 "interpreter.tab.c"
     break;
 
   case 56: /* exp: exp POWER exp  */
-#line 229 "interpreter.y"
+#line 234 "interpreter.y"
                   { (yyval.expNode) = new lp::PowerNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1951 "interpreter.tab.c"
     break;
 
   case 57: /* exp: exp GREATER_THAN exp  */
-#line 230 "interpreter.y"
+#line 235 "interpreter.y"
                          { (yyval.expNode) = new lp::GreaterThanNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1957 "interpreter.tab.c"
     break;
 
   case 58: /* exp: exp GREATER_OR_EQUAL exp  */
-#line 231 "interpreter.y"
+#line 236 "interpreter.y"
                              { (yyval.expNode) = new lp::GreaterOrEqualNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1963 "interpreter.tab.c"
     break;
 
   case 59: /* exp: exp LESS_THAN exp  */
-#line 232 "interpreter.y"
+#line 237 "interpreter.y"
                       { (yyval.expNode) = new lp::LessThanNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1969 "interpreter.tab.c"
     break;
 
   case 60: /* exp: exp LESS_OR_EQUAL exp  */
-#line 233 "interpreter.y"
+#line 238 "interpreter.y"
                           { (yyval.expNode) = new lp::LessOrEqualNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1975 "interpreter.tab.c"
     break;
 
   case 61: /* exp: exp EQUAL exp  */
-#line 234 "interpreter.y"
+#line 239 "interpreter.y"
                   { (yyval.expNode) = new lp::EqualNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1981 "interpreter.tab.c"
     break;
 
   case 62: /* exp: exp NOT_EQUAL exp  */
-#line 235 "interpreter.y"
+#line 240 "interpreter.y"
                       { (yyval.expNode) = new lp::NotEqualNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1987 "interpreter.tab.c"
     break;
 
   case 63: /* exp: exp AND exp  */
-#line 236 "interpreter.y"
+#line 241 "interpreter.y"
                 { (yyval.expNode) = new lp::AndNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1993 "interpreter.tab.c"
     break;
 
   case 64: /* exp: exp OR exp  */
-#line 237 "interpreter.y"
+#line 242 "interpreter.y"
                { (yyval.expNode) = new lp::OrNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 1999 "interpreter.tab.c"
     break;
 
   case 65: /* exp: exp CONCAT exp  */
-#line 238 "interpreter.y"
+#line 243 "interpreter.y"
                    { (yyval.expNode) = new lp::ConcatNode((yyvsp[-2].expNode), (yyvsp[0].expNode)); }
 #line 2005 "interpreter.tab.c"
     break;
 
   case 66: /* exp: LPAREN exp RPAREN  */
-#line 239 "interpreter.y"
+#line 244 "interpreter.y"
                       { (yyval.expNode) = (yyvsp[-1].expNode); }
 #line 2011 "interpreter.tab.c"
     break;
@@ -2235,5 +2235,5 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 252 "interpreter.y"
+#line 257 "interpreter.y"
 

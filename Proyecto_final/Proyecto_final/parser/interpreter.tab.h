@@ -44,6 +44,13 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 35 "interpreter.y"
+
+  #include <list>
+  #include "../ast/ast.hpp"
+
+#line 54 "interpreter.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -127,7 +134,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 35 "interpreter.y"
+#line 40 "interpreter.y"
 
   double number;
   char * string;
@@ -138,7 +145,7 @@ union YYSTYPE
   lp::Statement *st;
   lp::AST *prog;
 
-#line 142 "interpreter.tab.h"
+#line 149 "interpreter.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
