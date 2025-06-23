@@ -110,43 +110,5 @@ void init(lp::Table &t)
 	}
 
 
-
-  //////////////////////////////////////////////
- //  NEW in example 14
-
- lp::BuiltinParameter0 *f0;
-
- // The predefined functions with 0 parameters are installed in the table of symbols
- for (i=0; function_0[i].name.compare("")!=0; i++)
-	{
-		 f0 = new lp::BuiltinParameter0(function_0[i].name,
-									   BUILTIN,   // Token
-									   0,		  // Number of parameters
-									   function_0[i].function);
-
-		// A pointer to the new Keyword is inserted into the table of symbols
-		t.installSymbol(f0);
-	}
-
-
-
-
-  //////////////////////////////////////////////
- //  NEW in example 14
-
- lp::BuiltinParameter2 *f2;
-
- // The predefined functions with 2 parameters are installed in the table of symbols
- for (i=0; function_2[i].name.compare("")!=0; i++)
-	{
-		 f2 = new lp::BuiltinParameter2(function_2[i].name,
-									   BUILTIN,   // Token
-									   2,		  // Number of parameters
-									   function_2[i].function);
-
-		
-		// A pointer to the new Keyword is inserted into the table of symbols
-		t.installSymbol(f2);
-	}
 }
 
