@@ -73,18 +73,35 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 
 
 {ID} {
+    // Control de identificadores inválidos
     if (strstr(yytext, "__") || yytext[0] == '_' || yytext[yyleng - 1] == '_') {
         std::cerr << "Error léxico: identificador no válido '" << yytext << "' en línea " << lineNumber << std::endl;
         return ERROR_TOKEN;
     }
+
+    // Gestión de identificadores válidos
+    std::string identifier(yytext);
     yylval.string = strdup(yytext);
-    return IDENTIFIER;
+
+    // Si el identificador no está en la tabla de símbolos, lo insertamos como variable indefinida
+    if (table.lookupSymbol(identifier) == false) {
+        lp::NumericVariable *n = new lp::NumericVariable(identifier, VARIABLE, UNDEFINED, 0.0);
+        table.installSymbol(n);
+        return VARIABLE;
+    }
+    else {
+        lp::Symbol *s = table.getSymbol(identifier);
+        return s->getToken();
+    }
 }
 
+
+//Acceso a la  tabla de símbolos manualmente para comprobar si ya existe. Conversión a minuscula y otras expresiones para controlar
 
 
 ":="            { return ASSIGNMENT; }
 "//"            { return INTDIV; }
+"mod"           { return MODULO; }
 
 "++"            { return INCREMENT; }
 "--"            { return DECREMENT; }
