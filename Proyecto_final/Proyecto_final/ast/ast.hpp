@@ -258,14 +258,14 @@ class StringNode : public ExpNode
  public:
   StringNode(std::string value) : _value(value) {}
 
-  int getType() override;
+  int getType();
 
-  void printAST() override
+  void printAST()
   {
     std::cout << "StringNode: \"" << _value << "\"" << std::endl;
   }
 
-  std::string evaluateString() override;
+  std::string evaluateString();
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

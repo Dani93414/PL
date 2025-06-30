@@ -1422,7 +1422,7 @@ void lp::ReadStringStmt::evaluate()
   // Obtener la variable de la tabla de símbolos
   lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
 
-  if (var != nullptr && var->getType() == STRING_LITERAL)
+  if (var != NULL && var->getType() == STRING_LITERAL)
   {
     // Ya existe como STRING
     lp::StringVariable *s = (lp::StringVariable *) var;
@@ -1517,17 +1517,17 @@ void lp::IfStmt::printAST()
 
   	// Consequent
   	std::cout << "\t";
-  	std::list<Statement >::iterator stmtIter1;
+  	std::list<Statement *>::iterator stmtIter1;
 	for(stmtIter1= this->_stmt1->begin(); stmtIter1!= this->_stmt1->end(); stmtIter1++){
-		stmtIter1->printAST();
+		(*stmtIter1)->printAST();
 	}
 
  // The alternative is printASTed if exists
   if(this->_stmt2 != NULL)
      {  
-		std::list<Statement >::iterator stmtIter;
+		std::list<Statement *>::iterator stmtIter;
 		for(stmtIter= this->_stmt2->begin(); stmtIter!= this->_stmt2->end(); stmtIter++){
-			stmtIter->printAST();
+			(*stmtIter)->printAST();
 		}
      }
 
@@ -1538,18 +1538,18 @@ void lp::IfStmt::printAST()
 void lp::IfStmt::evaluate() 
 {
    // If the condition is true,
-   	std::list<Statement >::iterator stmtIter; 
+   	std::list<Statement *>::iterator stmtIter; 
 	if (this->_cond->evaluateBool() == true )
      	// the consequent is run
 		for(stmtIter= this->_stmt1->begin(); stmtIter!= this->_stmt1->end(); stmtIter++){
-			stmtIter->evaluate();
+			(*stmtIter)->evaluate();
 		}
 
     // Otherwise, the alternative is run if exists
 	else if (this->_stmt2 != NULL)
 		// the consequent is run
 		for(stmtIter= this->_stmt2->begin(); stmtIter!= this->_stmt2->end(); stmtIter++){
-			stmtIter->evaluate();
+			(*stmtIter)->evaluate();
 		}
 }
 
@@ -1557,60 +1557,60 @@ void lp::IfStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
 
-void lp::SwitchStmt::printAST() 
-{
-	std::cout << "SwitchStmt: "  << std::endl;
+// void lp::SwitchStmt::printAST() 
+// {
+// 	std::cout << "SwitchStmt: "  << std::endl;
 	
-	std::cout << "\t";
-	this->_value->printAST();
+// 	std::cout << "\t";
+// 	this->_value->printAST();
 
 
-	std::cout << "\t";
-	std::list<CaseStmt>::iterator it = this->_cases->begin();
-	while(it != this->_cases->end()){
-		(it)->printAST();
-		it++;
-	}
+// 	std::cout << "\t";
+// 	std::list<CaseStmt>::iterator it = this->_casesAndDefault->begin();
+// 	while(it != this->_casesAndDefault->end()){
+// 		(it)->printAST();
+// 		it++;
+// 	}
 
-	if(_default!=NULL){
-		std::list<Statement>::iterator itsttm = this->_default->begin();
-		while(itsttm != this->_default->end()){
-			(itsttm)->printAST();
-			itsttm++;
-		}
-	}
-}
+// 	if(_default!=NULL){
+// 		std::list<Statement>::iterator itsttm = this->_default->begin();
+// 		while(itsttm != this->_default->end()){
+// 			(itsttm)->printAST();
+// 			itsttm++;
+// 		}
+// 	}
+// }
 
 
-void lp::SwitchStmt::evaluate() 
-{
-  // While the condition is true. the body is run 
-  double value = this->_value->evaluateNumber();
+// void lp::SwitchStmt::evaluate() 
+// {
+//   // While the condition is true. the body is run 
+//   double value = this->_value->evaluateNumber();
 
-  // Check the cases
-  std::list<CaseStmt>::iterator it = this->_cases->begin();
-  while(it != this->_cases->end())
-  {
-    // If the case matches, evaluate the body of the case
-    if((it)->evaluateNumber() == value)
-    {
-      (it)->evaluate();
-      return; // Exit after the first matching case
-    }
-    it++;
-  }
+//   // Check the cases
+//   std::list<CaseStmt>::iterator it = this->_cases->begin();
+//   while(it != this->_cases->end())
+//   {
+//     // If the case matches, evaluate the body of the case
+//     if((it)->evaluateNumber() == value)
+//     {
+//       (it)->evaluate();
+//       return; // Exit after the first matching case
+//     }
+//     it++;
+//   }
 
-  // If no case matches, do nothing (or handle default case if implemented)
-  if (this->_default != NULL) 
-  {
-    std::list<Statement>::iterator itDf = this->_default->begin();
-    while (itDf != this->_default->end())
-    {
-      (itDf)->evaluate();
-      itDf++;
-    }
-  }
-}
+//   // If no case matches, do nothing (or handle default case if implemented)
+//   if (this->_default != NULL) 
+//   {
+//     std::list<Statement>::iterator itDf = this->_default->begin();
+//     while (itDf != this->_default->end())
+//     {
+//       (itDf)->evaluate();
+//       itDf++;
+//     }
+//   }
+// }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1624,9 +1624,9 @@ void lp::CaseStmt::printAST()
   this->_casN->printAST();
 
   std::cout << "\t";
-  std::list<Statement >::iterator stmtIter;
+  std::list<Statement *>::iterator stmtIter;
   for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-	  stmtIter->printAST();
+	  (*stmtIter)->printAST();
   }
 }
 
@@ -1639,9 +1639,9 @@ double lp::CaseStmt::evaluateNumber()
 
 void lp::CaseStmt::evaluate() 
 {
-	std::list<Statement >::iterator stmtIter;
+	std::list<Statement *>::iterator stmtIter;
 	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-		stmtIter->evaluate();
+		(*stmtIter)->evaluate();
 	}
 
 }
@@ -1660,9 +1660,9 @@ void lp::WhileStmt::printAST()
   // Body of the while loop
   std::cout << "\t";
 
-  	std::list<Statement >::iterator stmtIter;
+  	std::list<Statement *>::iterator stmtIter;
 	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-		stmtIter->printAST();
+		(*stmtIter)->printAST();
 	}
 
   std::cout << std::endl;
@@ -1674,9 +1674,9 @@ void lp::WhileStmt::evaluate()
   // While the condition is true. the body is run 
   while(this->_cond->evaluateBool() == true)
   {
-	std::list<Statement >::iterator stmtIter;
+	std::list<Statement *>::iterator stmtIter;
 	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-		stmtIter->evaluate();
+		(*stmtIter)->evaluate();
 	}	
 
   }
@@ -1692,9 +1692,9 @@ void lp::RepeatStmt::printAST()
   std::cout << "RepeatStmt: "  << std::endl;
   
   std::cout << "\t";
-  std::list<Statement >::iterator stmtIter;
+  std::list<Statement *>::iterator stmtIter;
 	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-		stmtIter->printAST();
+		(*stmtIter)->printAST();
 	}
 
 	
@@ -1711,9 +1711,9 @@ void lp::RepeatStmt::evaluate()
   // While the condition is true. the body is run 
   while(this->_cond->evaluateBool() == true)
   {
-	std::list<Statement >::iterator stmtIter;
+	std::list<Statement *>::iterator stmtIter;
 	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-		stmtIter->evaluate();
+		(*stmtIter)->evaluate();
 	}	
   }
 }
@@ -1735,9 +1735,9 @@ void lp::ForStmt::printAST()
   // Body of the while loop
   std::cout << "\t";
 
-  	std::list<Statement >::iterator stmtIter;
+  	std::list<Statement *>::iterator stmtIter;
 	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-		stmtIter->printAST();
+		(*stmtIter)->printAST();
 	}
 
   std::cout << std::endl;
@@ -1760,9 +1760,9 @@ void lp::ForStmt::evaluate()
 
   for(double i = inicio ; i <= final; i += inc){
 	
-	std::list<Statement >::iterator stmtIter;
+	std::list<Statement *>::iterator stmtIter;
 	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-		stmtIter->evaluate();
+		(*stmtIter)->evaluate();
 	}
   }
 
