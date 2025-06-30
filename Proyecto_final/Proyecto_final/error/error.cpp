@@ -20,11 +20,12 @@
 // Macros for the screen
 #include "../includes/macros.hpp"
 
+
 extern int lineNumber; //!< // Reference to line counter
 
 extern std::string progname; //!<  Reference to program name
 
-extern jmp_buf begin; //!< Used for error recovery 
+jmp_buf begin; //!< Used for error recovery 
 
 // NEW
 extern int errno; //!<  ReferenceReference to the global variable that controls errors in the mathematical code
