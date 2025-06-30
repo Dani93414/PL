@@ -4,7 +4,11 @@
 #include <string.h>
 #include "interpreter.tab.h"
 
+#include "../table/table.hpp"
+#include "../table/numericVariable.hpp"
+
 extern int lineNumber;
+extern lp::Table table;
 %}
 
 %option noyywrap
@@ -96,7 +100,6 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 }
 
 
-//Acceso a la  tabla de símbolos manualmente para comprobar si ya existe. Conversión a minuscula y otras expresiones para controlar
 
 
 ":="            { return ASSIGNMENT; }
