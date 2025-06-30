@@ -1557,8 +1557,8 @@ void lp::IfStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
 
-// void lp::SwitchStmt::printAST() 
-// {
+ void lp::SwitchStmt::printAST() 
+ {
 // 	std::cout << "SwitchStmt: "  << std::endl;
 	
 // 	std::cout << "\t";
@@ -1579,11 +1579,11 @@ void lp::IfStmt::evaluate()
 // 			itsttm++;
 // 		}
 // 	}
-// }
+ }
 
 
-// void lp::SwitchStmt::evaluate() 
-// {
+ void lp::SwitchStmt::evaluate() 
+ {
 //   // While the condition is true. the body is run 
 //   double value = this->_value->evaluateNumber();
 
@@ -1610,7 +1610,7 @@ void lp::IfStmt::evaluate()
 //       itDf++;
 //     }
 //   }
-// }
+ }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
