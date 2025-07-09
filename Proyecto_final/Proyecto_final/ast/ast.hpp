@@ -252,20 +252,40 @@ class NumberNode : public ExpNode
 
 class StringNode : public ExpNode 
 {
- private:
-  std::string _value;
+	private:
+		std::string _value;
 
- public:
-  StringNode(std::string value) : _value(value) {}
+	public:
+		/*!		
+			\brief Constructor of StringNode
+			\param value: std::string
+			\post  A new StringNOde is created with the value of the parameter
+			\note  Inline function
+		*/
+		StringNode(std::string value){
+			this->_value= value;
+		}
 
-  int getType();
+		/*!	
+			\brief   Get the type of the expression: STRING_LITERAL
+			\return  int
+			\sa		   printAST, evaluateString
+		*/
+		int getType();
 
-  void printAST()
-  {
-    std::cout << "StringNode: \"" << _value << "\"" << std::endl;
-  }
+		/*!
+			\brief   Print the AST for expression
+			\return  void
+			\sa		   getType, evaluateString
+		*/
+		void printAST();
 
-  std::string evaluateString();
+		/*!	
+			\brief   Evaluate the expression
+			\return  std::string
+			\sa		   getType, printAST
+		*/
+		std::string evaluateString();
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -623,6 +643,38 @@ class LogicalOperatorNode : public OperatorNode
 };
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class  StringOperatorNode
+  \brief   Definition of atributes and methods of StringOperatorNode class
+  \note    StringOperatorNode Class publicly inherits from OperatorNode class
+  \warning Abstract class, because it does not redefine the printAST method of ExpNode
+*/
+class StringOperatorNode : public OperatorNode 
+{
+	public:
+
+	/*!		
+		\brief Constructor of StringOperatorNode uses OperatorNode's constructor as members initializer
+		\param L: pointer to ExpNode
+		\param R: pointer to ExpNode
+		\post  A new StringOperatorNode is created with the parameters
+	*/
+    StringOperatorNode(ExpNode *L, ExpNode *R): OperatorNode(L,R) 
+	{
+		//	Empty
+	}
+
+	/*!	
+	\brief   Get the type of the children expressions
+	\return  int
+	*/
+	int getType();
+};
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -824,13 +876,13 @@ class IntegerDivisionNode : public NumericOperatorNode
 /*!	
   \class   ConcatNode
   \brief   Nodo de AST para concatenación de cadenas de tipo STRING_LITERAL
-  \note    Hereda de LogicalOperatorNode
+  \note    Hereda de StringOperatorNode
 */
-class ConcatNode : public LogicalOperatorNode 
+class ConcatNode : public StringOperatorNode 
 {
  public:
   ConcatNode(ExpNode *left, ExpNode *right)
-    : LogicalOperatorNode(left, right) {}
+    : StringOperatorNode(left, right) {}
 
   void printAST();
   std::string evaluateString();

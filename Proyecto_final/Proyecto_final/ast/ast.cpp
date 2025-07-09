@@ -207,13 +207,20 @@ double lp::NumberNode::evaluateNumber()
 //////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-std::string lp::StringNode::evaluateString(){
-	return _value;
-}
-
 int lp::StringNode::getType(){ 
 	return STRING_LITERAL; 
 }
+
+
+void lp::StringNode::printAST()
+{
+	std::cout << "StringNode: \"" << this-> _value << "\"" << std::endl;
+}
+
+std::string lp::StringNode::evaluateString(){
+	return this->_value;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -307,6 +314,24 @@ int lp::LogicalOperatorNode:: getType()
 	return	result;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+int lp::StringOperatorNode:: getType()
+{
+	int result = 0;
+		
+	if ( (this->_left->getType() == STRING_LITERAL) and (this->_right->getType() == STRING_LITERAL))
+	{
+		// 
+		result = STRING_LITERAL;
+	}
+	else
+		warning("Runtime error: incompatible types for", "String Operator");
+
+	return	result;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -327,7 +352,7 @@ double lp::UnaryMinusNode::evaluateNumber()
 	if (this->getType() == NUMBER)
 	{
 		// Minus
-		result = - this->_exp->evaluateNumber();
+		result = this->_exp->evaluateNumber() - 1;
 	}
 	else
 	{
@@ -356,7 +381,7 @@ double lp::UnaryPlusNode::evaluateNumber()
 	// Ckeck the type of the expression
 	if (this->getType() == NUMBER)
 	{
-		result = this->_exp->evaluateNumber();
+		result = this->_exp->evaluateNumber() + 1;
 	}
 	else
 	{
@@ -580,7 +605,7 @@ double lp::IntegerDivisionNode::evaluateNumber()
 
 void lp::ConcatNode::printAST()
 {
-  std::cout << "ConcatNode: +" << std::endl;
+  std::cout << "ConcatNode: ||" << std::endl;
   std::cout << "\t";
   this->_left->printAST();
   std::cout << "\t";
@@ -1226,6 +1251,34 @@ void lp::AssignmentStmt::evaluate()
 			}
 			break;
 
+			case STRING_LITERAL:
+			{
+				std::string value= this->_exp->evaluateString();
+				
+				if (firstVar->getType() == STRING_LITERAL)
+				{
+				  	// Get the identifier in the table of symbols as NumericVariable
+					lp::StringVariable *v = (lp::StringVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value to the identifier in the table of symbols
+					v->setValue(value);
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					// Delete the variable from the table of symbols 
+					table.eraseSymbol(this->_id);
+
+					// Insert the variable in the table of symbols as NumericVariable 
+					// with the type NUMBER and the value 
+					lp::StringVariable *v = new lp::StringVariable(this->_id,
+											VARIABLE,STRING_LITERAL,value);
+					table.installSymbol(v);
+				}
+
+			}
+			break;
+
 			default:
 				warning("Runtime error: incompatible type of expression for ", "Assigment");
 		}
@@ -1310,6 +1363,37 @@ void lp::AssignmentStmt::evaluate()
 			}
 			break;
 
+			case STRING_LITERAL:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::StringVariable *secondVar = (lp::StringVariable *) table.getSymbol(this->_asgn->_id);
+				// Check the type of the first variable
+				if (firstVar->getType() == STRING_LITERAL)
+				{
+				/* Get the identifier of the first variable in the table of symbols as StringVariable */
+				lp::StringVariable *firstVar = (lp::StringVariable *) table.getSymbol(this->_id);
+				  	// Get the identifier o f the in the table of symbols as StringVariable
+//					lp::StringVariable *n = (lp::StringVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(secondVar->getValue());
+
+				}
+				// The type of variable is not STRING_LITERAL
+				else
+				{
+					// Delete the first variable from the table of symbols 
+					table.eraseSymbol(this->_id);
+
+					// Insert the first variable in the table of symbols as StringVariable 
+					// with the type STRING_LITERAL and the value of the previous variable 
+					lp::StringVariable *firstVar = new lp::StringVariable(this->_id,
+											VARIABLE,STRING_LITERAL,secondVar->getValue());
+					table.installSymbol(firstVar);
+				}
+			}
+			break;
+
 			default:
 				warning("Runtime error: incompatible type of expression for ", "Assigment");
 		}
@@ -1338,14 +1422,17 @@ void lp::PrintStmt::evaluate()
 	switch(this->_exp->getType())
 	{
 		case NUMBER:
-				std::cout << this->_exp->evaluateNumber() << std::endl;
-				break;
+			std::cout << this->_exp->evaluateNumber() << std::endl;
+			break;
 		case BOOL:
 			if (this->_exp->evaluateBool())
 				std::cout << "true" << std::endl;
 			else
 				std::cout << "false" << std::endl;
 		
+			break;
+		case STRING_LITERAL:
+			std::cout << this->_exp->evaluateString() << std::endl;
 			break;
 
 		default:
@@ -1469,11 +1556,8 @@ void lp::ClearScreenStmt::printAST()
 
 void lp::ClearScreenStmt::evaluate() 
 {
-  // While the condition is true. the body is run 
 
-  for(int i = 0; i <= 80; ++i){
-	std::cout<<std::endl;
-  }
+	std::cout<<"\x1B[2J\x1B[H";
 
 }
 
