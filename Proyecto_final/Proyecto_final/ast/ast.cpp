@@ -1456,7 +1456,7 @@ void lp::ReadStmt::printAST()
 void lp::ReadStmt::evaluate() 
 {   
 	double value;
-	std::cout << BIYELLOW; 
+	std::cout << BIGREEN;
 	std::cout << "Insert a numeric value --> " ;
 	std::cout << RESET; 
 	std::cin >> value;
