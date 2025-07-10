@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string>
 #include <list>
+#include <sstream>
 
 // Para usar la funciones pow y std::abs
 #include <cmath>
@@ -118,6 +119,28 @@ bool lp::VariableNode::evaluateBool()
 	return result;
 }
 
+
+std::string lp::VariableNode::evaluateString() 
+{ 
+	std::string result = "";
+
+	if (this->getType() == STRING_LITERAL)
+	{
+		// Get the identifier in the table of symbols as LogicalVariable
+		lp::StringVariable *var = (lp::StringVariable *) table.getSymbol(this->_id);
+
+		// Copy the value of the LogicalVariable
+		result = var->getValue();
+	}
+	else
+	{
+		warning("Runtime error in evaluateBool(): the variable is not boolean",
+				   this->_id);
+	}
+
+	// Return the value of the LogicalVariable
+	return result;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -319,15 +342,7 @@ int lp::LogicalOperatorNode:: getType()
 
 int lp::StringOperatorNode:: getType()
 {
-	int result = 0;
-		
-	if ( (this->_left->getType() == STRING_LITERAL) and (this->_right->getType() == STRING_LITERAL))
-	{
-		// 
-		result = STRING_LITERAL;
-	}
-	else
-		warning("Runtime error: incompatible types for", "String Operator");
+	int result= STRING_LITERAL;
 
 	return	result;
 }
@@ -622,7 +637,47 @@ std::string lp::ConcatNode::evaluateString()
   }
   else
   {
-    warning("Runtime error: both operands must be STRING_LITERAL", "Concatenation");
+	std::string left_value= ""; 
+	std::string right_value= "";
+    if(this->_left->getType()!= STRING_LITERAL){
+		if(this->_left->getType() == NUMBER){
+			std::ostringstream lf;
+			lf << this->_left->evaluateNumber();
+			left_value= lf.str();
+		}
+		else if(this->_left->getType() == BOOL){
+			if(this->_left->evaluateBool()){
+				left_value= "true";
+			}
+			else{
+				left_value= "false";
+			}
+		}
+	}
+	else{
+		left_value= this->_left->evaluateString();
+	}
+
+	if(this->_right->getType()!= STRING_LITERAL){
+		if(this->_right->getType() == NUMBER){
+			std::ostringstream rg;
+			rg << this->_right->evaluateNumber();
+			right_value= rg.str();
+		}
+		else if(this->_right->getType() == BOOL){
+			if(this->_right->evaluateBool()){
+				right_value= "true";
+			}
+			else{
+				right_value= "false";
+			}
+		}
+	}
+	else{
+		right_value= this->_right->evaluateString();
+	}
+
+	result= left_value + right_value;
   }
 
   return result;
@@ -1060,7 +1115,7 @@ bool lp::NotEqualNode::evaluateBool()
 
 void lp::AndNode::printAST()
 {
-  std::cout << "AndNode: &&" << std::endl;
+  std::cout << "AndNode: and" << std::endl;
   std::cout << "\t"; 
 	this->_left->printAST();
 	std::cout << "\t"; 
@@ -1095,7 +1150,7 @@ bool lp::AndNode::evaluateBool()
 
 void lp::OrNode::printAST()
 {
-  std::cout << "OrNode: ||" << std::endl;
+  std::cout << "OrNode: or" << std::endl;
   std::cout << "\t"; 
 	this->_left->printAST();
 	std::cout << "\t"; 
@@ -1130,7 +1185,7 @@ bool lp::OrNode::evaluateBool()
 
 void lp::NotNode::printAST()
 {
-  std::cout << "NotNode: !" << std::endl;
+  std::cout << "NotNode: not" << std::endl;
   std::cout << "\t";
   this->_exp->printAST();
 }
@@ -1257,7 +1312,7 @@ void lp::AssignmentStmt::evaluate()
 				
 				if (firstVar->getType() == STRING_LITERAL)
 				{
-				  	// Get the identifier in the table of symbols as NumericVariable
+				  	// Get the identifier in the table of symbols as StringVariable
 					lp::StringVariable *v = (lp::StringVariable *) table.getSymbol(this->_id);
 
 					// Assignment the value to the identifier in the table of symbols
@@ -1269,8 +1324,8 @@ void lp::AssignmentStmt::evaluate()
 					// Delete the variable from the table of symbols 
 					table.eraseSymbol(this->_id);
 
-					// Insert the variable in the table of symbols as NumericVariable 
-					// with the type NUMBER and the value 
+					// Insert the variable in the table of symbols as StringVariable 
+					// with the type STRING_LITERAL and the value 
 					lp::StringVariable *v = new lp::StringVariable(this->_id,
 											VARIABLE,STRING_LITERAL,value);
 					table.installSymbol(v);
@@ -1793,7 +1848,7 @@ void lp::RepeatStmt::printAST()
 void lp::RepeatStmt::evaluate() 
 {
   // While the condition is true. the body is run 
-  while(this->_cond->evaluateBool() == true)
+  while(this->_cond->evaluateBool() == false)
   {
 	std::list<Statement *>::iterator stmtIter;
 	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
@@ -1813,7 +1868,7 @@ void lp::ForStmt::printAST()
   // Condition
   std::cout << "\t";
   this->_inicio->printAST();
-  std::cout << "<= ";
+  std::cout << "to ";
   this->_final->printAST();
 
   // Body of the while loop
@@ -1830,25 +1885,74 @@ void lp::ForStmt::printAST()
 
 void lp::ForStmt::evaluate() 
 {
-  // While the condition is true. the body is run 
-  double inicio= _inicio->evaluateNumber();
-  double final= _final->evaluateNumber();
-  
-  double inc;
-	if(_inc!= NULL){
-		inc= _inc->evaluateNumber();
-	} 
-	else{
-		inc= 1.0;
+	// Parameters init.
+	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
+	double inicio= _inicio->evaluateNumber();
+	double final= _final->evaluateNumber();
+	double inc= _inc->evaluateNumber();
+
+	lp::NumericVariable *v= NULL;
+
+	// Check of the variable value
+	if (var->getType() == NUMBER)
+	{
+		// Get the identifier in the table of symbols as NumericVariable
+		v = (lp::NumericVariable *) table.getSymbol(this->_id);
+		// Assignment the value to the identifier in the table of symbols
+		v->setValue(inicio);
+	}
+	// The type of variable is not NUMBER
+	else
+	{
+		// Delete the variable from the table of symbols 
+		table.eraseSymbol(this->_id);
+		// Insert the variable in the table of symbols as NumericVariable 
+		// with the type NUMBER and the value 
+		v = new lp::NumericVariable(this->_id,
+								VARIABLE,NUMBER,inicio);
+		table.installSymbol(v);
 	}
 
-  for(double i = inicio ; i <= final; i += inc){
-	
-	std::list<Statement *>::iterator stmtIter;
-	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-		(*stmtIter)->evaluate();
+	double i= 0.0;
+
+	// BUCLE FOR INCREMENTAL
+	if(inc > 0){
+		
+		// Bucle for principal
+		for(i= inicio; i <= final; i += inc){
+			// Assignment the value to the identifier in the table of symbols
+			v->setValue(i);
+			
+			// Bucle for de los statements
+			std::list<Statement *>::iterator stmtIter;
+			for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
+				(*stmtIter)->evaluate();
+			}
+			
+		}
+
 	}
-  }
+
+
+	//BUCLE FOR DECREMENTAL
+	else{
+		
+		// Bucle for principal
+		for(i= inicio; i >= final; i -= inc){
+			// Actualización de la variable de iteración
+			v->setValue(i);
+			
+			// Bucle for de los statements
+			std::list<Statement *>::iterator stmtIter;
+			for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
+				(*stmtIter)->evaluate();
+			}
+			
+		}
+
+	}
+
+	v->setValue(i);
 
 }
 

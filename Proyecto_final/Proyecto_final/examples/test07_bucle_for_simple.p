@@ -1,3 +1,3 @@
-for i from 1 to 3 do
+for i from 2 to 5 do
   print i;
 end_for

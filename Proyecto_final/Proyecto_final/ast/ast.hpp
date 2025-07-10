@@ -120,7 +120,7 @@ class VariableNode : public ExpNode
 	/*!
 		\brief   Print the AST for Variable
 		\return  void
-		\sa		   getType, evaluateNumber, evaluateBool
+		\sa		   getType, evaluateNumber, evaluateBool, evaluateString
 	*/
 	  void printAST();
 
@@ -134,9 +134,16 @@ class VariableNode : public ExpNode
 	/*!	
 		\brief   Evaluate the Variable as BOOL
 		\return  bool
-		\sa		   getType, printAST, evaluateNumber
+		\sa		   getType, printAST, evaluateNumber, evaluateString
 	*/
 	  bool evaluateBool();
+
+	/*!	
+		\brief   Evaluate the Variable as BOOL
+		\return  bool
+		\sa		   getType, printAST, evaluateNumber, evaluateBool
+	*/
+	  std::string evaluateString();
 
 };
 
@@ -2128,7 +2135,7 @@ class RepeatStmt : public Statement
 class ForStmt : public Statement 
 {
  private:
-  std::string _variable;
+  std::string _id;
   ExpNode *_final;
   ExpNode *_inicio;
   ExpNode *_inc;
@@ -2136,40 +2143,24 @@ class ForStmt : public Statement
 
  public:
   // Constructor con step por defecto
-  ForStmt(const std::string &var, ExpNode *inicio, ExpNode *final, std::list<Statement *> *stmt)
+  ForStmt(const std::string &id, ExpNode *inicio, ExpNode *final, std::list<Statement *> *stmt)
   {
-    _variable = var;
-    _inicio = inicio;
-    _final = final;
-    _inc = new NumberNode(1);  // step por defecto
-    _stmt = stmt;
+    this->_id = id;
+    this->_inicio = inicio;
+    this->_final = final;
+    this->_inc = new NumberNode(1);  // step por defecto
+    this->_stmt = stmt;
   }
 
   // Constructor con step personalizado
-  ForStmt(const std::string &var, ExpNode *inicio, ExpNode *final, ExpNode *inc, std::list<Statement *> *stmt)
+  ForStmt(const std::string &id, ExpNode *inicio, ExpNode *final, ExpNode *inc, std::list<Statement *> *stmt)
   {
-    _variable = var;
-    _inicio = inicio;
-    _final = final;
-    _inc = inc;
-    _stmt = stmt;
+    this->_id = id;
+    this->_inicio = inicio;
+    this->_final = final;
+    this->_inc = inc;
+    this->_stmt = stmt;
   }
-
-	/*!		
-	\brief Constructor of ForStmt
-	\param stmt: Statements of the condition
-	\param inicio: Initial value of iteration
-	\param final: Final value of iteration
-	\param inc: Incremental value of iteration
-	\post  A new ForStmt is created with the parameters
-	*/
-	ForStmt(std::list<Statement *> *stmt, ExpNode *inicio, ExpNode *final, ExpNode *inc)
-	{
-		this->_stmt = stmt;
-		this->_inicio = inicio;
-		this->_final = final;
-		this->_inc = inc;
-	}
 
 /*!
 	\brief   Print the AST for ForStmt

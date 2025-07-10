@@ -143,14 +143,15 @@ while:
 ;
 
 repeat:
-    REPEAT stmtlist UNTIL cond SEMICOLON {
-        $$ = new lp::RepeatStmt($4, $2); // Correcto: $4 es cond y $2 es stmtlist
+    REPEAT controlSymbol stmtlist UNTIL cond SEMICOLON {
+        $$ = new lp::RepeatStmt($5, $3); // $5 = cond, $3 = stmtlist
+        control--;
     }
 ;
 
 for:
     FOR VARIABLE FROM exp TO exp DO stmtlist END_FOR {
-        $$ = new lp::ForStmt($2, $4, $6, new lp::NumberNode(1), $8); // step por defecto = 1
+        $$ = new lp::ForStmt($2, $4, $6, $8); // step por defecto = 1
     }
   | FOR VARIABLE FROM exp TO exp STEP exp DO stmtlist END_FOR {
         $$ = new lp::ForStmt($2, $4, $6, $8, $10); // step personalizado
