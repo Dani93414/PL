@@ -28,6 +28,7 @@ INTEGER       {DIGIT}+
 REAL1         {DIGIT}+\.{DIGIT}*
 REAL2         {DIGIT}*\.{DIGIT}+
 SCI           ({REAL1}|{REAL2}|{INTEGER})[eE][+-]?{DIGIT}+
+NEGATIVE_NUMBER     -{DIGIT}+(\.{DIGIT}+)?([eE][+-]?{DIGIT}+)? 
 NUMBER        {REAL1}|{REAL2}|{SCI}|{INTEGER}
 
 STRING        \'([^\'\\]|\\[nt\\\'])*\'
@@ -58,6 +59,7 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 
 
 
+
 {STRING} {
     
     std::string raw(yytext + 1, yyleng - 2);
@@ -78,6 +80,10 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
     return STRING_LITERAL;
 }
 
+{NEGATIVE_NUMBER} {
+    yylval.number = atof(yytext);
+    return NUMBER;
+}
 
 {NUMBER} {
     yylval.number = atof(yytext);
@@ -113,7 +119,6 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 
 ":="            { return ASSIGNMENT; }
 "//"            { return INTDIV; }
-"mod"           { return MODULO; }
 
 "++"            { return INCREMENT; }
 "--"            { return DECREMENT; }

@@ -1,77 +1,72 @@
--- Operadores de asignación y aritméticos
-a := +2
-print(a)
+a := +2;
+print(a);
 
-b := 2 + 3
-print(b)
+b := 2 + 3;
+print(b);
 
-c := -2
-print(c)
+c := -2;
+print(c);
 
-d := 5 - 3
-print(d)
+d := 5 - 3;
+print(d);
 
-qw := 4 * 3
-print(qw)
+qw := 4 * 3;
+print(qw);
 
-f := 10 / 4
-print(f)
+f := 10 / 4;
+print(f);
 
-g := 10 // 4
-print(g)
+g := 10 // 4;
+print(g);
 
-h := 10 mod 3
-print(h)
+h := 10 mod 3;
+print(h);
 
-i := 2 ^ 3
-print(i)
+i := 2 ^ 3;
+print(i);
 
--- Operadores relacionales
-j := 5 < 10
-print(j)
+j := 5 < 10;
+print(j);
 
-k := 5 <= 5
-print(k)
+k := 5 <= 5;
+print(k);
 
-l := 7 > 3
-print(l)
+l := 7 > 3;
+print(l);
 
-m := 7 >= 7
-print(m)
+m := 7 >= 7;
+print(m);
 
-n := 10 = 10
-print(n)
+n := 10 = 10;
+print(n);
 
-o := 10 <> 5
-print(o)
+o := 10 <> 5;
+print(o);
 
--- Relacionales con variables
-A := 5
-control := 'go'
+A := 5;
+control := 'go';
 
-p := A >= 0
-print(p)
+p := A >= 0;
+print(p);
 
-q := control <> 'stop'
-print(q)
 
-valor := A > b
-print(valor)
 
-if (valor = true) then
-    print('Valor es verdadero')
-end_if
+valor := A > b;
+print(valor);
 
-if (valor <> false) then
-    print('Valor no es falso')
-end_if
+if (valor = false) then
+    print('Valor es verdadero');
+end_if;
 
--- Operadores lógicos
-r := (A >= 0) and not (control <> 'stop')
-print(r)
+if (valor <> true) then
+    print('Valor no es falso');
+end_if;
 
-s := (A >= 0) or (control = 'stop')
-print(s)
+r := (A >= 0) and not (control <> 'stop');
+print(r);
 
-t := not (A < 0)
-print(t)
+s := (A >= 0) or (control = 'stop');
+print(s);
+
+t := not (A < 0);
+print(t);
