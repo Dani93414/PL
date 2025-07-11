@@ -45,7 +45,16 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 "#".*           ;                        
 "(*"            { BEGIN(COMMENT); }     
 <COMMENT>"*)"   { BEGIN(INITIAL); }     
-<COMMENT>.|\n   ;                       
+<COMMENT>.|\n   ;
+
+"sin"       { return SIN; }
+"cos"       { return COS; }
+"log"       { return LOG; }
+"log10"     { return LOG10; }
+"exp"       { return EXP; }
+"sqrt"      { return SQRT; }
+"integer"   {return INTEGER; }
+"abs"       { return ABS; }
 
 
 

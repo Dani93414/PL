@@ -1938,7 +1938,7 @@ void lp::ForStmt::evaluate()
 	else{
 		
 		// Bucle for principal
-		for(i= inicio; i >= final; i -= inc){
+		for(i= inicio; i >= final; i += inc){
 			// Actualización de la variable de iteración
 			v->setValue(i);
 			
