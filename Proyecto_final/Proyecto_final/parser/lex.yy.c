@@ -354,8 +354,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 41
-#define YY_END_OF_BUFFER 42
+#define YY_NUM_RULES 42
+#define YY_END_OF_BUFFER 43
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -365,15 +365,15 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[91] =
     {   0,
-        0,    0,    0,    0,    0,    0,   42,   40,    1,    2,
-       25,    5,   40,   38,   39,   28,   26,    4,   27,   40,
-       29,   19,   40,    3,   36,   31,   35,   20,   20,   20,
-       20,   20,   20,   20,   30,   40,   41,    8,    8,    1,
-        5,    0,   17,    0,    6,   23,   24,   18,   19,   22,
-       19,   19,    0,   21,   34,   32,   33,   20,   20,   20,
-       20,   20,   20,   20,   20,   37,    7,    0,    0,   19,
-        0,   19,   16,   10,   13,   20,   11,    9,   20,   18,
-        0,   18,   20,   20,   14,   20,   12,   20,   15,    0
+        0,    0,    0,    0,    0,    0,   43,   41,    1,    2,
+       26,    6,   41,   39,   40,   29,   27,    4,   28,   41,
+       30,   20,    5,    3,   37,   32,   36,   21,   21,   21,
+       21,   21,   21,   21,   31,   41,   42,    9,    9,    1,
+        6,    0,   18,    0,    7,   24,   25,   19,   20,   23,
+       20,   20,    0,   22,   35,   33,   34,   21,   21,   21,
+       21,   21,   21,   21,   21,   38,    8,    0,    0,   20,
+        0,   20,   17,   11,   14,   21,   12,   10,   21,   19,
+        0,   19,   21,   21,   15,   21,   13,   21,   16,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -844,69 +844,74 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 46 "interpreter.l"
-;                        
+#line 44 "interpreter.l"
+{ return DOSPUNTOS;    }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 47 "interpreter.l"
-{ BEGIN(COMMENT); }     
+;                        
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 48 "interpreter.l"
-{ BEGIN(INITIAL); }     
+{ BEGIN(COMMENT); }     
 	YY_BREAK
 case 8:
-/* rule 8 can match eol */
 YY_RULE_SETUP
 #line 49 "interpreter.l"
-;
+{ BEGIN(INITIAL); }     
 	YY_BREAK
 case 9:
+/* rule 9 can match eol */
 YY_RULE_SETUP
-#line 51 "interpreter.l"
-{ return SIN; }
+#line 50 "interpreter.l"
+;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 52 "interpreter.l"
-{ return COS; }
+{ return SIN; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 53 "interpreter.l"
-{ return LOG; }
+{ return COS; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 54 "interpreter.l"
-{ return LOG10; }
+{ return LOG; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 55 "interpreter.l"
-{ return EXP; }
+{ return LOG10; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 56 "interpreter.l"
-{ return SQRT; }
+{ return EXP; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 57 "interpreter.l"
-{return INTEGER; }
+{ return SQRT; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 58 "interpreter.l"
-{ return ABS; }
+{return INTEGER; }
 	YY_BREAK
 case 17:
-/* rule 17 can match eol */
 YY_RULE_SETUP
-#line 63 "interpreter.l"
+#line 59 "interpreter.l"
+{ return ABS; }
+	YY_BREAK
+case 18:
+/* rule 18 can match eol */
+YY_RULE_SETUP
+#line 64 "interpreter.l"
 {
     
     std::string raw(yytext + 1, yyleng - 2);
@@ -927,17 +932,9 @@ YY_RULE_SETUP
     return STRING_LITERAL;
 }
 	YY_BREAK
-case 18:
-YY_RULE_SETUP
-#line 83 "interpreter.l"
-{
-    yylval.number = atof(yytext);
-    return NUMBER;
-}
-	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 88 "interpreter.l"
+#line 84 "interpreter.l"
 {
     yylval.number = atof(yytext);
     return NUMBER;
@@ -945,7 +942,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 94 "interpreter.l"
+#line 89 "interpreter.l"
+{
+    yylval.number = atof(yytext);
+    return NUMBER;
+}
+	YY_BREAK
+case 21:
+YY_RULE_SETUP
+#line 95 "interpreter.l"
 {
     // Control de identificadores inválidos
     if (strstr(yytext, "__") || yytext[0] == '_' || yytext[yyleng - 1] == '_') {
@@ -969,121 +974,121 @@ YY_RULE_SETUP
     }
 }
 	YY_BREAK
-case 21:
-YY_RULE_SETUP
-#line 120 "interpreter.l"
-{ return ASSIGNMENT; }
-	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 121 "interpreter.l"
-{ return INTDIV; }
+{ return ASSIGNMENT; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 123 "interpreter.l"
-{ return INCREMENT; }
+#line 122 "interpreter.l"
+{ return INTDIV; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 124 "interpreter.l"
-{ return DECREMENT; }
+{ return INCREMENT; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 125 "interpreter.l"
-{ return FACTORIAL; }
+{ return DECREMENT; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 127 "interpreter.l"
-{ return PLUS; }
+#line 126 "interpreter.l"
+{ return FACTORIAL; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 128 "interpreter.l"
-{ return MINUS; }
+{ return PLUS; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 129 "interpreter.l"
-{ return MULTIPLICATION; }
+{ return MINUS; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 130 "interpreter.l"
-{ return DIVISION; }
+{ return MULTIPLICATION; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 131 "interpreter.l"
-{ return POWER; }
+{ return DIVISION; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 133 "interpreter.l"
-{ return EQUAL; }
+#line 132 "interpreter.l"
+{ return POWER; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 134 "interpreter.l"
-{ return NOT_EQUAL; }
+{ return EQUAL; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 135 "interpreter.l"
-{ return GREATER_OR_EQUAL; }
+{ return NOT_EQUAL; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 136 "interpreter.l"
-{ return LESS_OR_EQUAL; }
+{ return GREATER_OR_EQUAL; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 137 "interpreter.l"
-{ return GREATER_THAN; }
+{ return LESS_OR_EQUAL; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 138 "interpreter.l"
-{ return LESS_THAN; }
+{ return GREATER_THAN; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 140 "interpreter.l"
-{ return CONCAT; }
+#line 139 "interpreter.l"
+{ return LESS_THAN; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 142 "interpreter.l"
-{ return LPAREN; }
+#line 141 "interpreter.l"
+{ return CONCAT; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 143 "interpreter.l"
+{ return LPAREN; }
+	YY_BREAK
+case 40:
+YY_RULE_SETUP
+#line 144 "interpreter.l"
 { return RPAREN; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(ERROR):
 case YY_STATE_EOF(COMMENT):
-#line 146 "interpreter.l"
+#line 147 "interpreter.l"
 { return 0; }
 	YY_BREAK
-case 40:
+case 41:
 YY_RULE_SETUP
-#line 148 "interpreter.l"
+#line 149 "interpreter.l"
 {
     std::cerr << "Error léxico: símbolo no válido '" << yytext << "' en línea " << lineNumber << std::endl;
     return ERROR_TOKEN;
 }
 	YY_BREAK
-case 41:
+case 42:
 YY_RULE_SETUP
-#line 153 "interpreter.l"
+#line 154 "interpreter.l"
 ECHO;
 	YY_BREAK
-#line 1087 "lex.yy.c"
+#line 1092 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2086,7 +2091,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 153 "interpreter.l"
+#line 154 "interpreter.l"
 
 
 
