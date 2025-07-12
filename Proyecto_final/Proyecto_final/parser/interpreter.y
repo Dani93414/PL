@@ -44,16 +44,20 @@ extern lp::AST *root;
   lp::ExpNode *expNode;
   std::list<lp::ExpNode *> *parameters;
   std::list<lp::Statement *> *stmts;
+  lp::CaseStmt *caseblock;
+  std::list<lp::CaseStmt*> *caselist;
   lp::Statement *st;
   lp::AST *prog;
 }
 
 %type <expNode> exp cond
 %type <parameters> listOfExp restOfListOfExp
-%type <stmts> stmtlist caseList
-%type <st> stmt asgn print read if while repeat for switchstmt caseBlock clearscreen place
+%type <stmts> stmtlist
+%type <caseblock> caseBlock
+%type <caselist> caseList
+%type <st> stmt asgn print read if while repeat for switchstmt clearscreen place
 
-%token SEMICOLON COMMA
+%token SEMICOLON COMMA DOSPUNTOS
 %token PRINT READ READ_STRING
 %token IF THEN ELSE END_IF
 %token WHILE DO END_WHILE
@@ -163,6 +167,9 @@ switchstmt:
     SWITCH LPAREN exp RPAREN caseList END_SWITCH {
         $$ = new lp::SwitchStmt($3, $5);  
     }
+  | SWITCH LPAREN exp RPAREN caseList DEFAULT DOSPUNTOS stmtlist END_SWITCH {
+        $$ = new lp::SwitchStmt($3, $5, $8);  
+    }
 ;
 
 caseList:
@@ -171,13 +178,13 @@ caseList:
         $$->push_back($2);
     }
   | caseBlock {
-        $$ = new std::list<lp::Statement *>();
+        $$ = new std::list<lp::CaseStmt*>();
         $$->push_back($1);
     }
 ;
 
 caseBlock:
-    CASE exp ':' stmtlist {
+    CASE exp DOSPUNTOS stmtlist {
         $$ = new lp::CaseStmt($2, $4);
     }
 ;

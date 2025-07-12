@@ -1698,62 +1698,85 @@ void lp::IfStmt::evaluate()
 
  void lp::SwitchStmt::printAST() 
  {
-// 	std::cout << "SwitchStmt: "  << std::endl;
-	
-// 	std::cout << "\t";
-// 	this->_value->printAST();
+ 	std::cout << "SwitchStmt: "  << std::endl;
+ 	std::cout << "\t";
+ 	this->_value->printAST();
+ 	std::cout << "\t";
+ 	std::list<CaseStmt *>::iterator it;
+	for(it= this->_cases->begin(); it!= this->_cases->end(); it++){
+		(*it)->printAST();
+	}
 
-
-// 	std::cout << "\t";
-// 	std::list<CaseStmt>::iterator it = this->_casesAndDefault->begin();
-// 	while(it != this->_casesAndDefault->end()){
-// 		(it)->printAST();
-// 		it++;
-// 	}
-
-// 	if(_default!=NULL){
-// 		std::list<Statement>::iterator itsttm = this->_default->begin();
-// 		while(itsttm != this->_default->end()){
-// 			(itsttm)->printAST();
-// 			itsttm++;
-// 		}
-// 	}
+ 	if(_default!=NULL){
+ 		std::list<Statement *>::iterator itsttm = this->_default->begin();
+ 		while(itsttm != this->_default->end()){
+ 			(*itsttm)->printAST();
+ 			itsttm++;
+ 		}
+ 	}
  }
 
 
  void lp::SwitchStmt::evaluate() 
  {
-//   // While the condition is true. the body is run 
-//   double value = this->_value->evaluateNumber();
+	double valueN_= 0.0;
+	bool valueB_= false;
+	std::string valueS_= "";
+	int executes= 0;
+	
+	if(this->_value->getType() == NUMBER){
+		valueN_ = this->_value->evaluateNumber();
+	}
+   	else if(this->_value->getType() == BOOL){
+		valueB_= this->_value->evaluateBool() ;  
+	}
+	else{
+		valueS_= this->_value->evaluateString();
+	}
 
-//   // Check the cases
-//   std::list<CaseStmt>::iterator it = this->_cases->begin();
-//   while(it != this->_cases->end())
-//   {
-//     // If the case matches, evaluate the body of the case
-//     if((it)->evaluateNumber() == value)
-//     {
-//       (it)->evaluate();
-//       return; // Exit after the first matching case
-//     }
-//     it++;
-//   }
+	// Check the cases
+	std::list<CaseStmt *>::iterator it;
+	for(it= this->_cases->begin(); it!= this->_cases->end(); it++){
 
-//   // If no case matches, do nothing (or handle default case if implemented)
-//   if (this->_default != NULL) 
-//   {
-//     std::list<Statement>::iterator itDf = this->_default->begin();
-//     while (itDf != this->_default->end())
-//     {
-//       (itDf)->evaluate();
-//       itDf++;
-//     }
-//   }
+		switch(this->_value->getType()){
+			case NUMBER:
+				if(valueN_ == (*it)->evaluateNumber()){
+					(*it)->evaluate();
+					executes++;
+				}
+				break;
+			case BOOL:
+				if(valueB_ == (*it)->evaluateBool()){
+					(*it)->evaluate();
+					executes++;
+				}
+				break;
+			case STRING_LITERAL:
+				if(valueS_ == (*it)->evaluateString()){
+					(*it)->evaluate();
+					executes++;
+				}
+				break;
+		}
+	}
+
+	// If no case matches and there is something on default, executes Default statement.
+	if (this->_default != NULL && executes== 0) 
+	{
+		std::list<Statement *>::iterator stmtDef;
+		for(stmtDef= this->_default->begin(); stmtDef!= this->_default->end(); stmtDef++){
+			(* stmtDef)->evaluate();
+		}
+	}
  }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
+
+int lp::CaseStmt::getType(){
+	return this->_casN->getType();
+}
 
 void lp::CaseStmt::printAST() 
 {
@@ -1771,8 +1794,17 @@ void lp::CaseStmt::printAST()
 
 double lp::CaseStmt::evaluateNumber() 
 {
-  // While the condition is true. the body is run 
-	return this->_casN->evaluateNumber();
+	return this->_casN->evaluateNumber();	
+}
+
+bool lp::CaseStmt::evaluateBool() 
+{
+	return this->_casN->evaluateBool();
+}
+
+std::string lp::CaseStmt::evaluateString() 
+{
+	return this->_casN->evaluateString();
 
 }
 

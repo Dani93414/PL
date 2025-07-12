@@ -63,77 +63,78 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     SEMICOLON = 258,               /* SEMICOLON  */
     COMMA = 259,                   /* COMMA  */
-    PRINT = 260,                   /* PRINT  */
-    READ = 261,                    /* READ  */
-    READ_STRING = 262,             /* READ_STRING  */
-    IF = 263,                      /* IF  */
-    THEN = 264,                    /* THEN  */
-    ELSE = 265,                    /* ELSE  */
-    END_IF = 266,                  /* END_IF  */
-    WHILE = 267,                   /* WHILE  */
-    DO = 268,                      /* DO  */
-    END_WHILE = 269,               /* END_WHILE  */
-    REPEAT = 270,                  /* REPEAT  */
-    UNTIL = 271,                   /* UNTIL  */
-    FOR = 272,                     /* FOR  */
-    FROM = 273,                    /* FROM  */
-    TO = 274,                      /* TO  */
-    STEP = 275,                    /* STEP  */
-    END_FOR = 276,                 /* END_FOR  */
-    SWITCH = 277,                  /* SWITCH  */
-    CASE = 278,                    /* CASE  */
-    DEFAULT = 279,                 /* DEFAULT  */
-    END_SWITCH = 280,              /* END_SWITCH  */
-    CLEAR_SCREEN = 281,            /* CLEAR_SCREEN  */
-    PLACE = 282,                   /* PLACE  */
-    BOOL_TRUE = 283,               /* BOOL_TRUE  */
-    BOOL_FALSE = 284,              /* BOOL_FALSE  */
-    CONST_PI = 285,                /* CONST_PI  */
-    CONST_E = 286,                 /* CONST_E  */
-    CONST_GAMMA = 287,             /* CONST_GAMMA  */
-    CONST_PHI = 288,               /* CONST_PHI  */
-    CONST_DEG = 289,               /* CONST_DEG  */
-    INCREMENT = 290,               /* INCREMENT  */
-    DECREMENT = 291,               /* DECREMENT  */
-    FACTORIAL = 292,               /* FACTORIAL  */
-    IDENTIFIER = 293,              /* IDENTIFIER  */
-    ERROR_TOKEN = 294,             /* ERROR_TOKEN  */
-    SQRT = 295,                    /* SQRT  */
-    LOG = 296,                     /* LOG  */
-    LOG10 = 297,                   /* LOG10  */
-    ABS = 298,                     /* ABS  */
-    EXP = 299,                     /* EXP  */
-    SIN = 300,                     /* SIN  */
-    COS = 301,                     /* COS  */
-    INTEGER = 302,                 /* INTEGER  */
-    STRING_LITERAL = 303,          /* STRING_LITERAL  */
-    NUMBER = 304,                  /* NUMBER  */
-    BOOL = 305,                    /* BOOL  */
-    VARIABLE = 306,                /* VARIABLE  */
-    CONSTANT = 307,                /* CONSTANT  */
-    BUILTIN = 308,                 /* BUILTIN  */
-    UNDEFINED = 309,               /* UNDEFINED  */
-    ASSIGNMENT = 310,              /* ASSIGNMENT  */
-    OR = 311,                      /* OR  */
-    AND = 312,                     /* AND  */
-    GREATER_OR_EQUAL = 313,        /* GREATER_OR_EQUAL  */
-    LESS_OR_EQUAL = 314,           /* LESS_OR_EQUAL  */
-    GREATER_THAN = 315,            /* GREATER_THAN  */
-    LESS_THAN = 316,               /* LESS_THAN  */
-    EQUAL = 317,                   /* EQUAL  */
-    NOT_EQUAL = 318,               /* NOT_EQUAL  */
-    NOT = 319,                     /* NOT  */
-    PLUS = 320,                    /* PLUS  */
-    MINUS = 321,                   /* MINUS  */
-    MULTIPLICATION = 322,          /* MULTIPLICATION  */
-    DIVISION = 323,                /* DIVISION  */
-    INTDIV = 324,                  /* INTDIV  */
-    MODULO = 325,                  /* MODULO  */
-    CONCAT = 326,                  /* CONCAT  */
-    LPAREN = 327,                  /* LPAREN  */
-    RPAREN = 328,                  /* RPAREN  */
-    POWER = 329,                   /* POWER  */
-    UNARY = 330                    /* UNARY  */
+    DOSPUNTOS = 260,               /* DOSPUNTOS  */
+    PRINT = 261,                   /* PRINT  */
+    READ = 262,                    /* READ  */
+    READ_STRING = 263,             /* READ_STRING  */
+    IF = 264,                      /* IF  */
+    THEN = 265,                    /* THEN  */
+    ELSE = 266,                    /* ELSE  */
+    END_IF = 267,                  /* END_IF  */
+    WHILE = 268,                   /* WHILE  */
+    DO = 269,                      /* DO  */
+    END_WHILE = 270,               /* END_WHILE  */
+    REPEAT = 271,                  /* REPEAT  */
+    UNTIL = 272,                   /* UNTIL  */
+    FOR = 273,                     /* FOR  */
+    FROM = 274,                    /* FROM  */
+    TO = 275,                      /* TO  */
+    STEP = 276,                    /* STEP  */
+    END_FOR = 277,                 /* END_FOR  */
+    SWITCH = 278,                  /* SWITCH  */
+    CASE = 279,                    /* CASE  */
+    DEFAULT = 280,                 /* DEFAULT  */
+    END_SWITCH = 281,              /* END_SWITCH  */
+    CLEAR_SCREEN = 282,            /* CLEAR_SCREEN  */
+    PLACE = 283,                   /* PLACE  */
+    BOOL_TRUE = 284,               /* BOOL_TRUE  */
+    BOOL_FALSE = 285,              /* BOOL_FALSE  */
+    CONST_PI = 286,                /* CONST_PI  */
+    CONST_E = 287,                 /* CONST_E  */
+    CONST_GAMMA = 288,             /* CONST_GAMMA  */
+    CONST_PHI = 289,               /* CONST_PHI  */
+    CONST_DEG = 290,               /* CONST_DEG  */
+    INCREMENT = 291,               /* INCREMENT  */
+    DECREMENT = 292,               /* DECREMENT  */
+    FACTORIAL = 293,               /* FACTORIAL  */
+    IDENTIFIER = 294,              /* IDENTIFIER  */
+    ERROR_TOKEN = 295,             /* ERROR_TOKEN  */
+    SQRT = 296,                    /* SQRT  */
+    LOG = 297,                     /* LOG  */
+    LOG10 = 298,                   /* LOG10  */
+    ABS = 299,                     /* ABS  */
+    EXP = 300,                     /* EXP  */
+    SIN = 301,                     /* SIN  */
+    COS = 302,                     /* COS  */
+    INTEGER = 303,                 /* INTEGER  */
+    STRING_LITERAL = 304,          /* STRING_LITERAL  */
+    NUMBER = 305,                  /* NUMBER  */
+    BOOL = 306,                    /* BOOL  */
+    VARIABLE = 307,                /* VARIABLE  */
+    CONSTANT = 308,                /* CONSTANT  */
+    BUILTIN = 309,                 /* BUILTIN  */
+    UNDEFINED = 310,               /* UNDEFINED  */
+    ASSIGNMENT = 311,              /* ASSIGNMENT  */
+    OR = 312,                      /* OR  */
+    AND = 313,                     /* AND  */
+    GREATER_OR_EQUAL = 314,        /* GREATER_OR_EQUAL  */
+    LESS_OR_EQUAL = 315,           /* LESS_OR_EQUAL  */
+    GREATER_THAN = 316,            /* GREATER_THAN  */
+    LESS_THAN = 317,               /* LESS_THAN  */
+    EQUAL = 318,                   /* EQUAL  */
+    NOT_EQUAL = 319,               /* NOT_EQUAL  */
+    NOT = 320,                     /* NOT  */
+    PLUS = 321,                    /* PLUS  */
+    MINUS = 322,                   /* MINUS  */
+    MULTIPLICATION = 323,          /* MULTIPLICATION  */
+    DIVISION = 324,                /* DIVISION  */
+    INTDIV = 325,                  /* INTDIV  */
+    MODULO = 326,                  /* MODULO  */
+    CONCAT = 327,                  /* CONCAT  */
+    LPAREN = 328,                  /* LPAREN  */
+    RPAREN = 329,                  /* RPAREN  */
+    POWER = 330,                   /* POWER  */
+    UNARY = 331                    /* UNARY  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -150,10 +151,12 @@ union YYSTYPE
   lp::ExpNode *expNode;
   std::list<lp::ExpNode *> *parameters;
   std::list<lp::Statement *> *stmts;
+  lp::CaseStmt *caseblock;
+  std::list<lp::CaseStmt*> *caselist;
   lp::Statement *st;
   lp::AST *prog;
 
-#line 157 "interpreter.tab.h"
+#line 160 "interpreter.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -1949,6 +1949,7 @@ class IfStmt : public Statement
  {
  private:
  ExpNode *_casN;
+ int _type;
  std::list<Statement *> *_stmt;
   
   public:
@@ -1964,26 +1965,48 @@ CaseStmt(ExpNode *casN, std::list<Statement *> *statement)
 	this->_stmt = statement;
 }
 
-/*!
-\brief   Print the AST for CaseStmt
-\return  void
-\sa		 evaluate
-*/
-void printAST();
+	/*!
+		\brief   Print the AST for CaseStmt
+		\return  void
+		\sa		 evaluate
+	*/
+	void printAST();
 
-/*!	
-	\brief   Evaluate the CaseStmt
-	\return  void
-	\sa	   	 printAST
+	/*!	
+		\brief   Type of the CaseStmt
+		\return  int
+		\sa		   printAST
+	*/
+	int getType();
+
+	/*!	
+		\brief   Evaluate the CaseStmt as Number
+		\return  void
+		\sa	   	 printAST
 	*/
   virtual double evaluateNumber();
-  
-/*!	
-	\brief   Evaluate the CaseStmt
-	\return  void
-	\sa	   	 printAST
+
+  /*!	
+		\brief   Evaluate the CaseStmt as Boolean
+		\return  void
+		\sa	   	 printAST
 	*/
-void evaluate();
+  virtual bool evaluateBool();
+
+
+	/*!	
+		\brief   Evaluate the CaseStmt as String
+		\return  void
+		\sa	   	 printAST
+	*/
+  virtual std::string evaluateString();
+  
+	/*!	
+		\brief   Evaluate the CaseStmt
+		\return  void
+		\sa	   	 printAST
+	*/
+	void evaluate();
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -2000,20 +2023,36 @@ class SwitchStmt : public Statement
 {
  private:
   ExpNode *_value;   
-  std::list<Statement *> *_casesAndDefault;
+  std::list<lp::CaseStmt *> *_cases;
+  std::list<Statement *> *_default;
 
   public:
 
-  /*!		
-	\brief Constructor of Single SwitchStmt (without alternative)
-	\param value: ExpNode of the condition
-	\param cases: List of different cases
-	\post  A new SwitchStmt is created with the parameters
+  	/*!		
+		\brief Constructor of SwitchStmt (without default)
+		\param value: ExpNode of the condition
+		\param cases: List of different cases
+		\post  A new SwitchStmt is created with the parameters
 	*/
-	SwitchStmt(ExpNode *value, std::list<Statement *> *casesAndDefault)
+	SwitchStmt(ExpNode *value, std::list<lp::CaseStmt *> *cases)
 {
 	this->_value = value;
-	this->_casesAndDefault = casesAndDefault;
+	this->_cases = cases;
+	this->_default= NULL;
+}
+
+	/*!		
+		\brief Constructor of SwitchStmt (with default)
+		\param value: ExpNode of the condition
+		\param cases: List of different cases
+		\param Default: List of statements of default condition
+		\post  A new SwitchStmt is created with the parameters
+	*/
+	SwitchStmt(ExpNode *value, std::list<lp::CaseStmt *> *cases, std::list<Statement *> *Default)
+{
+	this->_value = value;
+	this->_cases = cases;
+	this->_default = Default;
 }
 
 

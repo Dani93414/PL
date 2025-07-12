@@ -41,6 +41,7 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 
 ";"             { return SEMICOLON; }
 ","             { return COMMA;    }
+":"             { return DOSPUNTOS;    }
 
 
 "#".*           ;                        
