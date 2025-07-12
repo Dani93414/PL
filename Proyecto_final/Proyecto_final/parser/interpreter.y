@@ -156,7 +156,7 @@ repeat:
 
 for:
     FOR VARIABLE FROM exp TO exp DO stmtlist END_FOR {
-        $$ = new lp::ForStmt($2, $4, $6, $8); // step por defecto = 1
+        $$ = new lp::ForStmt($2, $4, $6, $8); 
     }
   | FOR VARIABLE FROM exp TO exp STEP exp DO stmtlist END_FOR {
         $$ = new lp::ForStmt($2, $4, $6, $8, $10); // step personalizado

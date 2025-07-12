@@ -1812,7 +1812,7 @@ yyreduce:
   case 22: /* for: FOR VARIABLE FROM exp TO exp DO stmtlist END_FOR  */
 #line 158 "interpreter.y"
                                                      {
-        (yyval.st) = new lp::ForStmt((yyvsp[-7].string), (yyvsp[-5].expNode), (yyvsp[-3].expNode), (yyvsp[-1].stmts)); // step por defecto = 1
+        (yyval.st) = new lp::ForStmt((yyvsp[-7].string), (yyvsp[-5].expNode), (yyvsp[-3].expNode), (yyvsp[-1].stmts)); 
     }
 #line 1818 "interpreter.tab.c"
     break;
