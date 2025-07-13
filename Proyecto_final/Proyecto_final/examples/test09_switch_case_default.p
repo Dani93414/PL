@@ -1,12 +1,12 @@
 x := 'patata';
 
 switch (x)
-case 'patata':
-  print 'Recibido patata';
-case 'tomate':
-  print 'Recibido tomate';
-default:
-  print 'Recibido otro valor';
+  case 'patata':
+    print 'Recibido patata';
+  case 'tomate':
+    print 'Recibido tomate';
+  default:
+    print 'Recibido otro valor';
 end_switch
 
 
@@ -20,3 +20,4 @@ case 2:
 default:
   print 'Otro valor';
 end_switch
+
