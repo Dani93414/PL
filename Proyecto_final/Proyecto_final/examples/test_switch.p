@@ -1,3 +1,4 @@
+dato := -1;
 repeat
     print('\n Introducza un número (0 para salir) \n\t --> ');
     read(dato);
