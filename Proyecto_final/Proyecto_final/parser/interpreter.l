@@ -95,7 +95,8 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 {ID} {
     // Control de identificadores inválidos
     if (strstr(yytext, "__") || yytext[0] == '_' || yytext[yyleng - 1] == '_') {
-        std::cerr << "Error léxico: identificador no válido '" << yytext << "' en línea " << lineNumber << std::endl;
+        
+        yylval.string = strdup(yytext); // guardar el texto del token inválido
         return ERROR_TOKEN;
     }
 
@@ -147,7 +148,8 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 <<EOF>>         { return 0; }
 
 . {
-    std::cerr << "Error léxico: símbolo no válido '" << yytext << "' en línea " << lineNumber << std::endl;
+    
+    yylval.string = strdup(yytext); // guardar el texto del token inválido
     return ERROR_TOKEN;
 }
 

@@ -404,7 +404,6 @@ class LogicalUnaryOperatorNode : public UnaryOperatorNode
 };
 
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -444,6 +443,45 @@ class UnaryMinusNode : public NumericUnaryOperatorNode
   double evaluateNumber();
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class   UnaryDecrementNode
+  \brief   Definition of atributes and methods of UnaryDecrementNode class
+  \note    UnaryDecrementNode Class publicly inherits from NumericUnaryOperatorNode class
+*/
+class UnaryDecrementNode : public NumericUnaryOperatorNode 
+{
+
+ public:
+
+/*!		
+	\brief Constructor of UnaryDecrementNode uses NumericUnaryOperatorNode's constructor as member initializer.
+	\param expression: pointer to ExpNode
+	\post  A new UnaryDecrementNode is created with the parameter
+	\note  Inline function: the NumericUnaryOperatorNode's constructor is used ad member initializer
+*/
+  UnaryDecrementNode(ExpNode *expression): NumericUnaryOperatorNode(expression) 
+	{
+		// empty
+	} 
+
+/*!
+	\brief   Print the AST for expression
+	\return  void
+	\sa		   evaluateNumber
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the expression
+	\return  double
+	\sa		   printAST
+*/
+  double evaluateNumber();
+};
+
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
@@ -463,6 +501,45 @@ class UnaryPlusNode : public NumericUnaryOperatorNode
 	\post  A new UnaryPlusNode is created with the parameter
 */
   UnaryPlusNode(ExpNode *expression): NumericUnaryOperatorNode(expression) 
+	{
+		// empty
+	} 
+
+/*!
+	\brief   Print the AST for expression
+	\return  void
+	\sa		   evaluateNumber
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the expression
+	\return  double
+	\sa		   printAST
+*/
+  double evaluateNumber();
+};
+
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class   UnaryIncrementNode
+  \brief   Definition of atributes and methods of UnaryIncrementNode class
+  \note    UnaryIncrementNode Class publicly inherits from NumericUnaryOperatorNode class
+*/
+class UnaryIncrementNode : public NumericUnaryOperatorNode 
+{
+
+ public:
+
+/*!		
+	\brief Constructor of UnaryIncrementNode uses NumericUnaryOperatorNode's constructor as member initializer
+	\param expression: pointer to ExpNode
+	\post  A new UnaryIncrementNode is created with the parameter
+*/
+  UnaryIncrementNode(ExpNode *expression): NumericUnaryOperatorNode(expression) 
 	{
 		// empty
 	} 
