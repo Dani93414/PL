@@ -479,27 +479,20 @@ void lp::FactorialNode::printAST()
 
 double lp::FactorialNode::evaluateNumber()
 {
-	int result = 0;
+	// Comprobar que es numérico
+	if (this->getType() != NUMBER)
+		execerror("Runtime error: the expression is not numeric", "Factorial");
 
-	// Ckeck the type of the expression
-	if (this->getType() == NUMBER)
-	{
-		result = static_cast<int>(this->_exp->evaluateNumber());
-		if(result <= 0){
-			warning("Runtime error: the numeric expression must be positive","Factorial");
-		}
-		else{
-			for(int i=(result - 1); i>1; i--){
-				result= (result*i);
-			}
-		}
-	}
-	else
-	{
-		warning("Runtime error: the expressions are not numeric for ","Factorial");
-	}
+	int n = static_cast<int>(this->_exp->evaluateNumber());
 
-  return static_cast<double>(result);
+	if (n < 0)
+		execerror("Runtime error: the expression must be non-negative", "Factorial");
+
+	int result = 1;
+	for (int i = 2; i <= n; ++i)
+		result *= i;
+
+	return static_cast<double>(result);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -2049,6 +2042,20 @@ void lp::ForStmt::evaluate()
 	double inicio= _inicio->evaluateNumber();
 	double final= _final->evaluateNumber();
 	double inc= _inc->evaluateNumber();
+
+
+	// Comprobaciones de errores
+	if (inc == 0) {
+		execerror("Bucle FOR incorrecto", "El paso no puede ser 0");
+	}
+
+	if ((inicio < final && inc < 0)) {
+		execerror("Bucle FOR incorrecto", "Paso negativo en bucle ascendente");
+	}
+
+	if ((inicio > final && inc > 0)) {
+		execerror("Bucle FOR incorrecto", "Paso positivo en bucle descendente");
+	}
 
 	lp::NumericVariable *v= NULL;
 

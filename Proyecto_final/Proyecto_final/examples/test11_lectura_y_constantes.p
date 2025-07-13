@@ -1,7 +1,7 @@
 read(x);
 print x;
 
-y := pi + e;
+y := pi + e + gamma + deg + phi;
 print y;
 
 

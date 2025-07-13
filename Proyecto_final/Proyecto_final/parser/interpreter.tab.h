@@ -45,7 +45,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 35 "interpreter.y"
+#line 36 "interpreter.y"
 
   #include <list>
   #include "../ast/ast.hpp"
@@ -98,22 +98,22 @@ extern int yydebug;
     DECREMENT = 292,               /* DECREMENT  */
     FACTORIAL = 293,               /* FACTORIAL  */
     IDENTIFIER = 294,              /* IDENTIFIER  */
-    ERROR_TOKEN = 295,             /* ERROR_TOKEN  */
-    SQRT = 296,                    /* SQRT  */
-    LOG = 297,                     /* LOG  */
-    LOG10 = 298,                   /* LOG10  */
-    ABS = 299,                     /* ABS  */
-    EXP = 300,                     /* EXP  */
-    SIN = 301,                     /* SIN  */
-    COS = 302,                     /* COS  */
-    INTEGER = 303,                 /* INTEGER  */
-    STRING_LITERAL = 304,          /* STRING_LITERAL  */
-    NUMBER = 305,                  /* NUMBER  */
-    BOOL = 306,                    /* BOOL  */
-    VARIABLE = 307,                /* VARIABLE  */
-    CONSTANT = 308,                /* CONSTANT  */
-    BUILTIN = 309,                 /* BUILTIN  */
-    UNDEFINED = 310,               /* UNDEFINED  */
+    SQRT = 295,                    /* SQRT  */
+    LOG = 296,                     /* LOG  */
+    LOG10 = 297,                   /* LOG10  */
+    ABS = 298,                     /* ABS  */
+    EXP = 299,                     /* EXP  */
+    SIN = 300,                     /* SIN  */
+    COS = 301,                     /* COS  */
+    INTEGER = 302,                 /* INTEGER  */
+    STRING_LITERAL = 303,          /* STRING_LITERAL  */
+    NUMBER = 304,                  /* NUMBER  */
+    BOOL = 305,                    /* BOOL  */
+    VARIABLE = 306,                /* VARIABLE  */
+    CONSTANT = 307,                /* CONSTANT  */
+    BUILTIN = 308,                 /* BUILTIN  */
+    UNDEFINED = 309,               /* UNDEFINED  */
+    ERROR_TOKEN = 310,             /* ERROR_TOKEN  */
     ASSIGNMENT = 311,              /* ASSIGNMENT  */
     OR = 312,                      /* OR  */
     AND = 313,                     /* AND  */
@@ -143,7 +143,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 40 "interpreter.y"
+#line 41 "interpreter.y"
 
   double number;
   char * string;
