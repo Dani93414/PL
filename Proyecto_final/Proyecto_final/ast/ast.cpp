@@ -896,11 +896,25 @@ bool lp::GreaterThanNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
+		switch(this->_left->getType()) {
+			case NUMBER: {
+				double leftNumber, rightNumber;
+				leftNumber = this->_left->evaluateNumber();
+				rightNumber = this->_right->evaluateNumber();
+				result = (leftNumber > rightNumber);
+				break;
+			}
 
-		result = (leftNumber > rightNumber);
+			case STRING_LITERAL: {
+				std::string leftString, rightString;
+				leftString = this->_left->evaluateString();
+				rightString = this->_right->evaluateString();
+				result = (leftString > rightString);
+				break;
+			}
+			default:
+				warning("Runtime error: incompatible types of parameters for ", "Equal operator");				
+		}
 	}
 	else
 	{
@@ -929,11 +943,25 @@ bool lp::GreaterOrEqualNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
+		switch(this->_left->getType()) {
+			case NUMBER: {
+				double leftNumber, rightNumber;
+				leftNumber = this->_left->evaluateNumber();
+				rightNumber = this->_right->evaluateNumber();
+				result = (leftNumber >= rightNumber);
+				break;
+			}
 
-		result = (leftNumber >= rightNumber);
+			case STRING_LITERAL: {
+				std::string leftString, rightString;
+				leftString = this->_left->evaluateString();
+				rightString = this->_right->evaluateString();
+				result = (leftString >= rightString);
+				break;
+			}
+			default:
+				warning("Runtime error: incompatible types of parameters for ", "Equal operator");				
+		}
 	}
 	else
 	{
@@ -963,11 +991,25 @@ bool lp::LessThanNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
+		switch(this->_left->getType()) {
+			case NUMBER: {
+				double leftNumber, rightNumber;
+				leftNumber = this->_left->evaluateNumber();
+				rightNumber = this->_right->evaluateNumber();
+				result = (leftNumber < rightNumber);
+				break;
+			}
 
-		result = (leftNumber < rightNumber);
+			case STRING_LITERAL: {
+				std::string leftString, rightString;
+				leftString = this->_left->evaluateString();
+				rightString = this->_right->evaluateString();
+				result = (leftString < rightString);
+				break;
+			}
+			default:
+				warning("Runtime error: incompatible types of parameters for ", "Equal operator");				
+		}
 	}
 	else
 	{
@@ -996,11 +1038,25 @@ bool lp::LessOrEqualNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
+		switch(this->_left->getType()) {
+			case NUMBER: {
+				double leftNumber, rightNumber;
+				leftNumber = this->_left->evaluateNumber();
+				rightNumber = this->_right->evaluateNumber();
+				result = (leftNumber <= rightNumber);
+				break;
+			}
 
-		result = (leftNumber <= rightNumber);
+			case STRING_LITERAL: {
+				std::string leftString, rightString;
+				leftString = this->_left->evaluateString();
+				rightString = this->_right->evaluateString();
+				result = (leftString <= rightString);
+				break;
+			}
+			default:
+				warning("Runtime error: incompatible types of parameters for ", "Equal operator");				
+		}
 	}
 	else
 	{
@@ -1101,8 +1157,8 @@ bool lp::NotEqualNode::evaluateBool()
 			}
 			case STRING_LITERAL: {
 				std::string leftString, rightString;
-				leftString = this->_left->evaluateString();  // ← ✅ CORREGIDO
-				rightString = this->_right->evaluateString(); // ← ✅ CORREGIDO
+				leftString = this->_left->evaluateString(); 
+				rightString = this->_right->evaluateString(); 
 				result = (leftString != rightString);
 				break;
 			}
