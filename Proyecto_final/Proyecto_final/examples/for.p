@@ -11,3 +11,5 @@ for i from 1 to 10 step -1 do print(i); end_for;
 
 print('Bucle for con paso igual a 0: desde 1 hasta 10 paso 0\n');
 for i from 1 to 10 step 0 do print(i); end_for;
+
+

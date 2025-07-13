@@ -24,9 +24,8 @@ read_string(nombre);
 
 clear_screen;
 place(10,10);
-print(' Bienvenido/a << ');
-print(nombre);
-print(' >> a \'interpreter.exe\'.');
+bienvenida := 'Bienvenido ' || nombre || ' al interpreter.';
+print(bienvenida);  
 
 place(40,10);
 print('Pulsa una tecla para continuar');

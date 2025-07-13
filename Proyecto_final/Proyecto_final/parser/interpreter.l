@@ -28,7 +28,7 @@ INTEGER       {DIGIT}+
 REAL1         {DIGIT}+\.{DIGIT}*
 REAL2         {DIGIT}*\.{DIGIT}+
 SCI           ({REAL1}|{REAL2}|{INTEGER})[eE][+-]?{DIGIT}+
-NEGATIVE_NUMBER     -{DIGIT}+(\.{DIGIT}+)?([eE][+-]?{DIGIT}+)? 
+NEGATIVE_NUMBER     -({REAL1}|{REAL2}|{SCI}|{INTEGER})
 NUMBER        {REAL1}|{REAL2}|{SCI}|{INTEGER}
 
 STRING        \'([^\'\\]|\\[nt\\\'])*\'
