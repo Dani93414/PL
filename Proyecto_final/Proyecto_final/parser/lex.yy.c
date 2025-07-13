@@ -954,7 +954,8 @@ YY_RULE_SETUP
 {
     // Control de identificadores inválidos
     if (strstr(yytext, "__") || yytext[0] == '_' || yytext[yyleng - 1] == '_') {
-        std::cerr << "Error léxico: identificador no válido '" << yytext << "' en línea " << lineNumber << std::endl;
+        
+        yylval.string = strdup(yytext); // guardar el texto del token inválido
         return ERROR_TOKEN;
     }
 
@@ -976,119 +977,120 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 121 "interpreter.l"
+#line 122 "interpreter.l"
 { return ASSIGNMENT; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 122 "interpreter.l"
+#line 123 "interpreter.l"
 { return INTDIV; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 124 "interpreter.l"
+#line 125 "interpreter.l"
 { return INCREMENT; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 125 "interpreter.l"
+#line 126 "interpreter.l"
 { return DECREMENT; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 126 "interpreter.l"
+#line 127 "interpreter.l"
 { return FACTORIAL; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 128 "interpreter.l"
+#line 129 "interpreter.l"
 { return PLUS; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 129 "interpreter.l"
+#line 130 "interpreter.l"
 { return MINUS; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 130 "interpreter.l"
+#line 131 "interpreter.l"
 { return MULTIPLICATION; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 131 "interpreter.l"
+#line 132 "interpreter.l"
 { return DIVISION; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 132 "interpreter.l"
+#line 133 "interpreter.l"
 { return POWER; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 134 "interpreter.l"
+#line 135 "interpreter.l"
 { return EQUAL; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 135 "interpreter.l"
+#line 136 "interpreter.l"
 { return NOT_EQUAL; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 136 "interpreter.l"
+#line 137 "interpreter.l"
 { return GREATER_OR_EQUAL; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 137 "interpreter.l"
+#line 138 "interpreter.l"
 { return LESS_OR_EQUAL; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 138 "interpreter.l"
+#line 139 "interpreter.l"
 { return GREATER_THAN; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 139 "interpreter.l"
+#line 140 "interpreter.l"
 { return LESS_THAN; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 141 "interpreter.l"
+#line 142 "interpreter.l"
 { return CONCAT; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 143 "interpreter.l"
+#line 144 "interpreter.l"
 { return LPAREN; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 144 "interpreter.l"
+#line 145 "interpreter.l"
 { return RPAREN; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(ERROR):
 case YY_STATE_EOF(COMMENT):
-#line 147 "interpreter.l"
+#line 148 "interpreter.l"
 { return 0; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 149 "interpreter.l"
+#line 150 "interpreter.l"
 {
-    std::cerr << "Error léxico: símbolo no válido '" << yytext << "' en línea " << lineNumber << std::endl;
+    
+    yylval.string = strdup(yytext); // guardar el texto del token inválido
     return ERROR_TOKEN;
 }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 154 "interpreter.l"
+#line 156 "interpreter.l"
 ECHO;
 	YY_BREAK
-#line 1092 "lex.yy.c"
+#line 1094 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2091,7 +2093,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 154 "interpreter.l"
+#line 156 "interpreter.l"
 
 
 

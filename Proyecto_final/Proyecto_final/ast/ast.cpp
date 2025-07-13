@@ -369,7 +369,7 @@ double lp::UnaryMinusNode::evaluateNumber()
 	if (this->getType() == NUMBER)
 	{
 		// Minus
-		result = this->_exp->evaluateNumber() - 1;
+		result = - this->_exp->evaluateNumber();
 	}
 	else
 	{
@@ -379,6 +379,34 @@ double lp::UnaryMinusNode::evaluateNumber()
   return result;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void lp::UnaryDecrementNode::printAST() 
+{
+  std::cout << "UnaryDecrementNode: --"  << std::endl;
+  std::cout << "\t"; 
+  this->_exp->printAST();
+}
+
+double lp::UnaryDecrementNode::evaluateNumber()
+{
+	double result = 0.0;
+
+	// Ckeck the type of the expression
+	if (this->getType() == NUMBER)
+	{
+		// Minus
+		result = this->_exp->evaluateNumber() -1;
+	}
+	else
+	{
+		warning("Runtime error: the expressions are not numeric for ", "UnaryDecrement");
+	}
+
+  return result;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -398,11 +426,39 @@ double lp::UnaryPlusNode::evaluateNumber()
 	// Ckeck the type of the expression
 	if (this->getType() == NUMBER)
 	{
-		result = this->_exp->evaluateNumber() + 1;
+		result = this->_exp->evaluateNumber();
 	}
 	else
 	{
 		warning("Runtime error: the expressions are not numeric for ","UnaryPlus");
+	}
+
+  return result;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void lp::UnaryIncrementNode::printAST() 
+{
+  std::cout << "UnaryIncrementNode: ++"  << std::endl;
+  std::cout << "\t"; 
+  this->_exp->printAST();
+}
+
+double lp::UnaryIncrementNode::evaluateNumber()
+{
+	double result = 0.0;
+
+	// Ckeck the type of the expression
+	if (this->getType() == NUMBER)
+	{
+		result = this->_exp->evaluateNumber() + 1;
+	}
+	else
+	{
+		warning("Runtime error: the expressions are not numeric for ","UnaryIncrement");
 	}
 
   return result;
@@ -429,8 +485,13 @@ double lp::FactorialNode::evaluateNumber()
 	if (this->getType() == NUMBER)
 	{
 		result = static_cast<int>(this->_exp->evaluateNumber());
-		for(int i=(result - 1); i>1; i--){
-			result= (result*i);
+		if(result <= 0){
+			warning("Runtime error: the numeric expression must be positive","Factorial");
+		}
+		else{
+			for(int i=(result - 1); i>1; i--){
+				result= (result*i);
+			}
 		}
 	}
 	else

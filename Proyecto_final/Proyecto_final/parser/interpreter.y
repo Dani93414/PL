@@ -17,6 +17,7 @@
 #include "../table/builtinParameter1.hpp"
 #include "../table/builtinParameter2.hpp"
 #include "../table/init.hpp"
+#include "../includes/macros.hpp"
 
 int yylex();
 
@@ -68,13 +69,13 @@ extern lp::AST *root;
 %token BOOL_TRUE BOOL_FALSE
 %token CONST_PI CONST_E CONST_GAMMA CONST_PHI CONST_DEG
 %token INCREMENT DECREMENT FACTORIAL
-%token IDENTIFIER ERROR_TOKEN
+%token IDENTIFIER
 %token SQRT LOG LOG10 ABS EXP SIN COS INTEGER
 
 %token <string> STRING_LITERAL
 %token <number> NUMBER
 %token <logic> BOOL
-%token <string> VARIABLE CONSTANT BUILTIN UNDEFINED
+%token <string> VARIABLE CONSTANT BUILTIN UNDEFINED ERROR_TOKEN
 
 %right ASSIGNMENT
 %left OR
@@ -123,6 +124,12 @@ stmt:
   | switchstmt
   | clearscreen
   | place
+  | ERROR_TOKEN { 
+        std::cerr << BIRED << "Error line " << lineNumber << " --> Lexical error" << std::endl;
+        std::cerr << RESET << "\tSímbolo no válido '" << $1 << "'" << std::endl;
+        free($1);
+        $$ = new lp::EmptyStmt();
+    }
 ;
 
 controlSymbol:
@@ -231,8 +238,10 @@ exp:
   | PLUS exp %prec UNARY { $$ = new lp::UnaryPlusNode($2); }
   | MINUS exp %prec UNARY { $$ = new lp::UnaryMinusNode($2); }
   | NOT exp { $$ = new lp::NotNode($2); }
-  | INCREMENT exp %prec UNARY { $$ = new lp::UnaryPlusNode($2); }
-  | DECREMENT exp %prec UNARY { $$ = new lp::UnaryMinusNode($2); }
+  | INCREMENT exp %prec UNARY { $$ = new lp::UnaryIncrementNode($2); }
+  | DECREMENT exp %prec UNARY { $$ = new lp::UnaryDecrementNode($2); }
+  | exp INCREMENT %prec UNARY { $$ = new lp::UnaryIncrementNode($1); }
+  | exp DECREMENT %prec UNARY { $$ = new lp::UnaryDecrementNode($1); }
   | exp FACTORIAL             { $$ = new lp::FactorialNode($1); }
   | exp PLUS exp { $$ = new lp::PlusNode($1, $3); }
   | exp MINUS exp { $$ = new lp::MinusNode($1, $3); }
