@@ -1,4 +1,4 @@
-// Prueba del bucle for con step
+# Prueba del bucle for con step
 
 for i from 1 to 5 do
     print i;

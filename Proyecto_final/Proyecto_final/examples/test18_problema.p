@@ -1,7 +1,7 @@
 # Programa que suma los dígitos pares de un número entero
 
 print('Programa que suma los dígitos pares de un número entero \n');
-print('Introduce un número entero: \n');
+print('Introduce un número entero: ');
 read(n);
 
 suma := 0;

@@ -143,8 +143,7 @@ else
 
  if (interactiveMode == false)
  {
-  /* NEW in example 15 */
-       root->printAST();  
+  /* NEW in example 15 */  
        root->evaluate(); 
  }
 

@@ -66,14 +66,6 @@ int lp::VariableNode::getType()
 	return var->getType();
 }
 
-
-void lp::VariableNode::printAST() 
-{
-  std::cout << "VariableNode: " << this->_id;
-  std::cout << " (Type: " << this->getType() << ")" << std::endl;
-}
-
-
 double lp::VariableNode::evaluateNumber() 
 { 
 	double result = 0.0;
@@ -145,12 +137,6 @@ std::string lp::VariableNode::evaluateString()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::ConstantNode::printAST() 
-{
-  std::cout << "ConstantNode: " << this->_id;
-  std::cout << " (Type: " << this->getType() << ")" << std::endl;
-}
-
 int lp::ConstantNode::getType() 
 { 
 	// Get the identifier in the table of symbols as Constant
@@ -215,12 +201,6 @@ int lp::NumberNode::getType()
 	return NUMBER;
 }
 
-
-void lp::NumberNode::printAST()
-{
-  std::cout << "NumberNode: " << this->_number << std::endl;
-}
-
 double lp::NumberNode::evaluateNumber() 
 { 
     return this->_number; 
@@ -232,12 +212,6 @@ double lp::NumberNode::evaluateNumber()
 
 int lp::StringNode::getType(){ 
 	return STRING_LITERAL; 
-}
-
-
-void lp::StringNode::printAST()
-{
-	std::cout << "StringNode: \"" << this-> _value << "\"" << std::endl;
 }
 
 std::string lp::StringNode::evaluateString(){
@@ -353,14 +327,6 @@ int lp::StringOperatorNode:: getType()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-
-void lp::UnaryMinusNode::printAST() 
-{
-  std::cout << "UnaryMinusNode: -"  << std::endl;
-  std::cout << "\t"; 
-  this->_exp->printAST();
-}
-
 double lp::UnaryMinusNode::evaluateNumber()
 {
 	double result = 0.0;
@@ -381,14 +347,6 @@ double lp::UnaryMinusNode::evaluateNumber()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-
-void lp::UnaryDecrementNode::printAST() 
-{
-  std::cout << "UnaryDecrementNode: --"  << std::endl;
-  std::cout << "\t"; 
-  this->_exp->printAST();
-}
 
 double lp::UnaryDecrementNode::evaluateNumber()
 {
@@ -411,14 +369,6 @@ double lp::UnaryDecrementNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-
-void lp::UnaryPlusNode::printAST() 
-{
-  std::cout << "UnaryPlusNode: +"  << std::endl;
-  std::cout << "\t"; 
-  this->_exp->printAST();
-}
-
 double lp::UnaryPlusNode::evaluateNumber()
 {
 	double result = 0.0;
@@ -439,13 +389,6 @@ double lp::UnaryPlusNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-
-void lp::UnaryIncrementNode::printAST() 
-{
-  std::cout << "UnaryIncrementNode: ++"  << std::endl;
-  std::cout << "\t"; 
-  this->_exp->printAST();
-}
 
 double lp::UnaryIncrementNode::evaluateNumber()
 {
@@ -469,14 +412,6 @@ double lp::UnaryIncrementNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-
-void lp::FactorialNode::printAST() 
-{
-  std::cout << "FactorialNode: !"  << std::endl;
-  std::cout << "\t"; 
-  this->_exp->printAST();
-}
-
 double lp::FactorialNode::evaluateNumber()
 {
 	// Comprobar que es numérico
@@ -497,15 +432,6 @@ double lp::FactorialNode::evaluateNumber()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::PlusNode::printAST() 
-{
-  std::cout << "PlusNode: +"  << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
 
 double lp::PlusNode::evaluateNumber()
 {
@@ -528,15 +454,6 @@ double lp::PlusNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::MinusNode::printAST() 
-{
-  std::cout << "MinusNode: -"  << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
-
 double lp::MinusNode::evaluateNumber() 
 {
 	double result = 0.0;
@@ -556,16 +473,6 @@ double lp::MinusNode::evaluateNumber()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-
-void lp::MultiplicationNode::printAST() 
-{
-  std::cout << "MultiplicationNode: *"  << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
 
 double lp::MultiplicationNode::evaluateNumber() 
 {
@@ -588,15 +495,6 @@ double lp::MultiplicationNode::evaluateNumber()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::DivisionNode::printAST()
-{
-  std::cout << "DivisionNode: /" << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
 
 double lp::DivisionNode::evaluateNumber() 
 {
@@ -631,15 +529,6 @@ double lp::DivisionNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::IntegerDivisionNode::printAST()
-{
-  std::cout << "DivisionNode: /" << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
-
 double lp::IntegerDivisionNode::evaluateNumber() 
 {
 	int result= 0;
@@ -672,15 +561,6 @@ double lp::IntegerDivisionNode::evaluateNumber()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::ConcatNode::printAST()
-{
-  std::cout << "ConcatNode: ||" << std::endl;
-  std::cout << "\t";
-  this->_left->printAST();
-  std::cout << "\t";
-  this->_right->printAST();
-}
 
 std::string lp::ConcatNode::evaluateString()
 {
@@ -742,16 +622,6 @@ std::string lp::ConcatNode::evaluateString()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-
-void lp::ModuloNode::printAST()
-{
-  std::cout << "ModuloNode: %" << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
-
 double lp::ModuloNode::evaluateNumber() 
 {
 	double result = 0.0;
@@ -782,15 +652,6 @@ double lp::ModuloNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::PowerNode::printAST() 
-{
-  std::cout << "PowerNode: ^"  << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
-
 double lp::PowerNode::evaluateNumber() 
 {
 	double result = 0.0;
@@ -813,14 +674,6 @@ double lp::PowerNode::evaluateNumber()
 int lp::BuiltinFunctionNode_0::getType()
 {
 	return	NUMBER;
-}
-
-
-void lp::BuiltinFunctionNode_0::printAST() 
-{
-  std::cout << "BuiltinFunctionNode_0: "  << std::endl;
-  std::cout << "\t";
-  std::cout << this->_id << std::endl;
 }
 
 double lp::BuiltinFunctionNode_0::evaluateNumber() 
@@ -846,16 +699,6 @@ int lp::BuiltinFunctionNode_1::getType()
 		warning("Runtime error: incompatible type for", "BuiltinFunctionNode_1");
 
 	return	result;
-}
-
-void lp::BuiltinFunctionNode_1::printAST() 
-{
-  std::cout << "BuiltinFunctionNode_1: "  << std::endl;
-  std::cout << "\t";
-  std::cout << this->_id << std::endl;  
-  std::cout << "\t";
-	this->_exp->printAST();
-	std::cout << std::endl;
 }
 
 double lp::BuiltinFunctionNode_1::evaluateNumber() 
@@ -895,19 +738,6 @@ int lp::BuiltinFunctionNode_2::getType()
 	return	result;
 }
 
-
-void lp::BuiltinFunctionNode_2::printAST() 
-{
-  std::cout << "BuiltinFunctionNode_2: " << std::endl;
-  std::cout << "\t";
-  std::cout << this->_id << std::endl;
-  std::cout << "\t";
-  this->_exp1->printAST();
-  std::cout << "\t";
-	this->_exp2->printAST();
-	std::cout << std::endl;
-}
-
 double lp::BuiltinFunctionNode_2::evaluateNumber() 
 {
 	double result = 0.0;
@@ -933,15 +763,6 @@ double lp::BuiltinFunctionNode_2::evaluateNumber()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::GreaterThanNode::printAST()
-{
-  std::cout << "GreaterThanNode: >" << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
 
 bool lp::GreaterThanNode::evaluateBool() 
 {
@@ -980,15 +801,6 @@ bool lp::GreaterThanNode::evaluateBool()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::GreaterOrEqualNode::printAST()
-{
-  std::cout << "GreaterOrEqualNode: >= " << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
 
 bool lp::GreaterOrEqualNode::evaluateBool() 
 {
@@ -1029,15 +841,6 @@ bool lp::GreaterOrEqualNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::LessThanNode::printAST()
-{
-  std::cout << "LessThanNode: <" << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
-
 bool lp::LessThanNode::evaluateBool() 
 {
 	bool result = false;
@@ -1075,15 +878,6 @@ bool lp::LessThanNode::evaluateBool()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::LessOrEqualNode::printAST()
-{
-  std::cout << "LessOrEqualNode: <=" << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
 
 bool lp::LessOrEqualNode::evaluateBool() 
 {
@@ -1123,15 +917,6 @@ bool lp::LessOrEqualNode::evaluateBool()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::EqualNode::printAST()
-{
-  std::cout << "EqualNode: =" << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
 
 bool lp::EqualNode::evaluateBool() 
 {
@@ -1177,15 +962,6 @@ bool lp::EqualNode::evaluateBool()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::NotEqualNode::printAST()
-{
-  std::cout << "NotEqualNode: <>" << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
 
 bool lp::NotEqualNode::evaluateBool() 
 {
@@ -1233,15 +1009,6 @@ bool lp::NotEqualNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::AndNode::printAST()
-{
-  std::cout << "AndNode: and" << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
-
 bool lp::AndNode::evaluateBool() 
 {
 	bool result = false;
@@ -1267,15 +1034,6 @@ bool lp::AndNode::evaluateBool()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::OrNode::printAST()
-{
-  std::cout << "OrNode: or" << std::endl;
-  std::cout << "\t"; 
-	this->_left->printAST();
-	std::cout << "\t"; 
-	this->_right->printAST();
-}
 
 bool lp::OrNode::evaluateBool() 
 {
@@ -1303,13 +1061,6 @@ bool lp::OrNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::NotNode::printAST()
-{
-  std::cout << "NotNode: not" << std::endl;
-  std::cout << "\t";
-  this->_exp->printAST();
-}
-
 bool lp::NotNode::evaluateBool() 
 {
 	bool result = false;
@@ -1329,25 +1080,6 @@ bool lp::NotNode::evaluateBool()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::AssignmentStmt::printAST() 
-{
-  std::cout << "assignment_node: :="  << std::endl;
-  std::cout << "\t";
-  std::cout << this->_id << std::endl;
-  std::cout << "\t";
-
-  // Check the expression
-	if (this->_exp != NULL)
-	{
-	  this->_exp->printAST();
-    std::cout << std::endl;
-  }
-  // this->_asgn is not NULL: multiple assingment
-  else 
-    this->_asgn->printAST();
-
-}
 
 void lp::AssignmentStmt::evaluate() 
 {
@@ -1579,21 +1311,10 @@ void lp::AssignmentStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::PrintStmt::printAST() 
-{
-  std::cout << "printASTStmt: printAST"  << std::endl;
-  std::cout << "\t";
-  this->_exp->printAST();
-  std::cout << std::endl;
-}
-
-
 void lp::PrintStmt::evaluate() 
 {
 	std::cout << BIYELLOW; 
-	std::cout << "print: ";
-	std::cout << RESET; 
-
+	
 	switch(this->_exp->getType())
 	{
 		case NUMBER:
@@ -1613,28 +1334,19 @@ void lp::PrintStmt::evaluate()
 		default:
 			warning("Runtime error: incompatible type for ", "print");
 	}
+	std::cout << RESET; 
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::ReadStmt::printAST() 
-{
-  std::cout << "ReadStmt: read"  << std::endl;
-  std::cout << "\t";
-  std::cout << this->_id;
-  std::cout << std::endl;
-}
-
 
 void lp::ReadStmt::evaluate() 
 {   
 	double value;
 	std::cout << BIGREEN;
-	std::cout << "Insert a numeric value --> " ;
-	std::cout << RESET; 
 	std::cin >> value;
+	std::cout << RESET; 
 
 	/* Get the identifier in the table of symbols as Variable */
 	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
@@ -1667,19 +1379,12 @@ void lp::ReadStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::ReadStringStmt::printAST() 
-{
-  std::cout << "ReadStringStmt: readString" << std::endl;
-  std::cout << "\t" << this->_id << std::endl;
-}
-
 void lp::ReadStringStmt::evaluate() 
 {
   std::string value;
   std::cout << BIGREEN;
-  std::cout << "Insert a string value --> ";
-  std::cout << RESET;
   std::getline(std::cin >> std::ws, value); // lee con espacios
+  std::cout << RESET;
 
   // Obtener la variable de la tabla de símbolos
   lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
@@ -1707,11 +1412,6 @@ void lp::ReadStringStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::EmptyStmt::printAST() 
-{
-  std::cout << "EmptyStmt "  << std::endl;
-}
-
 void lp::EmptyStmt::evaluate() 
 {
   // Empty
@@ -1720,13 +1420,6 @@ void lp::EmptyStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
-
-void lp::ClearScreenStmt::printAST() 
-{
-  std::cout << "ClearScreenStmt: "  << std::endl;
-
-  std::cout << std::endl;
-}
 
 
 void lp::ClearScreenStmt::evaluate() 
@@ -1740,20 +1433,6 @@ void lp::ClearScreenStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
 
-void lp::PlaceStmt::printAST() 
-{
-  std::cout << "PlaceStmt: "  << std::endl;
-  
-  std::cout << "\t";
-  this->_row->printAST();
-
-
-  std::cout << "\t";
-  this->_cols->printAST();
-
-  std::cout << std::endl;
-}
-
 
 void lp::PlaceStmt::evaluate() 
 {
@@ -1766,32 +1445,6 @@ void lp::PlaceStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
-
-void lp::IfStmt::printAST() 
-{
-  std::cout << "IfStmt: "  << std::endl;
-  // Condition
-  std::cout << "\t";
-  this->_cond->printAST();
-
-  	// Consequent
-  	std::cout << "\t";
-  	std::list<Statement *>::iterator stmtIter1;
-	for(stmtIter1= this->_stmt1->begin(); stmtIter1!= this->_stmt1->end(); stmtIter1++){
-		(*stmtIter1)->printAST();
-	}
-
- // The alternative is printASTed if exists
-  if(this->_stmt2 != NULL)
-     {  
-		std::list<Statement *>::iterator stmtIter;
-		for(stmtIter= this->_stmt2->begin(); stmtIter!= this->_stmt2->end(); stmtIter++){
-			(*stmtIter)->printAST();
-		}
-     }
-
-  std::cout << std::endl;
-}
 
 
 void lp::IfStmt::evaluate() 
@@ -1816,29 +1469,9 @@ void lp::IfStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
 
- void lp::SwitchStmt::printAST() 
- {
- 	std::cout << "SwitchStmt: "  << std::endl;
- 	std::cout << "\t";
- 	this->_value->printAST();
- 	std::cout << "\t";
- 	std::list<CaseStmt *>::iterator it;
-	for(it= this->_cases->begin(); it!= this->_cases->end(); it++){
-		(*it)->printAST();
-	}
 
- 	if(_default!=NULL){
- 		std::list<Statement *>::iterator itsttm = this->_default->begin();
- 		while(itsttm != this->_default->end()){
- 			(*itsttm)->printAST();
- 			itsttm++;
- 		}
- 	}
- }
-
-
- void lp::SwitchStmt::evaluate() 
- {
+void lp::SwitchStmt::evaluate() 
+{
 	double valueN_= 0.0;
 	bool valueB_= false;
 	std::string valueS_= "";
@@ -1888,7 +1521,7 @@ void lp::IfStmt::evaluate()
 			(* stmtDef)->evaluate();
 		}
 	}
- }
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1896,20 +1529,6 @@ void lp::IfStmt::evaluate()
 
 int lp::CaseStmt::getType(){
 	return this->_casN->getType();
-}
-
-void lp::CaseStmt::printAST() 
-{
-  std::cout << "CaseStmt: "  << std::endl;
-  // Condition
-  std::cout << "\t";
-  this->_casN->printAST();
-
-  std::cout << "\t";
-  std::list<Statement *>::iterator stmtIter;
-  for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-	  (*stmtIter)->printAST();
-  }
 }
 
 double lp::CaseStmt::evaluateNumber() 
@@ -1941,25 +1560,6 @@ void lp::CaseStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
 
-void lp::WhileStmt::printAST() 
-{
-  std::cout << "WhileStmt: "  << std::endl;
-  // Condition
-  std::cout << "\t";
-  this->_cond->printAST();
-
-  // Body of the while loop
-  std::cout << "\t";
-
-  	std::list<Statement *>::iterator stmtIter;
-	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-		(*stmtIter)->printAST();
-	}
-
-  std::cout << std::endl;
-}
-
-
 void lp::WhileStmt::evaluate() 
 {
   // While the condition is true. the body is run 
@@ -1978,25 +1578,6 @@ void lp::WhileStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
 
-void lp::RepeatStmt::printAST() 
-{
-  std::cout << "RepeatStmt: "  << std::endl;
-  
-  std::cout << "\t";
-  std::list<Statement *>::iterator stmtIter;
-	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-		(*stmtIter)->printAST();
-	}
-
-	
-	// Condition
-	std::cout << "\t";
-	this->_cond->printAST();
-
-  std::cout << std::endl;
-}
-
-
 void lp::RepeatStmt::evaluate() 
 {
   // While the condition is true. the body is run 
@@ -2013,26 +1594,6 @@ void lp::RepeatStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
-
-void lp::ForStmt::printAST() 
-{
-  std::cout << "ForStmt: "  << std::endl;
-  // Condition
-  std::cout << "\t";
-  this->_inicio->printAST();
-  std::cout << "to ";
-  this->_final->printAST();
-
-  // Body of the while loop
-  std::cout << "\t";
-
-  	std::list<Statement *>::iterator stmtIter;
-	for(stmtIter= this->_stmt->begin(); stmtIter!= this->_stmt->end(); stmtIter++){
-		(*stmtIter)->printAST();
-	}
-
-  std::cout << std::endl;
-}
 
 
 void lp::ForStmt::evaluate() 
@@ -2124,18 +1685,6 @@ void lp::ForStmt::evaluate()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-void lp::AST::printAST() 
-{
-  std::list<Statement *>::iterator stmtIter;
-
-  for (stmtIter = stmts->begin(); stmtIter != stmts->end(); stmtIter++) 
-  {
-     (*stmtIter)->printAST();
-  }
-}
-
-
 
 void lp::AST::evaluate() 
 {
