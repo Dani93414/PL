@@ -5,7 +5,7 @@ print z;
 
 print x+y;
 print x-y;
-print x*y:
+print x*y;
 
 print 10/3;
 print 10//3;

@@ -103,7 +103,6 @@ stmtlist:
       if (interactiveMode && control == 0) {
 		for (std::list<lp::Statement *>::iterator it = $$->begin(); it != $$->end(); ++it) {
 			lp::Statement *stmt = *it;
-			stmt->printAST();
 			stmt->evaluate();
 		}
         $$->clear();
@@ -235,6 +234,52 @@ exp:
   | STRING_LITERAL { $$ = new lp::StringNode($1); }
   | VARIABLE { $$ = new lp::VariableNode($1); }
   | CONSTANT { $$ = new lp::ConstantNode($1); }
+  | BUILTIN LPAREN listOfExp RPAREN
+		{
+			// Get the identifier in the table of symbols as Builtin
+			lp::Builtin *f= (lp::Builtin *) table.getSymbol($1);
+
+			// Check the number of parameters 
+			if (f->getNParameters() ==  (int) $3->size())
+			{
+				switch(f->getNParameters())
+				{
+					case 0:
+						{
+							// Create a new Builtin Function with 0 parameters node	
+							$$ = new lp::BuiltinFunctionNode_0($1);
+						}
+						break;
+
+					case 1:
+						{
+							// Get the expression from the list of expressions
+							lp::ExpNode *e = $3->front();
+
+							// Create a new Builtin Function with 1 parameter node	
+							$$ = new lp::BuiltinFunctionNode_1($1,e);
+						}
+						break;
+
+					case 2:
+						{
+							// Get the expressions from the list of expressions
+							lp::ExpNode *e1 = $3->front();
+							$3->pop_front();
+							lp::ExpNode *e2 = $3->front();
+
+							// Create a new Builtin Function with 2 parameters node	
+							$$ = new lp::BuiltinFunctionNode_2($1,e1,e2);
+						}
+						break;
+
+					default:
+				  			 execerror("Syntax error: too many parameters for function ", $1);
+				} 
+			}
+			else
+	  			 execerror("Syntax error: incompatible number of parameters for function", $1);
+		}
   | PLUS exp %prec UNARY { $$ = new lp::UnaryPlusNode($2); }
   | MINUS exp %prec UNARY { $$ = new lp::UnaryMinusNode($2); }
   | NOT exp { $$ = new lp::NotNode($2); }

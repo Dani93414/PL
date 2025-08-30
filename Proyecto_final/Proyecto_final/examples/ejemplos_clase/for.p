@@ -1,4 +1,4 @@
-print('Ejempplos del bucle \'for\' \n');
+print('Ejemplos del bucle \'for\' \n');
 
 print('Bucle for ascendente: desde 1 hasta 10 paso 1\n');
 for i from 1 to 10 step 1 do print(i); end_for;

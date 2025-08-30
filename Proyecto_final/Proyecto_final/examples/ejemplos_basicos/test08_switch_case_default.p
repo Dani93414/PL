@@ -1,4 +1,4 @@
-x := 'patata';
+x := 'tomate';
 
 switch (x)
   case 'patata':
