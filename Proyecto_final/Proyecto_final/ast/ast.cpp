@@ -1312,8 +1312,7 @@ void lp::AssignmentStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 void lp::PrintStmt::evaluate() 
-{
-	std::cout << BIYELLOW; 
+{ 
 	
 	switch(this->_exp->getType())
 	{
@@ -1333,8 +1332,7 @@ void lp::PrintStmt::evaluate()
 
 		default:
 			warning("Runtime error: incompatible type for ", "print");
-	}
-	std::cout << RESET; 
+	} 
 }
 
 
@@ -1344,9 +1342,7 @@ void lp::PrintStmt::evaluate()
 void lp::ReadStmt::evaluate() 
 {   
 	double value;
-	std::cout << BIGREEN;
-	std::cin >> value;
-	std::cout << RESET; 
+	std::cin >> value; 
 
 	/* Get the identifier in the table of symbols as Variable */
 	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
@@ -1382,9 +1378,7 @@ void lp::ReadStmt::evaluate()
 void lp::ReadStringStmt::evaluate() 
 {
   std::string value;
-  std::cout << BIGREEN;
   std::getline(std::cin >> std::ws, value); // lee con espacios
-  std::cout << RESET;
 
   // Obtener la variable de la tabla de símbolos
   lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);

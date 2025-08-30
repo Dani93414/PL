@@ -64,6 +64,7 @@ lp::AST *root; //!< Root of the abstract syntax tree AST
 // NEW in example 10 
 
 #include "table/init.hpp"
+#include "includes/macros.hpp"
 
 
 /*
@@ -98,57 +99,81 @@ lp::Table table; //!< Table of Symbols
 */
 int main(int argc, char *argv[])
 {
-	/* Option -t needed to debug */
+  /* Option -t needed to debug */
     /* 1, on; 0, off */
-	yydebug = 0; 
- 
- /* 
-   If the input file exists 
+  yydebug = 0; 
+
+  /* 
+    If the input file exists 
       then 
-           it is set as input device for yylex();
+            it is set as input device for yylex();
       otherwise
             the input device is the keyboard (stdin)
- */
- if (argc == 2) 
- {
-     yyin = fopen(argv[1],"r");
+  */
+  if(argc > 2){
+    std::cout << BIRED;
+    std::cout << "ERROR AL EJECUTAR: demasiados argumentos indicados" << "\n";
+    std::cout<< RESET;
+    return 1; 
+  }
 
-	 interactiveMode = false;
- }
-else
- {
-	interactiveMode = true;
- }
+  if (argc == 2) 
+  {
+    std::string filename = argv[1];
+    if (filename.size() < 2 || filename.substr(filename.size() - 2) != ".p") 
+    {
+      std::cout << BIRED;
+      std::cout << "ERROR AL EJECUTAR: el archivo debe tener extensión .p\n";
+      std::cout<< RESET;
+      return 1;
+    }
 
- // Copy the name of the interpreter 
-	progname = argv[0];
+    yyin = fopen(argv[1], "r");
+    if(yyin == NULL){
+      std::cout << BIRED;
+      std::cout << "ERROR AL EJECUTAR: no se pudo abrir el archivo \"" << argv[1] << "\"\n";
+      std::cout<< RESET;
+      return 1; 
+    }
 
- /* Number of decimal places */ 
- std::cout.precision(7);
+    interactiveMode = false;
+  }
 
- /* 
-   Table of symbols initialization 
-   Must be written before the recovery sentence: setjmp
- */
-   init(table);
 
-/* Sets a viable state to continue after a runtime error */
- setjmp(begin);
+  else
+  {
+    interactiveMode = true;
+  }
 
- /* The name of the function to handle floating-point errors is set */
- signal(SIGFPE,fpecatch);
+  // Copy the name of the interpreter 
+  progname = argv[0];
 
- // Parser function
+  /* Number of decimal places */ 
+  std::cout.precision(7);
+
+  /* 
+    Table of symbols initialization 
+    Must be written before the recovery sentence: setjmp
+  */
+  init(table);
+
+  /* Sets a viable state to continue after a runtime error */
+  setjmp(begin);
+
+  /* The name of the function to handle floating-point errors is set */
+  signal(SIGFPE,fpecatch);
+
+  // Parser function
   yyparse();
 
- if (interactiveMode == false)
- {
+  if (interactiveMode == false)
+  {
   /* NEW in example 15 */  
-       root->evaluate(); 
- }
+    root->evaluate(); 
+  }
 
- /* End of program */
- return 0;
+  /* End of program */
+  return 0;
 }
 
 

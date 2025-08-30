@@ -1,11 +1,11 @@
-x := 5;
-print +x;
-print -x;
+numerin := 5;
+print +numerin;
+print -numerin;
 
-print ++x;
-print --x;
+print ++numerin;
+print --numerin;
 
-print x++;
-print x--;
+print numerin++;
+print numerin--;
 
-print x!;
+print numerin!;
