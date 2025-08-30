@@ -875,42 +875,42 @@ YY_RULE_SETUP
 case 10:
 YY_RULE_SETUP
 #line 52 "interpreter.l"
-{ return SIN; }
+{ yylval.string = strdup(yytext); return BUILTIN; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 53 "interpreter.l"
-{ return COS; }
+{ yylval.string = strdup(yytext); return BUILTIN; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 54 "interpreter.l"
-{ return LOG; }
+{ yylval.string = strdup(yytext); return BUILTIN; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 55 "interpreter.l"
-{ return LOG10; }
+{ yylval.string = strdup(yytext); return BUILTIN; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 56 "interpreter.l"
-{ return EXP; }
+{ yylval.string = strdup(yytext); return BUILTIN; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 57 "interpreter.l"
-{ return SQRT; }
+{ yylval.string = strdup(yytext); return BUILTIN; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 58 "interpreter.l"
-{return INTEGER; }
+{ yylval.string = strdup(yytext); return BUILTIN; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 59 "interpreter.l"
-{ return ABS; }
+{ yylval.string = strdup(yytext); return BUILTIN; }
 	YY_BREAK
 case 18:
 /* rule 18 can match eol */

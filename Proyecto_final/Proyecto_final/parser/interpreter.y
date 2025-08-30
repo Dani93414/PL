@@ -70,7 +70,7 @@ extern lp::AST *root;
 %token CONST_PI CONST_E CONST_GAMMA CONST_PHI CONST_DEG
 %token INCREMENT DECREMENT FACTORIAL
 %token IDENTIFIER
-%token SQRT LOG LOG10 ABS EXP SIN COS INTEGER
+
 
 %token <string> STRING_LITERAL
 %token <number> NUMBER
@@ -305,14 +305,7 @@ exp:
   | exp OR exp { $$ = new lp::OrNode($1, $3); }
   | exp CONCAT exp { $$ = new lp::ConcatNode($1, $3); }
   | LPAREN exp RPAREN { $$ = $2; }
-  | SIN LPAREN exp RPAREN    { $$ = new lp::BuiltinFunctionNode_1("sin", $3); }
-  | COS LPAREN exp RPAREN    { $$ = new lp::BuiltinFunctionNode_1("cos", $3); }
-  | LOG LPAREN exp RPAREN    { $$ = new lp::BuiltinFunctionNode_1("log", $3); }
-  | LOG10 LPAREN exp RPAREN  { $$ = new lp::BuiltinFunctionNode_1("log10", $3); }
-  | EXP LPAREN exp RPAREN    { $$ = new lp::BuiltinFunctionNode_1("exp", $3); }
-  | SQRT LPAREN exp RPAREN   { $$ = new lp::BuiltinFunctionNode_1("sqrt", $3); }
-  | INTEGER LPAREN exp RPAREN { $$ = new lp::BuiltinFunctionNode_1("integer", $3); }
-  | ABS LPAREN exp RPAREN    { $$ = new lp::BuiltinFunctionNode_1("abs", $3); }
+
 
 ;
 

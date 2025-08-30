@@ -49,14 +49,14 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 <COMMENT>"*)"   { BEGIN(INITIAL); }     
 <COMMENT>.|\n   ;
 
-"sin"       { return SIN; }
-"cos"       { return COS; }
-"log"       { return LOG; }
-"log10"     { return LOG10; }
-"exp"       { return EXP; }
-"sqrt"      { return SQRT; }
-"integer"   {return INTEGER; }
-"abs"       { return ABS; }
+"sin"       { yylval.string = strdup(yytext); return BUILTIN; }
+"cos"       { yylval.string = strdup(yytext); return BUILTIN; }
+"log"       { yylval.string = strdup(yytext); return BUILTIN; }
+"log10"     { yylval.string = strdup(yytext); return BUILTIN; }
+"exp"       { yylval.string = strdup(yytext); return BUILTIN; }
+"sqrt"      { yylval.string = strdup(yytext); return BUILTIN; }
+"integer"   { yylval.string = strdup(yytext); return BUILTIN; }
+"abs"       { yylval.string = strdup(yytext); return BUILTIN; }
 
 
 
