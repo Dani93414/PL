@@ -15,11 +15,18 @@
 
 #include "table.hpp"
 
-
+std::string lp::Table::normalize(const std::string & id){
+  std::string tmp= id;
+  for (std::string::iterator it = tmp.begin(); it != tmp.end(); ++it) {
+    *it = std::tolower(static_cast<unsigned char>(*it)); 
+  }
+  return tmp;
+} 
 
 bool lp::Table::lookupSymbol(const std::string & name) const 
-{		
-	if (this->_table.find(name) !=  this->_table.end())
+{	
+  std::string key = this->normalize(name);	
+	if (this->_table.find(key) !=  this->_table.end())
 		return true;
 	else
 		return false;
@@ -32,25 +39,26 @@ lp::Symbol * lp::Table::getSymbol(const std::string & name)
    // Precondition
    assert (this->lookupSymbol(name) == true);
  #endif //NDEBUG
-
-	return	this->_table[name];
+  std::string key = normalize(name);
+	return	this->_table[key];
 }
 
 
 
 void lp::Table::installSymbol(Symbol * s)
 {
+  std::string key = normalize(s->getName());
  #ifndef NDEBUG
   // Precondition
-   assert (this->lookupSymbol(s->getName()) == false);
+   assert (this->lookupSymbol(key) == false);
  #endif //NDEBUG
 
    // The pointer to symbol is inserted in the map
-	this->_table[s->getName()] = s;
+	this->_table[key] = s;
 
  #ifndef NDEBUG
   // Postcondition
-   assert (this->lookupSymbol(s->getName()) == true);
+   assert (this->lookupSymbol(key) == true);
  #endif //NDEBUG
 }
 
@@ -58,17 +66,18 @@ void lp::Table::installSymbol(Symbol * s)
 
 void lp::Table::eraseSymbol(const std::string & name)
 {
+  std::string key = normalize(name);
  #ifndef NDEBUG
   // Precondition
-   assert (this->lookupSymbol(name) == true);
+   assert (this->lookupSymbol(key) == true);
  #endif //NDEBUG
 
-   // The symbol "name" is deleted from the map
-	this->_table.erase(name);
+   // The symbol "key" is deleted from the map
+	this->_table.erase(key);
 
  #ifndef NDEBUG
   // Postcondition
-   assert (this->lookupSymbol(name) == false);
+   assert (this->lookupSymbol(key) == false);
  #endif //NDEBUG
 }
 

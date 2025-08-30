@@ -127,13 +127,23 @@ class Table: public lp::TableInterface
 	\name Modifiers
 */
 
+
+/*!		
+	\brief  Modify the variable’s identifier to treat lowercase and uppercase letters as the same
+	\param  id: Variable’s identifier
+	\return The variable’s identifier with lowercase letters
+	\sa     lookupSymbol(), eraseSymbol(), installSymbol()
+*/
+	static std::string normalize(const std::string &id);
+
+
 /*!		
 	\brief  Insert a new pointer to Symbol in the Table
 	\param  s: new pointer to Symbol
 	\pre    The Symbol "s" must not be in the Table 
 	\post   The Symbol "s" must be in the Table 
 	\return void
-	\sa     lookupSymbol(), eraseSymbol()
+	\sa     lookupSymbol(), eraseSymbol(), normalize()
 */
 	void installSymbol(Symbol * s);
 
@@ -144,7 +154,7 @@ class Table: public lp::TableInterface
 	\pre    The Symbol "name" must be in the Table
 	\post   The Symbol "name" must not be in the Table
 	\return void
-	\sa     lookupSymbol(),installSymbol()
+	\sa     lookupSymbol(),installSymbol(), normalize()
 */
 	void eraseSymbol(const std::string & name);
 
