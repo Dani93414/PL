@@ -1317,17 +1317,17 @@ void lp::PrintStmt::evaluate()
 	switch(this->_exp->getType())
 	{
 		case NUMBER:
-			std::cout << this->_exp->evaluateNumber() << std::endl;
+			std::cout << this->_exp->evaluateNumber();
 			break;
 		case BOOL:
 			if (this->_exp->evaluateBool())
-				std::cout << "true" << std::endl;
+				std::cout << "true";
 			else
-				std::cout << "false" << std::endl;
+				std::cout << "false";
 		
 			break;
 		case STRING_LITERAL:
-			std::cout << this->_exp->evaluateString() << std::endl;
+			std::cout << this->_exp->evaluateString();
 			break;
 
 		default:

@@ -1,23 +1,27 @@
 x := 'tomate';
 
+print 'Prueba de funcionamiento del switch:\n\n';
+
 switch (x)
   case 'patata':
-    print 'Recibido patata';
+    print 'Recibido patata\n';
   case 'tomate':
-    print 'Recibido tomate';
+    print 'Recibido tomate\n';
   default:
-    print 'Recibido otro valor';
+    print 'Recibido otro valor\n';
 end_switch
 
 
 y := 2;
 
+print '\n';
+
 switch (y)
 case 1:
-  print 'Uno';
+  print 'Es uno\n';
 case 2:
-  print 'Dos';
+  print 'Es dos\n';
 default:
-  print 'Otro valor';
+  print 'Es otro valor\n';
 end_switch
 

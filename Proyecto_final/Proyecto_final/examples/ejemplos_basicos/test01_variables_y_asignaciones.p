@@ -1,24 +1,28 @@
 numerin := 5;
-print +numerin;
-print -numerin;
+print 'Unario + a la izquierda= ' || +numerin || '\n';
+print 'Unario - a la izquierda= ' || -numerin || '\n';
 
-print ++numerin;
-print --numerin;
+print 'Unario ++ a la izquierda= ' || ++numerin || '\n';
+print 'Unario -- a la izquierda= ' || --numerin || '\n';
 
-print numerin++;
-print numerin--;
+print 'Unario ++ a la derecha= ' || numerin++ || '\n';
+print 'Unario -- a la derecha= ' || numerin-- || '\n';
 
-print numerin!;
+print 'Factorial de 5= ' || numerin! || '\n';
 
+
+print '\nImpresión de variables con mismas letras pero con algunas diferencias entre mayúsculas: \n';
 varIABle := 512;
+print 'Valor de varIABle: 512\n';
+print 'variable=' || variable || '\n';
+print 'variabLE=' || variabLE || '\n';
+print 'VaRIable=' || VaRIable || '\n';
+print 'VARIABLE=' || VARIABLE || '\n';
 
-print variable;
-print variabLE;
-print VaRIable;
-print VARIABLE;
-
+print 'Ingresa un numero que se guardará en la variable NUMber: ';
 read(NUMber);
-print nuMber;
+print 'nuMber= ' || nuMber || '\n';
 
-read_string(VERte);
-print vErtE;
+print 'Ingresa un string que se guardará en la variable CADEna: ';
+read_string(CADEna);
+print 'cAdeNA= ' || cAdeNA || '\n';

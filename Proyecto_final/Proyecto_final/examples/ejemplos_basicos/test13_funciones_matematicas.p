@@ -1,9 +1,9 @@
 x := 2;
-print sin(45);
-print cos(90);
-print log(x);
-print log10(x);
-print sqrt(x);
-print exp(2);
-print integer(2.5);
-print abs(-4.5);
+print 'Seno de 45= ' || sin(45) || '\n';
+print 'Coseno de 90= ' || cos(90) || '\n';
+print 'Logaritmo neperiano de 2= ' || log(x) || '\n';
+print 'Logaritmo base 10 de 2= ' || log10(x) || '\n';
+print 'Raíz cuadrada de 2= ' || sqrt(x) || '\n';
+print 'Exponente de 2= ' || exp(2) || '\n';
+print 'Valor entero de 2.5= ' || integer(2.5) || '\n';
+print 'Valor absoluto de -4.5= ' || abs(-4.5) || '\n';

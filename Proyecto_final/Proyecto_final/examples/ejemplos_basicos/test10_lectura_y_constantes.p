@@ -1,9 +1,10 @@
+print 'Escriba un valor numérico: ';
 read(x);
-print x;
+print x || '\n';
 
 y := pi + e + gamma + deg + phi;
-print y;
+print 'pi + e + gamma + deg + phi= ' || y || '\n';
 
-print 'Mensaje: ';
+print 'Escriba un mensaje: ';
 read_string(mensaje);
-print mensaje || '\n';
+print 'Mensaje recibido: ' || mensaje || '\n';

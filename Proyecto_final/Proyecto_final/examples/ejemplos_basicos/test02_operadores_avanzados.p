@@ -1,11 +1,11 @@
 x := 3;
 y := 4;
 z := x^2 + y^2;
-print z;
+print '3² + 4² = ' || z || '\n';
 
-print x+y;
-print x-y;
-print x*y;
+print '3 + 4 = ' || (x+y) || '\n';
+print '3 - 4 = ' || (x-y) || '\n';
+print '3 * 4 = ' || (x*y) || '\n';
 
-print 10/3;
-print 10//3;
+print 'Resultado completo de 10/3 = ' || (10/3) || '\n';
+print 'Resultado entero de 10/3 = ' || (10//3) || '\n';
