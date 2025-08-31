@@ -1,10 +1,10 @@
-print('Introduce el límite para la serie de Fibonacci:\n');
+print('Introduce el límite para la serie de Fibonacci: ');
 read(limite);
 
 a := 0;
 b := 1;
 
-print('Serie de Fibonacci:\n');
+print('\nSerie de Fibonacci:\n');
 
 while (a <= limite) do
 	print(a || ' ');

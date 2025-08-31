@@ -2,7 +2,7 @@ clave := 'segura';
 entrada := ' ';
 
 repeat
-	print('Introduce la clave secreta:\n');
+	print('Introduce la clave secreta: ');
 	read_string(entrada);
 
 	if (entrada <> clave) then

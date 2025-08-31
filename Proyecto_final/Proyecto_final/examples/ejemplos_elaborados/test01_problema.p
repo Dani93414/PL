@@ -1,7 +1,7 @@
 # Programa que invierte los dígitos de un número entero
 
 print('Programa que invierte los dígitos de un número entero \n');
-print('Introduce un número entero: \n');
+print('Introduce un número entero: ');
 read(n);
 
 r := ' ';

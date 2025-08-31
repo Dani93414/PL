@@ -1,4 +1,4 @@
-print('Introduce cuántos números vas a introducir:\n');
+print('Introduce cuántos números vas a introducir: ');
 read(n);
 
 positivos := 0;
@@ -7,7 +7,7 @@ ceros := 0;
 suma := 0;
 
 for i from 1 to n do
-	print('Número ' || i || ': \n');
+	print('Número ' || i || ': ');
 	read(x);
 	suma := suma + x;
 
@@ -22,7 +22,7 @@ for i from 1 to n do
 	end_if;
 end_for;
 
-print('Resumen:\n');
+print('\nResumen:\n');
 print('Positivos: ' || positivos || '\n');
 print('Negativos: ' || negativos || '\n');
 print('Ceros: ' || ceros || '\n');
