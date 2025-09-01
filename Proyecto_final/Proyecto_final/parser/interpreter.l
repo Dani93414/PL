@@ -9,12 +9,12 @@
 
 extern int lineNumber;
 extern lp::Table table;
+int nComments;
 %}
 
 %option noyywrap
 %option caseless
 
-%x ERROR
 %x COMMENT
 
 
@@ -22,7 +22,6 @@ extern lp::Table table;
 DIGIT         [0-9]
 LETTER        [a-zA-Z]
 ID            {LETTER}({LETTER}|{DIGIT}|_)*
-INVALID_ID    (_{ID}|{ID}_|.*__.*)
 
 INTEGER       {DIGIT}+
 REAL1         {DIGIT}+\.{DIGIT}*
@@ -45,8 +44,24 @@ STRING        \'([^\'\\]|\\[nt\\\'])*\'
 
 
 "#".*           ;                        
-"(*"            { BEGIN(COMMENT); }     
-<COMMENT>"*)"   { BEGIN(INITIAL); }     
+"(*"            { 
+                    nComments= 1;
+                    BEGIN(COMMENT); 
+                }     
+
+<COMMENT>"(*"   { 
+                    nComments++;
+                    BEGIN(COMMENT); 
+                }
+
+<COMMENT>"*)"   { 
+                    nComments--;
+
+                    if(nComments == 0){
+                        BEGIN(INITIAL); 
+                    }
+                }
+
 <COMMENT>.|\n   ;
 
 "sin"       { yylval.string = strdup(yytext); return BUILTIN; }
