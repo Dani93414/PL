@@ -1,8 +1,5 @@
 # ----------------------------------------------------
 # ÁREA DE UN TRIÁNGULO (Fórmula de Herón)
-# Dado los tres lados a, b, c:
-#   s = (a+b+c)/2
-#   area = sqrt(s*(s-a)*(s-b)*(s-c))
 # ----------------------------------------------------
 
 print('== ÁREA DE UN TRIÁNGULO ==\n');
