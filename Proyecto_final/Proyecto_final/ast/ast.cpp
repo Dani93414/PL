@@ -11,6 +11,7 @@
 #include <string>
 #include <list>
 #include <sstream>
+#include <csignal>
 
 // Para usar la funciones pow y std::abs
 #include <cmath>
@@ -515,7 +516,7 @@ double lp::DivisionNode::evaluateNumber()
 		}
 		else
 		{
-			warning("Runtime error", "Division by zero");
+			fpecatch(SIGFPE);
 		}
 	}
 	else
@@ -548,7 +549,7 @@ double lp::IntegerDivisionNode::evaluateNumber()
 		}
 		else
 		{
-			warning("Runtime error", "Division by zero");
+			fpecatch(SIGFPE);
 		}
 	}
 	else
@@ -637,7 +638,7 @@ double lp::ModuloNode::evaluateNumber()
     	if(std::abs(rightNumber) > ERROR_BOUND)
 				result = (int) leftNumber % (int) rightNumber;
 		else
-			warning("Runtime error", "Division by zero");
+			fpecatch(SIGFPE);
 	}
 	else
 	{
